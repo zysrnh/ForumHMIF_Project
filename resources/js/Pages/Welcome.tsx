@@ -73,7 +73,6 @@ export default function Welcome({
         e.preventDefault();
         if (!aspirationContent.trim()) return;
 
-        // Tambahkan aspirasi baru ke list
         const newTopic: TopicItem = {
             id: Date.now(),
             title: aspirationContent.slice(0, 60) + (aspirationContent.length > 60 ? '...' : ''),
@@ -162,13 +161,9 @@ export default function Welcome({
 
                     {/* 2. HERO: SUARA KALIAN, ARAH KSM KITA + MINI FORM ASPIRASI */}
                     <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                        {/* Kiri: Headline & Call To Action */}
+                        {/* Kiri: Headline & Call To Action (Tanpa badge pemanis) */}
                         <div className="lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal-lg flex flex-col justify-between">
                             <div className="space-y-4">
-                                <div className="inline-block bg-blue-50 border border-hima-blue-light px-3 py-1 text-xs font-bold text-hima-blue-dark uppercase tracking-wider">
-                                    Pintu Masuk Aspirasi Mahasiswa
-                                </div>
-
                                 <h1 className="text-3xl sm:text-5xl font-black text-hima-blue-dark tracking-tight leading-tight">
                                     Suara Kalian, Arah KSM Kita.
                                 </h1>
@@ -195,19 +190,16 @@ export default function Welcome({
                             </div>
                         </div>
 
-                        {/* Kanan: Mini Form Aspirasi Langsung */}
+                        {/* Kanan: Mini Form Aspirasi Langsung (Header Bersih) */}
                         <div
                             id="form-aspirasi"
                             className="lg:col-span-5 bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal-lg flex flex-col justify-between"
                         >
                             <form onSubmit={handleQuickSubmit} className="space-y-3.5">
-                                <div className="border-b-2 border-hima-blue-dark pb-2 flex items-center justify-between">
+                                <div className="border-b-2 border-hima-blue-dark pb-2">
                                     <h2 className="text-sm font-black text-hima-blue-dark uppercase tracking-wider">
                                         Tumpahin Aspirasimu
                                     </h2>
-                                    <span className="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-300 px-2 py-0.5">
-                                        Bisa Anonim
-                                    </span>
                                 </div>
 
                                 {/* Segment / Category Chips */}
@@ -265,20 +257,15 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 3. TOPIK LAGI RAME (3-5 KARTU ASPIRASI TERBANYAK) */}
+                    {/* 3. TOPIK LAGI RAME (Header Bersih Tanpa Box Mengambang) */}
                     <section id="aspirasi" className="space-y-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b-2 border-hima-blue-dark pb-2">
-                            <div>
-                                <h2 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
-                                    Topik Lagi Rame
-                                </h2>
-                                <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                    Aspirasi dengan vote terbanyak yang lagi hangat diperbincangkan anak IF.
-                                </p>
-                            </div>
-                            <span className="text-xs font-bold text-hima-blue-dark bg-white border-2 border-hima-blue-dark px-3 py-1 shadow-brutal-sm self-start sm:self-auto uppercase">
-                                Realtime Voting
-                            </span>
+                        <div className="border-b-2 border-hima-blue-dark pb-2">
+                            <h2 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
+                                Topik Lagi Rame
+                            </h2>
+                            <p className="text-xs sm:text-sm font-semibold text-gray-600">
+                                Aspirasi dengan vote terbanyak yang lagi hangat diperbincangkan anak IF.
+                            </p>
                         </div>
 
                         {/* List Topik */}
@@ -289,10 +276,10 @@ export default function Welcome({
                                     className="bg-white border-2 border-hima-blue-dark p-5 shadow-brutal flex flex-col justify-between btn-brutal space-y-3"
                                 >
                                     <div className="space-y-2.5">
-                                        {/* Chip & Meta */}
+                                        {/* Kategori & Waktu */}
                                         <div className="flex items-center justify-between">
                                             <span className="text-[10px] font-bold uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
-                                                Chip: {item.tag}
+                                                {item.tag}
                                             </span>
                                             <span className="text-[10px] font-semibold text-gray-500">
                                                 {item.timeAgo}
@@ -414,18 +401,13 @@ export default function Welcome({
 
                     {/* 6. WARTA & ARTIKEL (Sebagai Pelengkap) */}
                     <section id="warta" className="space-y-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b-2 border-hima-blue-dark pb-2">
-                            <div>
-                                <h2 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
-                                    Warta & Artikel Informatika
-                                </h2>
-                                <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                    Kumpulan bacaan teknologi, riset, dan info kegiatan mahasiswa IF.
-                                </p>
-                            </div>
-                            <span className="text-xs font-bold text-hima-blue-dark bg-white border-2 border-hima-blue-dark px-3 py-1 shadow-brutal-sm self-start sm:self-auto uppercase">
-                                Baca Lainnya
-                            </span>
+                        <div className="border-b-2 border-hima-blue-dark pb-2">
+                            <h2 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
+                                Warta & Artikel Informatika
+                            </h2>
+                            <p className="text-xs sm:text-sm font-semibold text-gray-600">
+                                Kumpulan bacaan teknologi, riset, dan info kegiatan mahasiswa IF.
+                            </p>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
