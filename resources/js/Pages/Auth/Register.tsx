@@ -21,26 +21,31 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout maxWidth="max-w-xl">
             <Head title="Daftar Akun Forum HMIF" />
 
             {/* Header Form */}
-            <div className="border-b-2 border-hima-blue-dark pb-4 mb-5">
-                <h1 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
-                    Daftar Akun Mahasiswa
-                </h1>
-                <p className="text-xs font-semibold text-gray-600 mt-1">
-                    Suarakan aspirasimu dan ikut menentukan arah KSM Himpunan Mahasiswa Informatika.
-                </p>
+            <div className="border-b-2 border-hima-blue-dark pb-2.5 mb-3 flex items-center justify-between">
+                <div>
+                    <h1 className="text-lg sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
+                        Daftar Akun Mahasiswa
+                    </h1>
+                    <p className="text-[11px] font-semibold text-gray-600">
+                        Suarakan aspirasimu dan ikut menentukan arah KSM Himpunan Mahasiswa Informatika.
+                    </p>
+                </div>
+                <span className="hidden sm:inline-block bg-blue-50 border border-hima-blue-dark text-hima-blue-dark px-2 py-0.5 text-[9px] font-black uppercase">
+                    LPKIA FELLOW
+                </span>
             </div>
 
-            {/* 1. TOMBOL GOOGLE REGISTER CEPOAT */}
-            <div className="space-y-3 mb-6">
+            {/* 1. TOMBOL GOOGLE REGISTER CEPAT */}
+            <div className="space-y-1.5 mb-3">
                 <a
                     href={route('auth.google')}
-                    className="btn-brutal w-full flex items-center justify-center gap-3 bg-white border-2 border-hima-blue-dark py-3 px-4 shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wider hover:bg-gray-50 active:translate-x-0.5 active:translate-y-0.5"
+                    className="btn-brutal w-full flex items-center justify-center gap-2.5 bg-white border-2 border-hima-blue-dark py-2 px-3 shadow-[3px_3px_0px_0px_#1A467C] text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wider hover:bg-gray-50 active:translate-x-0.5 active:translate-y-0.5"
                 >
-                    <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                         <path
                             fill="#4285F4"
                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -58,128 +63,106 @@ export default function Register() {
                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                         />
                     </svg>
-                    <span>Daftar Cepat via Google Fellow</span>
+                    <span>Daftar Cepat via Google Fellow (@fellow.lpkia.ac.id)</span>
                 </a>
-                <p className="text-[10px] text-gray-500 font-semibold text-center uppercase tracking-wider">
-                    Tanpa perlu bikin password manual
-                </p>
             </div>
 
             {/* Divider */}
-            <div className="relative flex items-center justify-center my-6">
+            <div className="relative flex items-center justify-center my-2.5">
                 <div className="border-t-2 border-hima-blue-dark/20 w-full" />
-                <span className="bg-white px-3 text-[10px] font-black uppercase tracking-widest text-gray-500 absolute">
+                <span className="bg-white px-2.5 text-[9px] font-black uppercase tracking-widest text-gray-500 absolute">
                     Atau Daftar Manual
                 </span>
             </div>
 
             {/* 2. CATATAN KEAMANAN PENTING (PASSWORD HARUS BEDA) */}
-            <div className="bg-amber-50 border-2 border-amber-600 p-3 mb-5 text-[11px] font-bold text-amber-900 leading-snug shadow-[2px_2px_0px_0px_#B45309]">
-                <span className="font-black uppercase tracking-wider block mb-0.5">
-                    Catatan Keamanan Penting:
-                </span>
-                Gunakan password yang <u>BERBEDA</u> dengan akun portal kampus / email fellow aslimu demi keamanan!
+            <div className="bg-amber-50 border border-amber-600 p-2 mb-3 text-[10px] sm:text-[11px] font-semibold text-amber-900 leading-tight">
+                <strong className="font-black uppercase tracking-wider text-amber-950">Catatan Keamanan: </strong>
+                Gunakan password yang <u>BERBEDA</u> dengan akun portal kampus aslimu demi keamanan data!
             </div>
 
-            {/* 3. FORM REGISTRASI DENGAN EMAIL FELLOW */}
-            <form onSubmit={submit} className="space-y-4">
-                {/* Nama Lengkap */}
-                <div>
-                    <InputLabel htmlFor="name" value="Nama Lengkap" className="text-xs font-bold text-gray-700 uppercase" />
+            {/* 3. FORM REGISTRASI GRID 2 KOLOM DI DESKTOP */}
+            <form onSubmit={submit} className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Nama Lengkap */}
+                    <div>
+                        <InputLabel htmlFor="name" value="Nama Lengkap" className="text-[11px] font-bold text-gray-700 uppercase" />
+                        <input
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            placeholder="contoh: Zaki Yusron"
+                            className="mt-1 block w-full border-2 border-hima-blue-dark p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                            autoComplete="name"
+                            autoFocus
+                            onChange={(e) => setData('name', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.name} className="mt-1 text-[11px] font-bold text-hima-red-light" />
+                    </div>
 
-                    <input
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        placeholder="contoh: Zaki Yusron"
-                        className="mt-1 block w-full border-2 border-hima-blue-dark p-2.5 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
-                        autoComplete="name"
-                        autoFocus
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
+                    {/* Email Kampus */}
+                    <div>
+                        <InputLabel htmlFor="email" value="Email (@fellow.lpkia.ac.id)" className="text-[11px] font-bold text-gray-700 uppercase" />
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            placeholder="250414010@fellow.lpkia.ac.id"
+                            className="mt-1 block w-full border-2 border-hima-blue-dark p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                            autoComplete="username"
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.email} className="mt-1 text-[11px] font-bold text-hima-red-light" />
+                    </div>
 
-                    <InputError message={errors.name} className="mt-1.5 text-xs font-bold text-hima-red-light" />
+                    {/* Password */}
+                    <div>
+                        <InputLabel htmlFor="password" value="Password Baru" className="text-[11px] font-bold text-gray-700 uppercase" />
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            placeholder="minimal 8 karakter"
+                            className="mt-1 block w-full border-2 border-hima-blue-dark p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                            autoComplete="new-password"
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.password} className="mt-1 text-[11px] font-bold text-hima-red-light" />
+                    </div>
+
+                    {/* Konfirmasi Password */}
+                    <div>
+                        <InputLabel
+                            htmlFor="password_confirmation"
+                            value="Konfirmasi Password"
+                            className="text-[11px] font-bold text-gray-700 uppercase"
+                        />
+                        <input
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            placeholder="ulangi password baru"
+                            className="mt-1 block w-full border-2 border-hima-blue-dark p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                            autoComplete="new-password"
+                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                            required
+                        />
+                        <InputError
+                            message={errors.password_confirmation}
+                            className="mt-1 text-[11px] font-bold text-hima-red-light"
+                        />
+                    </div>
                 </div>
 
-                {/* Email Kampus */}
-                <div>
-                    <InputLabel htmlFor="email" value="Email Mahasiswa (@fellow.lpkia.ac.id)" className="text-xs font-bold text-gray-700 uppercase" />
-
-                    <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        placeholder="contoh: 250414010@fellow.lpkia.ac.id"
-                        className="mt-1 block w-full border-2 border-hima-blue-dark p-2.5 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.email} className="mt-1.5 text-xs font-bold text-hima-red-light" />
-                </div>
-
-                {/* Password */}
-                <div>
-                    <InputLabel htmlFor="password" value="Password Baru" className="text-xs font-bold text-gray-700 uppercase" />
-
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        placeholder="minimal 8 karakter"
-                        className="mt-1 block w-full border-2 border-hima-blue-dark p-2.5 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-1.5 text-xs font-bold text-hima-red-light" />
-                </div>
-
-                {/* Konfirmasi Password */}
-                <div>
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Konfirmasi Password Baru"
-                        className="text-xs font-bold text-gray-700 uppercase"
-                    />
-
-                    <input
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        placeholder="ulangi password baru"
-                        className="mt-1 block w-full border-2 border-hima-blue-dark p-2.5 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
-                        required
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-1.5 text-xs font-bold text-hima-red-light"
-                    />
-                </div>
-
-                {/* Tombol Submit */}
-                <div className="pt-2">
-                    <button
-                        type="submit"
-                        disabled={processing}
-                        className="btn-brutal w-full bg-hima-red-light text-white font-black py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark disabled:opacity-50"
-                    >
-                        {processing ? 'Mendaftarkan...' : 'Daftar Akun Mahasiswa'}
-                    </button>
-                </div>
-
-                {/* Link ke Login */}
-                <div className="text-center pt-3 border-t border-gray-200">
-                    <p className="text-xs font-semibold text-gray-600">
+                {/* Tombol Submit & Link Login */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-2.5 border-t border-gray-200">
+                    <p className="text-xs font-semibold text-gray-600 order-2 sm:order-1">
                         Sudah punya akun?{' '}
                         <Link
                             href={route('login')}
@@ -188,6 +171,13 @@ export default function Register() {
                             Masuk di Sini &rarr;
                         </Link>
                     </p>
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className="btn-brutal w-full sm:w-auto bg-hima-red-light text-white font-black py-2.5 px-6 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark disabled:opacity-50 order-1 sm:order-2"
+                    >
+                        {processing ? 'Mendaftarkan...' : 'Daftar Akun Mahasiswa'}
+                    </button>
                 </div>
             </form>
         </GuestLayout>
