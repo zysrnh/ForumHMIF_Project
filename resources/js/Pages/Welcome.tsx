@@ -1,6 +1,6 @@
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface TopicItem {
     id: number;
@@ -13,6 +13,36 @@ interface TopicItem {
     hasVoted?: boolean;
 }
 
+// Hook sederhana untuk deteksi scroll animasi masuk/keluar
+function useScrollReveal() {
+    const ref = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                // Beri efek transisi saat masuk atau keluar viewport
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                }
+            },
+            { threshold: 0.15 },
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, []);
+
+    return { ref, isVisible };
+}
+
 export default function Welcome({
     auth,
     laravelVersion,
@@ -22,6 +52,11 @@ export default function Welcome({
     const [aspirationCategory, setAspirationCategory] = useState<string>('Umum');
     const [aspirationContent, setAspirationContent] = useState<string>('');
     const [aspirationSuccess, setAspirationSuccess] = useState<boolean>(false);
+
+    // Observer untuk scroll reveal sections
+    const topicsSection = useScrollReveal();
+    const caraKerjaSection = useScrollReveal();
+    const counterSection = useScrollReveal();
 
     // State Topik Lagi Rame (Interactive Votes)
     const [topics, setTopics] = useState<TopicItem[]>([
@@ -108,12 +143,12 @@ export default function Welcome({
                 <div className="hidden xl:block absolute bottom-24 right-4 2xl:right-10 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-6 z-0" />
 
                 {/* Main Wrapper (Widescreen Responsive Container) */}
-                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-10 my-2">
-                    {/* 1. NAVBAR FORUM */}
-                    <header className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-brutal flex items-center justify-between gap-4">
+                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-12 my-2">
+                    {/* 1. NAVBAR FORUM (Slide Down Anim) */}
+                    <header className="anim-enter-down bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-4">
                         {/* Logo & Brand */}
                         <Link href="/" className="flex items-center gap-3 group">
-                            <div className="w-10 h-10 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-3deg] transition-transform">
+                            <div className="w-10 h-10 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200">
                                 <img
                                     src="/logo/logo.png"
                                     alt="Logo HIMA IF"
@@ -145,14 +180,14 @@ export default function Welcome({
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-4 sm:px-6 py-2.5 border-2 border-hima-blue-dark shadow-brutal-sm text-xs uppercase tracking-wider hover:bg-hima-blue-light"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-4 sm:px-6 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs uppercase tracking-wider hover:bg-hima-blue-light"
                                 >
                                     Dashboard Kamu
                                 </Link>
                             ) : (
                                 <Link
                                     href={route('login')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-5 sm:px-7 py-2.5 border-2 border-hima-blue-dark shadow-brutal-sm text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-5 sm:px-7 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Gabung Yuk
                                 </Link>
@@ -162,8 +197,8 @@ export default function Welcome({
 
                     {/* 2. HERO: SUARA KALIAN, ARAH KSM KITA + MINI FORM ASPIRASI */}
                     <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-                        {/* Kiri: Headline & Call To Action */}
-                        <div className="lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-10 shadow-brutal-lg flex flex-col justify-between">
+                        {/* Kiri: Headline & Call To Action (Anim Enter 1) */}
+                        <div className="anim-enter-1 lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-10 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover">
                             <div className="space-y-5">
                                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-hima-blue-dark tracking-tight leading-tight">
                                     Suara Kalian, Arah KSM Kita.
@@ -178,23 +213,23 @@ export default function Welcome({
                             <div className="pt-8 flex flex-wrap items-center gap-4">
                                 <a
                                     href="#form-aspirasi"
-                                    className="btn-brutal inline-flex items-center justify-center bg-hima-red-light text-white font-black px-7 py-3.5 border-2 border-hima-blue-dark shadow-brutal text-sm sm:text-base uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="btn-brutal inline-flex items-center justify-center bg-hima-red-light text-white font-black px-7 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Kirim Aspirasi
                                 </a>
                                 <a
                                     href="#aspirasi"
-                                    className="btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-6 py-3.5 border-2 border-hima-blue-dark shadow-brutal text-sm sm:text-base uppercase tracking-wider hover:bg-blue-50"
+                                    className="btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-6 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-blue-50"
                                 >
                                     Lihat Topik Masuk
                                 </a>
                             </div>
                         </div>
 
-                        {/* Kanan: Mini Form Aspirasi Langsung */}
+                        {/* Kanan: Mini Form Aspirasi Langsung (Anim Enter 2) */}
                         <div
                             id="form-aspirasi"
-                            className="lg:col-span-5 bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal-lg flex flex-col justify-between"
+                            className="anim-enter-2 lg:col-span-5 bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
                         >
                             <form onSubmit={handleQuickSubmit} className="space-y-4">
                                 <div className="border-b-2 border-hima-blue-dark pb-2.5">
@@ -214,9 +249,9 @@ export default function Welcome({
                                                 key={cat}
                                                 type="button"
                                                 onClick={() => setAspirationCategory(cat)}
-                                                className={`text-xs font-bold px-3 py-1 border-2 border-hima-blue-dark transition-all ${
+                                                className={`text-xs font-bold px-3 py-1 border-2 border-hima-blue-dark transition-all duration-150 ${
                                                     aspirationCategory === cat
-                                                        ? 'bg-hima-blue-dark text-white shadow-brutal-sm'
+                                                        ? 'bg-hima-blue-dark text-white shadow-[3px_3px_0px_0px_#1A467C] translate-x-[-1px] translate-y-[-1px]'
                                                         : 'bg-white text-hima-blue-dark hover:bg-gray-100'
                                                 }`}
                                             >
@@ -240,7 +275,7 @@ export default function Welcome({
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="w-full btn-brutal bg-hima-red-light text-white font-black py-3 border-2 border-hima-blue-dark shadow-brutal text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="w-full btn-brutal bg-hima-red-light text-white font-black py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Lempar ke Forum
                                 </button>
@@ -258,8 +293,16 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 3. TOPIK LAGI RAME */}
-                    <section id="aspirasi" className="space-y-5">
+                    {/* 3. TOPIK LAGI RAME (Scroll Reveal Hook) */}
+                    <section
+                        id="aspirasi"
+                        ref={topicsSection.ref}
+                        className={`space-y-5 transition-all duration-700 ease-out ${
+                            topicsSection.isVisible
+                                ? 'opacity-100 translate-y-0'
+                                : 'opacity-0 translate-y-10'
+                        }`}
+                    >
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
                             <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                 Topik Lagi Rame
@@ -269,12 +312,12 @@ export default function Welcome({
                             </p>
                         </div>
 
-                        {/* List Topik (Grid 3 Kolom yang Melebar) */}
+                        {/* List Topik (Grid 3 Kolom dengan Shadow 6px & Hover Lift) */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
                             {topics.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="bg-white border-2 border-hima-blue-dark p-6 shadow-brutal flex flex-col justify-between btn-brutal space-y-4"
+                                    className="bg-white border-2 border-hima-blue-dark p-6 shadow-[6px_6px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-4"
                                 >
                                     <div className="space-y-3">
                                         {/* Kategori & Waktu */}
@@ -309,8 +352,8 @@ export default function Welcome({
                                             onClick={() => handleVote(item.id)}
                                             className={`btn-brutal inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-black border-2 border-hima-blue-dark transition-all ${
                                                 item.hasVoted
-                                                    ? 'bg-hima-red-light text-white shadow-brutal-sm'
-                                                    : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-brutal-sm'
+                                                    ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C]'
+                                                    : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-[3px_3px_0px_0px_#1A467C]'
                                             }`}
                                         >
                                             <span>&#9650;</span>
@@ -323,8 +366,16 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 4. CARA KERJA FORUM (RAPI, BERSIH, SOLID WHITE) */}
-                    <section id="cara-kerja" className="space-y-5">
+                    {/* 4. CARA KERJA FORUM (Scroll Reveal Hook) */}
+                    <section
+                        id="cara-kerja"
+                        ref={caraKerjaSection.ref}
+                        className={`space-y-5 transition-all duration-700 ease-out ${
+                            caraKerjaSection.isVisible
+                                ? 'opacity-100 translate-y-0'
+                                : 'opacity-0 translate-y-10'
+                        }`}
+                    >
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
                             <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                 Cara Kerja Forum
@@ -336,9 +387,9 @@ export default function Welcome({
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
                             {/* Langkah 1 */}
-                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-brutal flex flex-col justify-between space-y-4 btn-brutal">
+                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] flex flex-col justify-between space-y-4 card-brutal-hover">
                                 <div className="space-y-3">
-                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-base shadow-brutal-sm">
+                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-base shadow-[3px_3px_0px_0px_#1A467C]">
                                         01
                                     </div>
                                     <h3 className="text-lg font-black text-hima-blue-dark uppercase">
@@ -354,9 +405,9 @@ export default function Welcome({
                             </div>
 
                             {/* Langkah 2 */}
-                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-brutal flex flex-col justify-between space-y-4 btn-brutal">
+                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] flex flex-col justify-between space-y-4 card-brutal-hover">
                                 <div className="space-y-3">
-                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-red-light text-white flex items-center justify-center font-black text-base shadow-brutal-sm">
+                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-red-light text-white flex items-center justify-center font-black text-base shadow-[3px_3px_0px_0px_#1A467C]">
                                         02
                                     </div>
                                     <h3 className="text-lg font-black text-hima-blue-dark uppercase">
@@ -372,9 +423,9 @@ export default function Welcome({
                             </div>
 
                             {/* Langkah 3 */}
-                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-brutal flex flex-col justify-between space-y-4 btn-brutal">
+                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] flex flex-col justify-between space-y-4 card-brutal-hover">
                                 <div className="space-y-3">
-                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-blue-light text-white flex items-center justify-center font-black text-base shadow-brutal-sm">
+                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-blue-light text-white flex items-center justify-center font-black text-base shadow-[3px_3px_0px_0px_#1A467C]">
                                         03
                                     </div>
                                     <h3 className="text-lg font-black text-hima-blue-dark uppercase">
@@ -391,9 +442,16 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 5. COUNTER STATISTIK */}
-                    <section className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6">
-                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal text-center">
+                    {/* 5. COUNTER STATISTIK (Scroll Reveal Hook) */}
+                    <section
+                        ref={counterSection.ref}
+                        className={`grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6 transition-all duration-700 ease-out ${
+                            counterSection.isVisible
+                                ? 'opacity-100 translate-y-0'
+                                : 'opacity-0 translate-y-10'
+                        }`}
+                    >
+                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1A467C] text-center card-brutal-hover">
                             <span className="text-4xl sm:text-5xl font-black text-hima-blue-dark block">
                                 148
                             </span>
@@ -402,7 +460,7 @@ export default function Welcome({
                             </span>
                         </div>
 
-                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal text-center">
+                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1A467C] text-center card-brutal-hover">
                             <span className="text-4xl sm:text-5xl font-black text-hima-red-light block">
                                 42
                             </span>
@@ -411,7 +469,7 @@ export default function Welcome({
                             </span>
                         </div>
 
-                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal text-center">
+                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1A467C] text-center card-brutal-hover">
                             <span className="text-4xl sm:text-5xl font-black text-hima-blue-light block">
                                 23
                             </span>
