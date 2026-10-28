@@ -21,8 +21,6 @@ export default {
                     'blue-dark': '#1A467C',
                     'red-light': '#CA2C2A',
                     'red-dark': '#901C1A',
-                    'yellow': '#FACC15',
-                    'yellow-hover': '#EAB308',
                 },
             },
             boxShadow: {

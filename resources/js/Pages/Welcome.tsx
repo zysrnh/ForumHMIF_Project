@@ -95,10 +95,10 @@ export default function Welcome({
         <>
             <Head title="Forum HMIF - Suara Kalian, Arah KSM Kita" />
 
-            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-10 relative overflow-x-hidden selection:bg-hima-yellow selection:text-hima-blue-dark">
+            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-10 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
                 {/* Floating Geometric Accents */}
                 <div className="hidden md:block absolute top-8 left-8 w-14 h-14 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
-                <div className="hidden md:block absolute bottom-16 left-12 w-10 h-10 bg-hima-yellow/40 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2" />
+                <div className="hidden md:block absolute bottom-16 left-12 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />
                 <div className="hidden md:block absolute top-24 right-12 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2" />
 
                 {/* Main Wrapper */}
@@ -152,7 +152,7 @@ export default function Welcome({
                             ) : (
                                 <Link
                                     href={route('login')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-yellow text-hima-blue-dark font-black px-4 sm:px-5 py-2 border-2 border-hima-blue-dark shadow-brutal-sm text-xs uppercase tracking-wider hover:bg-hima-yellow-hover"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-4 sm:px-5 py-2 border-2 border-hima-blue-dark shadow-brutal-sm text-xs uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Gabung Yuk
                                 </Link>
@@ -182,7 +182,7 @@ export default function Welcome({
                             <div className="pt-6 flex flex-wrap items-center gap-3">
                                 <a
                                     href="#form-aspirasi"
-                                    className="btn-brutal inline-flex items-center justify-center bg-hima-yellow text-hima-blue-dark font-black px-6 py-3 border-2 border-hima-blue-dark shadow-brutal text-sm uppercase tracking-wider hover:bg-hima-yellow-hover"
+                                    className="btn-brutal inline-flex items-center justify-center bg-hima-red-light text-white font-black px-6 py-3 border-2 border-hima-blue-dark shadow-brutal text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Kirim Aspirasi
                                 </a>
@@ -244,10 +244,10 @@ export default function Welcome({
                                     />
                                 </div>
 
-                                {/* Submit Button */}
+                                {/* Submit Button (Merah HIMA) */}
                                 <button
                                     type="submit"
-                                    className="w-full btn-brutal bg-hima-yellow text-hima-blue-dark font-black py-2.5 border-2 border-hima-blue-dark shadow-brutal text-xs uppercase tracking-wider hover:bg-hima-yellow-hover"
+                                    className="w-full btn-brutal bg-hima-red-light text-white font-black py-2.5 border-2 border-hima-blue-dark shadow-brutal text-xs uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Lempar ke Forum
                                 </button>
@@ -321,7 +321,7 @@ export default function Welcome({
                                             onClick={() => handleVote(item.id)}
                                             className={`btn-brutal inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black border-2 border-hima-blue-dark transition-all ${
                                                 item.hasVoted
-                                                    ? 'bg-hima-yellow text-hima-blue-dark shadow-brutal-sm'
+                                                    ? 'bg-hima-red-light text-white shadow-brutal-sm'
                                                     : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-brutal-sm'
                                             }`}
                                         >
@@ -360,7 +360,7 @@ export default function Welcome({
 
                             {/* Langkah 2 */}
                             <div className="dot-card border-2 border-hima-blue-dark p-4 shadow-brutal-sm space-y-2">
-                                <div className="text-2xl font-black text-hima-yellow-hover">02</div>
+                                <div className="text-2xl font-black text-hima-red-light">02</div>
                                 <h3 className="text-base font-black text-hima-blue-dark uppercase">
                                     Dukungan & Vote
                                 </h3>
@@ -394,7 +394,7 @@ export default function Welcome({
                         </div>
 
                         <div className="bg-white border-2 border-hima-blue-dark p-5 shadow-brutal text-center">
-                            <span className="text-3xl sm:text-4xl font-black text-hima-yellow-hover block">
+                            <span className="text-3xl sm:text-4xl font-black text-hima-red-light block">
                                 42
                             </span>
                             <span className="text-xs font-bold text-gray-600 uppercase tracking-wider mt-1 block">
