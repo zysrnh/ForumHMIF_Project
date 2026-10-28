@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Blueprint Dot Grid Background */
+.bg-blueprint {
+    background-color: #E8F2FA;
+    background-image: radial-gradient(#1A467C 1.2px, transparent 1.2px);
+    background-size: 24px 24px;
+}
+
+.dot-card {
+    background-color: #F8FBFE;
+    background-image: radial-gradient(#1A467C 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+/* Tape effect on polaroid badge */
+.tape-badge {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Tactile Brutal Button */
+.btn-brutal {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-brutal:hover {
+    transform: translate(-2px, -2px);
+}
+
+.btn-brutal:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px 0px #1A467C !important;
+}
+
+/* Floating Ambient Geometric Accents */
+@keyframes gentleFloat1 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes gentleFloat2 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(6px) rotate(-3deg); }
+}
+
+.anim-float-1 {
+    animation: gentleFloat1 6s ease-in-out infinite;
+}
+
+.anim-float-2 {
+    animation: gentleFloat2 7s ease-in-out infinite;
+}
