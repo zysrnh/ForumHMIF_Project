@@ -95,9 +95,17 @@ export default function Welcome({
             <Head title="Forum HMIF - Suara Kalian, Arah KSM Kita" />
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-8 xl:p-10 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
-                {/* Floating Geometric Accents di pojok atas */}
-                <div className="hidden 2xl:block absolute top-8 left-8 w-14 h-14 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
-                <div className="hidden 2xl:block absolute top-24 right-10 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2" />
+                {/* Ambient Floating Geometric Accents (Sisi Kiri Layar) */}
+                <div className="hidden xl:block absolute top-6 left-4 2xl:left-10 w-12 h-12 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-6 z-0" />
+                <div className="hidden xl:block absolute top-[28rem] left-3 2xl:left-8 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2 -rotate-12 z-0" />
+                <div className="hidden xl:block absolute top-[50rem] left-5 2xl:left-10 w-14 h-14 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-3 z-0" />
+                <div className="hidden xl:block absolute bottom-28 left-4 2xl:left-8 w-9 h-9 bg-hima-blue-dark/15 border-2 border-hima-blue-dark shadow-brutal-sm pointer-events-none anim-float-2 rotate-12 z-0" />
+
+                {/* Ambient Floating Geometric Accents (Sisi Kanan Layar) */}
+                <div className="hidden xl:block absolute top-8 right-4 2xl:right-10 w-14 h-14 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2 -rotate-6 z-0" />
+                <div className="hidden xl:block absolute top-[25rem] right-3 2xl:right-8 w-11 h-11 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-12 z-0" />
+                <div className="hidden xl:block absolute top-[48rem] right-5 2xl:right-10 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2 -rotate-3 z-0" />
+                <div className="hidden xl:block absolute bottom-24 right-4 2xl:right-10 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-6 z-0" />
 
                 {/* Main Wrapper (Widescreen Responsive Container) */}
                 <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-10 my-2">
