@@ -264,10 +264,11 @@ export default function Dashboard() {
         >
             <Head title="Portal Aspirasi Mahasiswa" />
 
-            <div className="mx-auto max-w-4xl space-y-5">
+            {/* FULL WIDTH CONTAINER TANPA GAP SAMPING */}
+            <div className="w-full space-y-3">
                 {/* Notifikasi Sukses Sederhana */}
                 {showSuccessAlert && (
-                    <div className="bg-green-50 border-2 border-green-700 p-3 shadow-brutal-sm flex items-center justify-between gap-3 text-xs text-green-900 font-semibold">
+                    <div className="w-full bg-green-50 border-2 border-green-700 p-3 shadow-brutal-sm flex items-center justify-between gap-3 text-xs text-green-900 font-semibold">
                         <div className="flex items-center gap-2">
                             <span className="w-5 h-5 bg-green-700 text-white font-black flex items-center justify-center text-[10px]">
                                 ✓
@@ -284,9 +285,9 @@ export default function Dashboard() {
                     </div>
                 )}
 
-                {/* 1. TAMPILAN FOKUS: FORM INPUT ASPIRASI (Gak Rame, Tenang & Mudah Diisi) */}
+                {/* 1. TAMPILAN FOKUS: FORM INPUT ASPIRASI (FULL WIDTH) */}
                 {activeNav === 'create' ? (
-                    <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal">
+                    <div className="w-full bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm">
                         <div className="border-b border-gray-200 pb-3 mb-5">
                             <h2 className="text-base sm:text-lg font-black text-hima-blue-dark uppercase">
                                 Tulis Masukan & Aspirasi
@@ -388,10 +389,10 @@ export default function Dashboard() {
                         </form>
                     </div>
                 ) : (
-                    /* 2. TAMPILAN FEED ASPIRASI (Bersih, Rapi & Tidak Memusingkan) */
-                    <div className="space-y-4">
-                        {/* Filter & Pencarian Sederhana */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-brutal-sm space-y-3">
+                    /* 2. TAMPILAN FEED ASPIRASI (FULL WIDTH MEMBENTANG RAPI TANPA GAP KOSONG) */
+                    <div className="w-full space-y-3">
+                        {/* Filter & Pencarian Full Width */}
+                        <div className="w-full bg-white border-2 border-hima-blue-dark p-3 sm:p-3.5 shadow-brutal-sm space-y-2.5">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                                 {/* Search Bar */}
                                 <div className="relative flex-1">
@@ -432,7 +433,7 @@ export default function Dashboard() {
                             </div>
 
                             {/* Kategori Chips */}
-                            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs">
                                 {CATEGORIES.map((cat) => (
                                     <button
                                         key={cat}
@@ -450,9 +451,9 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        {/* List Aspirasi Cards */}
+                        {/* List Aspirasi Cards (Full Width) */}
                         {filteredAspirations.length === 0 ? (
-                            <div className="bg-white border-2 border-hima-blue-dark p-8 text-center shadow-brutal-sm">
+                            <div className="w-full bg-white border-2 border-hima-blue-dark p-8 text-center shadow-brutal-sm">
                                 <p className="text-sm font-black uppercase text-hima-blue-dark">
                                     Belum Ada Aspirasi
                                 </p>
@@ -471,7 +472,7 @@ export default function Dashboard() {
                             filteredAspirations.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-sm hover:border-hima-blue-light transition-all flex flex-col sm:flex-row items-start gap-3.5"
+                                    className="w-full bg-white border-2 border-hima-blue-dark p-3.5 sm:p-4 shadow-brutal-sm hover:border-hima-blue-light transition-all flex flex-col sm:flex-row items-start gap-3.5"
                                 >
                                     {/* Kolom Upvote Ringkas */}
                                     <button

@@ -37,20 +37,21 @@ export default function Edit({
         >
             <Head title="Pengaturan Akun" />
 
-            <div className="mx-auto max-w-4xl space-y-5">
+            {/* FULL WIDTH CONTAINER TANPA GAP SAMPING */}
+            <div className="w-full space-y-3.5">
                 {/* 1. INFORMASI PROFIL MAHASISWA */}
-                <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal">
+                <div className="w-full bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal-sm">
                     <UpdateProfileInformationForm
                         mustVerifyEmail={mustVerifyEmail}
                         status={status}
-                        className="max-w-2xl"
+                        className="w-full"
                     />
                 </div>
 
                 {/* 2. KEAMANAN / GANTI PASSWORD (KONDISIONAL GOOGLE SSO) */}
                 {isGoogleUser ? (
                     /* JIKA LOGIN GOOGLE: HIDE FORM GANTI PASSWORD & TAMPILKAN STATUS GOOGLE SSO */
-                    <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal">
+                    <div className="w-full bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal-sm">
                         <div className="border-b-2 border-gray-100 pb-3 mb-4">
                             <h2 className="text-sm sm:text-base font-black text-hima-blue-dark uppercase tracking-tight flex items-center gap-2">
                                 <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,14 +111,14 @@ export default function Edit({
                     </div>
                 ) : (
                     /* JIKA DAFTAR MANUAL: TAMPILKAN FORM GANTI PASSWORD */
-                    <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal">
-                        <UpdatePasswordForm className="max-w-2xl" />
+                    <div className="w-full bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal-sm">
+                        <UpdatePasswordForm className="w-full" />
                     </div>
                 )}
 
                 {/* 3. HAPUS AKUN MAHASISWA */}
-                <div className="bg-white border-2 border-hima-red-dark p-5 sm:p-6 shadow-brutal-red">
-                    <DeleteUserForm className="max-w-2xl" />
+                <div className="w-full bg-white border-2 border-hima-red-dark p-4 sm:p-5 shadow-brutal-red">
+                    <DeleteUserForm className="w-full" />
                 </div>
             </div>
         </AuthenticatedLayout>
