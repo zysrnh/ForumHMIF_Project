@@ -97,6 +97,15 @@ export default function Welcome({
     const countTopikKsm = useCountUp(42, 1100);
     const countProgramAksi = useCountUp(23, 1000);
 
+    // Fungsi Smooth Scroll Halus Tanpa Teleport Tiba-tiba
+    const scrollToSection = (e: React.MouseEvent, id: string) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     // Data Langkah Alur Stepper (Interactive Line)
     const workflowSteps = [
         {
@@ -264,12 +273,20 @@ export default function Welcome({
                             </div>
                         </Link>
 
-                        {/* Menu Nav Santai */}
+                        {/* Menu Nav Santai dengan Smooth Scroll */}
                         <nav className="hidden md:flex items-center gap-8 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
-                            <a href="#aspirasi" className="hover:text-hima-blue-light transition-colors">
+                            <a
+                                href="#aspirasi"
+                                onClick={(e) => scrollToSection(e, 'aspirasi')}
+                                className="hover:text-hima-blue-light transition-colors"
+                            >
                                 Aspirasi
                             </a>
-                            <a href="#cara-kerja" className="hover:text-hima-blue-light transition-colors">
+                            <a
+                                href="#cara-kerja"
+                                onClick={(e) => scrollToSection(e, 'cara-kerja')}
+                                className="hover:text-hima-blue-light transition-colors"
+                            >
                                 Cara Kerja
                             </a>
                         </nav>
@@ -339,16 +356,18 @@ export default function Welcome({
                                 </div>
                             </div>
 
-                            {/* Action Buttons */}
+                            {/* Action Buttons dengan Smooth Scroll */}
                             <div className="pt-4 flex flex-wrap items-center gap-4">
                                 <a
                                     href="#form-aspirasi"
+                                    onClick={(e) => scrollToSection(e, 'form-aspirasi')}
                                     className="btn-brutal inline-flex items-center justify-center bg-hima-red-light text-white font-black px-7 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Kirim Aspirasi
                                 </a>
                                 <a
                                     href="#aspirasi"
+                                    onClick={(e) => scrollToSection(e, 'aspirasi')}
                                     className="btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-6 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-blue-50"
                                 >
                                     Lihat Topik Masuk

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth Scrolling & Proper Scroll Margin */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 2.5rem;
+}
+
 /* Blueprint Dot Grid Background */
 .bg-blueprint {
     background-color: #E8F2FA;
