@@ -131,12 +131,6 @@ export default function Welcome({
                             <a href="#cara-kerja" className="hover:text-hima-blue-light transition-colors">
                                 Cara Kerja
                             </a>
-                            <a href="#warta" className="hover:text-hima-blue-light transition-colors">
-                                Warta
-                            </a>
-                            <a href="#pengurus" className="hover:text-hima-blue-light transition-colors">
-                                Buat Pengurus
-                            </a>
                         </nav>
 
                         {/* Right Auth Button */}
@@ -322,49 +316,70 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 4. CARA KERJA (3 LANGKAH) */}
-                    <section id="cara-kerja" className="bg-white border-2 border-hima-blue-dark p-6 sm:p-10 shadow-brutal-lg space-y-8">
-                        <div className="text-center max-w-xl mx-auto space-y-1.5">
+                    {/* 4. CARA KERJA FORUM (RAPI, BERSIH, SOLID WHITE, TANPA NOISE TITIK-TITIK) */}
+                    <section id="cara-kerja" className="space-y-5">
+                        <div className="border-b-2 border-hima-blue-dark pb-2.5">
                             <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                 Cara Kerja Forum
                             </h2>
                             <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                Dari sekadar unek-unek sampai jadi program dan solusi nyata di himpunan.
+                                Alur sederhana dari unek-unek kamu sampai jadi aksi dan program nyata di himpunan.
                             </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
                             {/* Langkah 1 */}
-                            <div className="dot-card border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal-sm space-y-3">
-                                <div className="text-3xl font-black text-hima-blue-dark">01</div>
-                                <h3 className="text-lg font-black text-hima-blue-dark uppercase">
-                                    Tulis Aspirasimu
-                                </h3>
-                                <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
-                                    Tumpahin ide kegiatan, saran akademik, atau kritik fasilitas lab secara terbuka atau anonim.
-                                </p>
+                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-brutal flex flex-col justify-between space-y-4 btn-brutal">
+                                <div className="space-y-3">
+                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-base shadow-brutal-sm">
+                                        01
+                                    </div>
+                                    <h3 className="text-lg font-black text-hima-blue-dark uppercase">
+                                        Tulis Aspirasimu
+                                    </h3>
+                                    <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
+                                        Tumpahin ide kegiatan, saran akademik, atau kritik fasilitas lab secara terbuka atau anonim langsung di form hero.
+                                    </p>
+                                </div>
+                                <div className="pt-3 border-t border-gray-100 text-[11px] font-bold text-hima-blue-dark uppercase tracking-wider">
+                                    Langkah Pertama
+                                </div>
                             </div>
 
                             {/* Langkah 2 */}
-                            <div className="dot-card border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal-sm space-y-3">
-                                <div className="text-3xl font-black text-hima-red-light">02</div>
-                                <h3 className="text-lg font-black text-hima-blue-dark uppercase">
-                                    Dukungan & Vote
-                                </h3>
-                                <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
-                                    Ajak temen-temen seangkatan nge-vote aspirasimu biar naik ke jajaran topik prioritas.
-                                </p>
+                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-brutal flex flex-col justify-between space-y-4 btn-brutal">
+                                <div className="space-y-3">
+                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-red-light text-white flex items-center justify-center font-black text-base shadow-brutal-sm">
+                                        02
+                                    </div>
+                                    <h3 className="text-lg font-black text-hima-blue-dark uppercase">
+                                        Dukungan & Vote
+                                    </h3>
+                                    <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
+                                        Ajak temen-temen seangkatan nge-vote aspirasimu agar naik ke jajaran topik prioritas yang paling urgent.
+                                    </p>
+                                </div>
+                                <div className="pt-3 border-t border-gray-100 text-[11px] font-bold text-hima-red-light uppercase tracking-wider">
+                                    Dukungan Mahasiswa
+                                </div>
                             </div>
 
                             {/* Langkah 3 */}
-                            <div className="dot-card border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal-sm space-y-3">
-                                <div className="text-3xl font-black text-hima-blue-light">03</div>
-                                <h3 className="text-lg font-black text-hima-blue-dark uppercase">
-                                    Dibahas di KSM
-                                </h3>
-                                <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
-                                    Topik teratas langsung dibawa ke meja rapat KSM HIMA IF buat dicariin solusi atau diangkat ke prodi.
-                                </p>
+                            <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-brutal flex flex-col justify-between space-y-4 btn-brutal">
+                                <div className="space-y-3">
+                                    <div className="w-11 h-11 border-2 border-hima-blue-dark bg-hima-blue-light text-white flex items-center justify-center font-black text-base shadow-brutal-sm">
+                                        03
+                                    </div>
+                                    <h3 className="text-lg font-black text-hima-blue-dark uppercase">
+                                        Dibahas di KSM
+                                    </h3>
+                                    <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
+                                        Topik teratas langsung dibawa ke meja rapat KSM HIMA IF buat dicarikan solusi konkret atau diangkat ke prodi.
+                                    </p>
+                                </div>
+                                <div className="pt-3 border-t border-gray-100 text-[11px] font-bold text-hima-blue-light uppercase tracking-wider">
+                                    Aksi Nyata Himpunan
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -399,121 +414,7 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 6. WARTA & ARTIKEL */}
-                    <section id="warta" className="space-y-5">
-                        <div className="border-b-2 border-hima-blue-dark pb-2.5">
-                            <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
-                                Warta & Artikel Informatika
-                            </h2>
-                            <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                Kumpulan bacaan teknologi, riset, dan info kegiatan mahasiswa IF.
-                            </p>
-                        </div>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                            {/* Card Kiri */}
-                            <div className="lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 shadow-brutal flex flex-col justify-between btn-brutal cursor-pointer">
-                                <div className="space-y-3.5">
-                                    <div className="w-full h-52 sm:h-64 bg-slate-900 border-2 border-hima-blue-dark relative overflow-hidden flex items-center justify-center">
-                                        <div className="absolute inset-0 bg-gradient-to-tr from-[#1A467C]/90 to-[#2A82C6]/50 mix-blend-multiply" />
-                                        <p className="relative z-10 text-white font-black text-xl sm:text-2xl uppercase tracking-wider">
-                                            AI & Software Engineering
-                                        </p>
-                                    </div>
-                                    <div className="flex items-center gap-2.5">
-                                        <span className="text-[11px] font-bold uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2.5 py-0.5">
-                                            Riset & AI
-                                        </span>
-                                        <span className="text-xs font-semibold text-gray-500">
-                                            28 Oktober 2026
-                                        </span>
-                                    </div>
-                                    <h3 className="text-xl sm:text-2xl font-black text-hima-blue-dark leading-snug">
-                                        Pemanfaatan Large Language Model untuk Otomasi Pelayanan Mahasiswa
-                                    </h3>
-                                    <p className="text-xs sm:text-sm font-medium text-gray-600 line-clamp-2 leading-relaxed">
-                                        Kajian implementasi AI agent cerdas untuk memvalidasi berkas akademik dan portal kemahasiswaan.
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* List Kanan */}
-                            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-                                <div className="bg-white border-2 border-hima-blue-dark p-5 shadow-brutal flex-1 btn-brutal cursor-pointer space-y-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] font-bold uppercase text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
-                                            Web Dev & UI
-                                        </span>
-                                        <span className="text-xs font-semibold text-gray-500">26 Okt</span>
-                                    </div>
-                                    <h4 className="text-base font-black text-hima-blue-dark leading-snug">
-                                        Eksplorasi Konsep Neubrutalism dalam Desain Portal Mahasiswa
-                                    </h4>
-                                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
-                                        Kenapa warna solid dan shadow kaku justru bikin navigasi makin jelas.
-                                    </p>
-                                </div>
-
-                                <div className="bg-white border-2 border-hima-blue-dark p-5 shadow-brutal flex-1 btn-brutal cursor-pointer space-y-2">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-[10px] font-bold uppercase text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
-                                            Agenda POKJA
-                                        </span>
-                                        <span className="text-xs font-semibold text-gray-500">24 Okt</span>
-                                    </div>
-                                    <h4 className="text-base font-black text-hima-blue-dark leading-snug">
-                                        Workshop Pemrograman Cloud & Persiapan Karir Developer 2026
-                                    </h4>
-                                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
-                                        Dokumentasi sesi bimbingan teknis bersama praktisi software house.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* 7. STRIP "BUAT PENGURUS" (Kompak Satu Baris yang Melebar) */}
-                    <section id="pengurus" className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
-                        <div className="flex items-center gap-2.5 font-black text-hima-blue-dark uppercase tracking-wide">
-                            <span className="w-3 h-3 bg-hima-blue-dark" />
-                            <span>Area Pengurus HIMA IF:</span>
-                        </div>
-
-                        <div className="flex flex-wrap items-center justify-center gap-2.5 font-bold text-gray-700">
-                            <Link
-                                href={route('login')}
-                                className="px-3 py-1.5 border border-gray-300 hover:border-hima-blue-dark hover:bg-blue-50 uppercase text-xs"
-                            >
-                                Surat & Arsip
-                            </Link>
-                            <Link
-                                href={route('login')}
-                                className="px-3 py-1.5 border border-gray-300 hover:border-hima-blue-dark hover:bg-blue-50 uppercase text-xs"
-                            >
-                                Database Anggota
-                            </Link>
-                            <Link
-                                href={route('login')}
-                                className="px-3 py-1.5 border border-gray-300 hover:border-hima-blue-dark hover:bg-blue-50 uppercase text-xs"
-                            >
-                                Agenda POKJA
-                            </Link>
-                            <Link
-                                href={route('login')}
-                                className="px-3 py-1.5 border border-gray-300 hover:border-hima-blue-dark hover:bg-blue-50 uppercase text-xs"
-                            >
-                                Kas HIMA
-                            </Link>
-                            <Link
-                                href={route('login')}
-                                className="btn-brutal px-4 py-1.5 bg-hima-blue-dark text-white font-black border-2 border-hima-blue-dark shadow-brutal-sm uppercase text-xs ml-1"
-                            >
-                                Masuk Admin
-                            </Link>
-                        </div>
-                    </section>
-
-                    {/* 8. FOOTER SANTAI */}
+                    {/* 6. FOOTER SANTAI */}
                     <footer className="border-t-2 border-hima-blue-dark pt-8 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-semibold text-gray-600">
                         <div>
                             <p className="font-bold text-hima-blue-dark text-sm sm:text-base">
