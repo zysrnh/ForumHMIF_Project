@@ -33,13 +33,28 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:'.User::class,
+                'regex:/^[a-zA-Z0-9._%+-]+@(fellow\.)?lpkia\.ac\.id$/i',
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'email.regex' => 'Pendaftaran wajib menggunakan email resmi kampus LPKIA (@fellow.lpkia.ac.id).',
         ]);
+
+        $email = strtolower($request->email);
+        $emailParts = explode('@', $email);
+        $nim = is_numeric($emailParts[0]) ? $emailParts[0] : null;
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => $email,
+            'nim' => $nim,
             'password' => Hash::make($request->password),
         ]);
 
