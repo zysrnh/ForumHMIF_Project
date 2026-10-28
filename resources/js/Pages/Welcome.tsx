@@ -95,9 +95,8 @@ export default function Welcome({
             <Head title="Forum HMIF - Suara Kalian, Arah KSM Kita" />
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-8 xl:p-10 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
-                {/* Floating Geometric Accents */}
+                {/* Floating Geometric Accents di pojok atas */}
                 <div className="hidden 2xl:block absolute top-8 left-8 w-14 h-14 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
-                <div className="hidden 2xl:block absolute bottom-16 left-10 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />
                 <div className="hidden 2xl:block absolute top-24 right-10 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2" />
 
                 {/* Main Wrapper (Widescreen Responsive Container) */}
@@ -316,7 +315,7 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 4. CARA KERJA FORUM (RAPI, BERSIH, SOLID WHITE, TANPA NOISE TITIK-TITIK) */}
+                    {/* 4. CARA KERJA FORUM (RAPI, BERSIH, SOLID WHITE) */}
                     <section id="cara-kerja" className="space-y-5">
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
                             <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
@@ -414,8 +413,8 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 6. FOOTER SANTAI */}
-                    <footer className="border-t-2 border-hima-blue-dark pt-8 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-semibold text-gray-600">
+                    {/* 6. FOOTER SANTAI & BERSIH */}
+                    <footer className="border-t-2 border-hima-blue-dark pt-8 pb-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-semibold text-gray-600">
                         <div>
                             <p className="font-bold text-hima-blue-dark text-sm sm:text-base">
                                 Dibuat anak IF, buat anak IF.
@@ -425,8 +424,8 @@ export default function Welcome({
                             </p>
                         </div>
 
-                        <div className="text-gray-400 font-mono text-xs">
-                            Laravel v{laravelVersion} (PHP v{phpVersion})
+                        <div className="text-xs font-bold text-hima-blue-dark uppercase tracking-wider">
+                            &copy; 2026 HIMA IF &bull; All Rights Reserved
                         </div>
                     </footer>
                 </div>
