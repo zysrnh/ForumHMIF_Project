@@ -13,7 +13,7 @@ export default function Welcome({
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 lg:p-10 relative overflow-x-hidden selection:bg-hima-blue-light selection:text-white">
                 {/* Floating Geometric Accents */}
                 <div className="hidden md:block absolute top-8 left-8 w-14 h-14 bg-hima-blue-light/25 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
-                <div className="hidden md:block absolute bottom-12 left-12 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />
+                <div className="hidden md:block absolute bottom-12 left-12 w-10 h-10 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2" />
                 <div className="hidden md:block absolute top-16 right-12 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2" />
                 <div className="hidden md:block absolute bottom-8 right-16 w-16 h-16 bg-hima-blue-dark/15 border-2 border-black shadow-[4px_4px_0px_0px_#000000] pointer-events-none anim-float-1" />
 
@@ -39,10 +39,6 @@ export default function Welcome({
 
                             {/* Headline Section */}
                             <div className="flex-1 text-center md:text-left space-y-2">
-                                <div className="inline-flex items-center gap-2 bg-blue-50 border border-hima-blue-light px-3 py-1 text-xs font-bold text-hima-blue-dark uppercase tracking-wider">
-                                    <span className="w-2 h-2 rounded-full bg-hima-blue-light animate-pulse" />
-                                    Portal Terpadu Mahasiswa & Pengurus
-                                </div>
                                 <h1 className="text-2xl sm:text-4xl font-black text-hima-blue-dark tracking-tight leading-tight">
                                     SISTEM INFORMASI HIMA IF
                                 </h1>
@@ -57,7 +53,7 @@ export default function Welcome({
                                             href={route('dashboard')}
                                             className="btn-brutal inline-flex items-center gap-2 bg-hima-blue-light text-white font-bold px-5 py-2.5 border-2 border-hima-blue-dark shadow-brutal text-sm uppercase tracking-wider"
                                         >
-                                            Buka Dashboard &rarr;
+                                            Buka Dashboard
                                         </Link>
                                     ) : (
                                         <>
@@ -80,7 +76,7 @@ export default function Welcome({
                         </div>
                     </div>
 
-                    {/* SECTION: WARTA & ARTIKEL INFORMATIKA (Inspirasi Layout PIAUD) */}
+                    {/* SECTION: WARTA & ARTIKEL INFORMATIKA */}
                     <div className="space-y-4">
                         {/* Section Header */}
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b-2 border-hima-blue-dark pb-3">
@@ -94,25 +90,22 @@ export default function Welcome({
                             </div>
                             <a
                                 href="#artikel"
-                                className="btn-brutal inline-flex items-center self-start sm:self-auto gap-1 text-xs font-bold text-hima-blue-dark bg-white border-2 border-hima-blue-dark px-3 py-1.5 shadow-brutal-sm hover:bg-blue-50 uppercase tracking-wider"
+                                className="btn-brutal inline-flex items-center self-start sm:self-auto text-xs font-bold text-hima-blue-dark bg-white border-2 border-hima-blue-dark px-3 py-1.5 shadow-brutal-sm hover:bg-blue-50 uppercase tracking-wider"
                             >
-                                Lihat Semua Artikel &rarr;
+                                Lihat Semua Artikel
                             </a>
                         </div>
 
                         {/* Article Grid: 1 Featured Besar (Kiri) + 3 List Bertingkat (Kanan) */}
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
                             {/* KIRI: FEATURED ARTICLE CARD (7 Kolom) */}
-                            <div className="lg:col-span-7 bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal flex flex-col justify-between btn-brutal">
+                            <div className="lg:col-span-7 bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal flex flex-col justify-between btn-brutal cursor-pointer">
                                 <div className="space-y-4">
                                     {/* Thumbnail Visual */}
-                                    <div className="w-full h-52 sm:h-64 bg-slate-900 border-2 border-hima-blue-dark relative overflow-hidden flex items-center justify-center group">
-                                        <div className="absolute inset-0 bg-gradient-to-tr from-[#1A467C]/80 to-[#2A82C6]/40 mix-blend-multiply" />
+                                    <div className="w-full h-52 sm:h-64 bg-slate-900 border-2 border-hima-blue-dark relative overflow-hidden flex items-center justify-center">
+                                        <div className="absolute inset-0 bg-gradient-to-tr from-[#1A467C]/90 to-[#2A82C6]/50 mix-blend-multiply" />
                                         <div className="relative z-10 text-center p-4">
-                                            <span className="font-mono text-xs uppercase tracking-widest text-blue-200 block mb-1">
-                                                [ FEATURED TECH RESEARCH ]
-                                            </span>
-                                            <p className="text-white font-black text-lg sm:text-xl uppercase tracking-wider">
+                                            <p className="text-white font-black text-xl sm:text-2xl uppercase tracking-wider">
                                                 AI & Software Engineering
                                             </p>
                                         </div>
@@ -120,7 +113,7 @@ export default function Welcome({
 
                                     {/* Meta Tags */}
                                     <div className="flex items-center gap-2.5 flex-wrap pt-1">
-                                        <span className="text-[11px] font-black uppercase tracking-wider text-white bg-hima-blue-dark px-2.5 py-0.5 border border-hima-blue-dark">
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2.5 py-0.5">
                                             Riset & AI
                                         </span>
                                         <span className="text-xs font-semibold text-gray-500">
@@ -129,7 +122,7 @@ export default function Welcome({
                                     </div>
 
                                     {/* Title */}
-                                    <h3 className="text-xl sm:text-2xl font-black text-hima-blue-dark tracking-tight leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                    <h3 className="text-xl sm:text-2xl font-black text-hima-blue-dark tracking-tight leading-snug hover:text-hima-blue-light transition-colors">
                                         Pemanfaatan Large Language Model untuk Otomasi Administrasi & Pelayanan Mahasiswa
                                     </h3>
 
@@ -139,26 +132,25 @@ export default function Welcome({
                                     </p>
                                 </div>
 
-                                <div className="pt-4 border-t border-gray-200 mt-4 flex items-center justify-between text-xs font-bold text-hima-blue-dark">
-                                    <span>Oleh: Divisi Ristek HIMA IF</span>
-                                    <span className="underline cursor-pointer hover:text-hima-blue-light">Baca Selengkapnya &rarr;</span>
+                                <div className="pt-4 border-t border-gray-200 mt-4 text-xs font-bold text-gray-500">
+                                    Divisi Riset & Teknologi HIMA IF
                                 </div>
                             </div>
 
                             {/* KANAN: 3 LIST ARTICLES BERTINGKAT (5 Kolom) */}
                             <div className="lg:col-span-5 flex flex-col justify-between gap-4">
                                 {/* Sub-Card 1 */}
-                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal">
+                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal cursor-pointer">
                                     <div className="space-y-2">
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="text-[10px] font-black uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
+                                            <span className="text-[10px] font-bold uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
                                                 Web Dev & UI
                                             </span>
                                             <span className="text-[11px] font-semibold text-gray-500">
-                                                26 Oktober 2026 &bull; 3 menit
+                                                26 Oktober 2026 &bull; 3 menit baca
                                             </span>
                                         </div>
-                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors">
                                             Eksplorasi Konsep Neubrutalism dalam Desain Portal Mahasiswa Modern
                                         </h4>
                                         <p className="text-xs font-medium text-gray-600 line-clamp-2">
@@ -168,17 +160,17 @@ export default function Welcome({
                                 </div>
 
                                 {/* Sub-Card 2 */}
-                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal">
+                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal cursor-pointer">
                                     <div className="space-y-2">
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="text-[10px] font-black uppercase tracking-wider text-hima-red-dark bg-red-50 border border-hima-red-light px-2 py-0.5">
+                                            <span className="text-[10px] font-bold uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
                                                 Agenda POKJA
                                             </span>
                                             <span className="text-[11px] font-semibold text-gray-500">
-                                                24 Oktober 2026 &bull; 5 menit
+                                                24 Oktober 2026 &bull; 5 menit baca
                                             </span>
                                         </div>
-                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors">
                                             Workshop Pemrograman Berbasis Cloud dan Penyiapan Karir Developer 2026
                                         </h4>
                                         <p className="text-xs font-medium text-gray-600 line-clamp-2">
@@ -188,17 +180,17 @@ export default function Welcome({
                                 </div>
 
                                 {/* Sub-Card 3 */}
-                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal">
+                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal cursor-pointer">
                                     <div className="space-y-2">
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="text-[10px] font-black uppercase tracking-wider text-green-900 bg-green-50 border border-green-700 px-2 py-0.5">
+                                            <span className="text-[10px] font-bold uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
                                                 Akademik & Karir
                                             </span>
                                             <span className="text-[11px] font-semibold text-gray-500">
-                                                21 Oktober 2026 &bull; 4 menit
+                                                21 Oktober 2026 &bull; 4 menit baca
                                             </span>
                                         </div>
-                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors">
                                             Strategi Sukses Magang MBKM dan Tips Lolos Seleksi Portfolio Informatika
                                         </h4>
                                         <p className="text-xs font-medium text-gray-600 line-clamp-2">
@@ -248,7 +240,7 @@ export default function Welcome({
                         <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal">
                             <div className="flex items-start justify-between">
                                 <span className="text-2xl font-black text-hima-blue-dark">03</span>
-                                <span className="text-[10px] font-bold text-hima-red-dark bg-red-50 border border-hima-red-light px-2 py-0.5 uppercase">
+                                <span className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5 uppercase">
                                     Program Kerja
                                 </span>
                             </div>
@@ -264,7 +256,7 @@ export default function Welcome({
                         <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal">
                             <div className="flex items-start justify-between">
                                 <span className="text-2xl font-black text-hima-blue-dark">04</span>
-                                <span className="text-[10px] font-bold text-green-800 bg-green-50 border border-green-700 px-2 py-0.5 uppercase">
+                                <span className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5 uppercase">
                                     Keuangan
                                 </span>
                             </div>
