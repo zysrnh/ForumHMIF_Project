@@ -10,7 +10,7 @@ export default function Welcome({
         <>
             <Head title="Sistem Informasi HIMA IF" />
 
-            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-10 relative overflow-x-hidden selection:bg-hima-blue-light selection:text-white">
+            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 lg:p-10 relative overflow-x-hidden selection:bg-hima-blue-light selection:text-white">
                 {/* Floating Geometric Accents */}
                 <div className="hidden md:block absolute top-8 left-8 w-14 h-14 bg-hima-blue-light/25 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
                 <div className="hidden md:block absolute bottom-12 left-12 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />
@@ -18,7 +18,7 @@ export default function Welcome({
                 <div className="hidden md:block absolute bottom-8 right-16 w-16 h-16 bg-hima-blue-dark/15 border-2 border-black shadow-[4px_4px_0px_0px_#000000] pointer-events-none anim-float-1" />
 
                 {/* Main Container */}
-                <div className="w-full max-w-4xl z-10 my-4 space-y-6">
+                <div className="w-full max-w-5xl z-10 my-4 space-y-8">
                     {/* Header Card with Polaroid Badge */}
                     <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-brutal-lg">
                         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
@@ -75,6 +75,136 @@ export default function Welcome({
                                             </Link>
                                         </>
                                     )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* SECTION: WARTA & ARTIKEL INFORMATIKA (Inspirasi Layout PIAUD) */}
+                    <div className="space-y-4">
+                        {/* Section Header */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b-2 border-hima-blue-dark pb-3">
+                            <div>
+                                <h2 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
+                                    Warta & Artikel Informatika
+                                </h2>
+                                <p className="text-xs sm:text-sm font-semibold text-gray-600">
+                                    Kumpulan riset teknologi, berita kegiatan, dan khazanah mahasiswa Teknik Informatika.
+                                </p>
+                            </div>
+                            <a
+                                href="#artikel"
+                                className="btn-brutal inline-flex items-center self-start sm:self-auto gap-1 text-xs font-bold text-hima-blue-dark bg-white border-2 border-hima-blue-dark px-3 py-1.5 shadow-brutal-sm hover:bg-blue-50 uppercase tracking-wider"
+                            >
+                                Lihat Semua Artikel &rarr;
+                            </a>
+                        </div>
+
+                        {/* Article Grid: 1 Featured Besar (Kiri) + 3 List Bertingkat (Kanan) */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+                            {/* KIRI: FEATURED ARTICLE CARD (7 Kolom) */}
+                            <div className="lg:col-span-7 bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-brutal flex flex-col justify-between btn-brutal">
+                                <div className="space-y-4">
+                                    {/* Thumbnail Visual */}
+                                    <div className="w-full h-52 sm:h-64 bg-slate-900 border-2 border-hima-blue-dark relative overflow-hidden flex items-center justify-center group">
+                                        <div className="absolute inset-0 bg-gradient-to-tr from-[#1A467C]/80 to-[#2A82C6]/40 mix-blend-multiply" />
+                                        <div className="relative z-10 text-center p-4">
+                                            <span className="font-mono text-xs uppercase tracking-widest text-blue-200 block mb-1">
+                                                [ FEATURED TECH RESEARCH ]
+                                            </span>
+                                            <p className="text-white font-black text-lg sm:text-xl uppercase tracking-wider">
+                                                AI & Software Engineering
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Meta Tags */}
+                                    <div className="flex items-center gap-2.5 flex-wrap pt-1">
+                                        <span className="text-[11px] font-black uppercase tracking-wider text-white bg-hima-blue-dark px-2.5 py-0.5 border border-hima-blue-dark">
+                                            Riset & AI
+                                        </span>
+                                        <span className="text-xs font-semibold text-gray-500">
+                                            28 Oktober 2026 &bull; 4 menit baca
+                                        </span>
+                                    </div>
+
+                                    {/* Title */}
+                                    <h3 className="text-xl sm:text-2xl font-black text-hima-blue-dark tracking-tight leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                        Pemanfaatan Large Language Model untuk Otomasi Administrasi & Pelayanan Mahasiswa
+                                    </h3>
+
+                                    {/* Excerpt */}
+                                    <p className="text-sm font-medium text-gray-600 leading-relaxed">
+                                        Kajian divisi Riset & Teknologi HIMA IF mengenai implementasi arsitektur agen cerdas untuk mempercepat validasi berkas akademik, surat pengantar, dan sistem informasi kampus.
+                                    </p>
+                                </div>
+
+                                <div className="pt-4 border-t border-gray-200 mt-4 flex items-center justify-between text-xs font-bold text-hima-blue-dark">
+                                    <span>Oleh: Divisi Ristek HIMA IF</span>
+                                    <span className="underline cursor-pointer hover:text-hima-blue-light">Baca Selengkapnya &rarr;</span>
+                                </div>
+                            </div>
+
+                            {/* KANAN: 3 LIST ARTICLES BERTINGKAT (5 Kolom) */}
+                            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
+                                {/* Sub-Card 1 */}
+                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="text-[10px] font-black uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
+                                                Web Dev & UI
+                                            </span>
+                                            <span className="text-[11px] font-semibold text-gray-500">
+                                                26 Oktober 2026 &bull; 3 menit
+                                            </span>
+                                        </div>
+                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                            Eksplorasi Konsep Neubrutalism dalam Desain Portal Mahasiswa Modern
+                                        </h4>
+                                        <p className="text-xs font-medium text-gray-600 line-clamp-2">
+                                            Membahas alasan pemilihan warna solid tegas dan hard drop shadow untuk meningkatkan kontras visual dan ketegasan navigasi antarmuka.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Sub-Card 2 */}
+                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="text-[10px] font-black uppercase tracking-wider text-hima-red-dark bg-red-50 border border-hima-red-light px-2 py-0.5">
+                                                Agenda POKJA
+                                            </span>
+                                            <span className="text-[11px] font-semibold text-gray-500">
+                                                24 Oktober 2026 &bull; 5 menit
+                                            </span>
+                                        </div>
+                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                            Workshop Pemrograman Berbasis Cloud dan Penyiapan Karir Developer 2026
+                                        </h4>
+                                        <p className="text-xs font-medium text-gray-600 line-clamp-2">
+                                            Panduan praktis dan dokumentasi sesi bimbingan teknis bersama para praktisi industri software engineering se-Bandung Raya.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Sub-Card 3 */}
+                                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal flex-1 flex flex-col justify-between btn-brutal">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="text-[10px] font-black uppercase tracking-wider text-green-900 bg-green-50 border border-green-700 px-2 py-0.5">
+                                                Akademik & Karir
+                                            </span>
+                                            <span className="text-[11px] font-semibold text-gray-500">
+                                                21 Oktober 2026 &bull; 4 menit
+                                            </span>
+                                        </div>
+                                        <h4 className="text-base font-black text-hima-blue-dark leading-snug hover:text-hima-blue-light transition-colors cursor-pointer">
+                                            Strategi Sukses Magang MBKM dan Tips Lolos Seleksi Portfolio Informatika
+                                        </h4>
+                                        <p className="text-xs font-medium text-gray-600 line-clamp-2">
+                                            Kiat penting menyusun repositori proyek open-source dan portofolio fullstack untuk memikat rekruter tech company.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
