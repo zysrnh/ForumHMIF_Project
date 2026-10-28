@@ -2,7 +2,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useRef, useState } from 'react';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -15,17 +15,58 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage().props.auth.user;
     const userNim = user.nim || (user.email.includes('@') ? user.email.split('@')[0] : '250414010');
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
+    const [previewUrl, setPreviewUrl] = useState<string | null>(user.avatar || null);
+
+    const { data, setData, post, errors, processing, recentlySuccessful } =
+        useForm<{
+            _method: string;
+            name: string;
+            email: string;
+            avatar: File | null;
+            delete_avatar: boolean;
+        }>({
+            _method: 'patch',
             name: user.name,
             email: user.email,
+            avatar: null,
+            delete_avatar: false,
         });
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData((prev) => ({
+                ...prev,
+                avatar: file,
+                delete_avatar: false,
+            }));
+            const objectUrl = URL.createObjectURL(file);
+            setPreviewUrl(objectUrl);
+        }
+    };
+
+    const handleDeletePhoto = () => {
+        setData((prev) => ({
+            ...prev,
+            avatar: null,
+            delete_avatar: true,
+        }));
+        setPreviewUrl(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        // Gunakan POST dengan forceFormData dan _method patch agar support file upload di Laravel
+        post(route('profile.update'), {
+            forceFormData: true,
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -41,11 +82,72 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <p className="text-xs text-gray-500 mt-0.5">
-                    Perbarui nama lengkap dan alamat email fellow yang terdaftar di sistem HIMA IF.
+                    Perbarui foto profil, nama lengkap, dan alamat email fellow yang terdaftar di sistem HIMA IF.
                 </p>
             </header>
 
             <form onSubmit={submit} className="space-y-4">
+                {/* 1. BAGIAN UPLOAD & GANTI FOTO PROFIL */}
+                <div className="border-2 border-hima-blue-dark p-3.5 bg-slate-50 shadow-[2px_2px_0px_0px_#1A467C]">
+                    <InputLabel value="Foto Profil Mahasiswa" className="text-xs font-black uppercase text-hima-blue-dark mb-2 block" />
+
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                        {/* Avatar Preview */}
+                        <div className="relative shrink-0">
+                            {previewUrl ? (
+                                <img
+                                    src={previewUrl}
+                                    alt="Preview Foto Profil"
+                                    className="w-16 h-16 sm:w-20 sm:h-20 object-cover border-2 border-hima-blue-dark shadow-brutal-sm bg-white"
+                                />
+                            ) : (
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-hima-blue-dark text-white font-black text-2xl flex items-center justify-center border-2 border-hima-blue-dark shadow-brutal-sm">
+                                    {data.name.charAt(0).toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* File Picker Actions */}
+                        <div className="space-y-1.5 flex-1">
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                id="avatar-input"
+                                accept="image/png, image/jpeg, image/jpg, image/webp"
+                                className="hidden"
+                                onChange={handleFileChange}
+                            />
+
+                            <div className="flex flex-wrap items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="btn-brutal border-2 border-hima-blue-dark bg-white text-hima-blue-dark px-3 py-1.5 text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-blue-50 active:translate-x-0.5 active:translate-y-0.5"
+                                >
+                                    📷 {previewUrl ? 'Ganti Foto' : 'Unggah Foto'}
+                                </button>
+
+                                {previewUrl && (
+                                    <button
+                                        type="button"
+                                        onClick={handleDeletePhoto}
+                                        className="border border-red-400 bg-white text-hima-red-dark hover:bg-red-50 px-2.5 py-1 text-xs font-bold uppercase"
+                                    >
+                                        Hapus Foto
+                                    </button>
+                                )}
+                            </div>
+
+                            <p className="text-[11px] text-gray-500 font-medium">
+                                Format didukung: <strong>JPG, PNG, WEBP</strong> (Maksimal 2MB).
+                            </p>
+
+                            <InputError className="mt-1 text-xs font-bold text-hima-red-light" message={errors.avatar} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* 2. NAMA LENGKAP */}
                 <div>
                     <InputLabel htmlFor="name" value="Nama Lengkap" className="text-xs font-black uppercase text-hima-blue-dark mb-1" />
 
@@ -62,6 +164,7 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-1.5 text-xs font-bold text-hima-red-light" message={errors.name} />
                 </div>
 
+                {/* 3. EMAIL MAHASISWA */}
                 <div>
                     <InputLabel htmlFor="email" value="Email Mahasiswa (@fellow.lpkia.ac.id)" className="text-xs font-black uppercase text-hima-blue-dark mb-1" />
 
@@ -100,13 +203,14 @@ export default function UpdateProfileInformation({
                     </div>
                 )}
 
+                {/* TOMBOL SIMPAN */}
                 <div className="flex items-center gap-3 pt-2">
                     <button
                         type="submit"
                         disabled={processing}
                         className="btn-brutal border-2 border-hima-blue-dark bg-hima-blue-dark text-white px-5 py-2 text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-blue-light disabled:opacity-50 transition-all active:translate-x-0.5 active:translate-y-0.5"
                     >
-                        {processing ? 'Menyimpan...' : 'Simpan Profil'}
+                        {processing ? 'Menyimpan...' : 'Simpan Profil & Foto'}
                     </button>
 
                     <Transition
@@ -117,7 +221,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-xs font-black text-green-700 bg-green-50 border border-green-600 px-2.5 py-1">
-                            ✓ Perubahan profil berhasil disimpan.
+                            ✓ Perubahan profil dan foto berhasil disimpan.
                         </p>
                     </Transition>
                 </div>
