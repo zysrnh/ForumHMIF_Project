@@ -605,7 +605,7 @@ export default function Welcome({
 
                             {/* Panel Detail Langkah yang Sedang Aktif (Tampil Proporsional & Dinamis) */}
                             <div className="bg-blue-50/50 border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[4px_4px_0px_0px_#1A467C] space-y-4">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-hima-blue-dark/20 pb-3">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-hima-blue-dark/20 pb-3">
                                     <div className="flex items-center gap-2">
                                         <span className="px-2.5 py-0.5 border border-hima-blue-dark bg-hima-blue-dark text-white text-[11px] font-black uppercase tracking-wider">
                                             Tahap {currentStepData.number}
@@ -615,22 +615,48 @@ export default function Welcome({
                                         </span>
                                     </div>
 
-                                    <div className="flex items-center gap-2">
+                                    {/* Tombol Navigasi Stepper Berbentuk Kotak Ikon SVG Compact */}
+                                    <div className="flex items-center gap-2 self-end sm:self-auto">
                                         <button
                                             type="button"
                                             disabled={activeStep === 1}
                                             onClick={() => setActiveStep((prev) => Math.max(1, prev - 1))}
-                                            className="px-2.5 py-1 text-xs font-bold border border-hima-blue-dark bg-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+                                            aria-label="Tahap Sebelumnya"
+                                            className="w-8 h-8 border-2 border-hima-blue-dark bg-white flex items-center justify-center text-hima-blue-dark shadow-[2px_2px_0px_0px_#1A467C] active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-35 disabled:cursor-not-allowed disabled:shadow-none hover:bg-gray-100 transition-all"
                                         >
-                                            &larr; Sebelumnya
+                                            <svg
+                                                className="w-4 h-4 stroke-[2.5]"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 19l-7-7 7-7"
+                                                />
+                                            </svg>
                                         </button>
+
                                         <button
                                             type="button"
                                             disabled={activeStep === 3}
                                             onClick={() => setActiveStep((prev) => Math.min(3, prev + 1))}
-                                            className="px-2.5 py-1 text-xs font-bold border border-hima-blue-dark bg-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+                                            aria-label="Tahap Selanjutnya"
+                                            className="w-8 h-8 border-2 border-hima-blue-dark bg-white flex items-center justify-center text-hima-blue-dark shadow-[2px_2px_0px_0px_#1A467C] active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-35 disabled:cursor-not-allowed disabled:shadow-none hover:bg-gray-100 transition-all"
                                         >
-                                            Selanjutnya &rarr;
+                                            <svg
+                                                className="w-4 h-4 stroke-[2.5]"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M9 5l7 7-7 7"
+                                                />
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
