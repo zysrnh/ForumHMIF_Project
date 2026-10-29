@@ -134,9 +134,10 @@ export default function Authenticated({
                     {/* Navigation Menu */}
                     <nav className="p-3 sm:p-4 space-y-1.5 flex-1">
                         <div className="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">
-                            Menu Utama
+                            Menu Forum & KSM
                         </div>
 
+                        {/* 1. Feed Aspirasi */}
                         {isProfilePage ? (
                             <Link
                                 href={route('dashboard')}
@@ -145,7 +146,7 @@ export default function Authenticated({
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                                 </svg>
-                                <span>Feed Aspirasi</span>
+                                <span>Semua Aspirasi</span>
                             </Link>
                         ) : (
                             <button
@@ -160,18 +161,42 @@ export default function Authenticated({
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                                 </svg>
-                                <span>Feed Aspirasi</span>
+                                <span>Semua Aspirasi</span>
                             </button>
                         )}
 
+                        {/* 2. Agenda Sidang KSM (Fitur Khusus KSM) */}
+                        {!isProfilePage ? (
+                            <button
+                                type="button"
+                                onClick={() => handleNavClick('ksm')}
+                                className={`w-full text-left flex items-center justify-between px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
+                                    currentNav === 'ksm'
+                                        ? 'bg-hima-red-dark text-white border-hima-red-dark shadow-brutal-sm translate-x-0.5'
+                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-red-50'
+                                }`}
+                            >
+                                <div className="flex items-center gap-2.5">
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span>Agenda KSM</span>
+                                </div>
+                                <span className={`text-[9px] font-black uppercase px-1.5 py-0.2 ${currentNav === 'ksm' ? 'bg-white text-hima-red-dark' : 'bg-red-100 text-hima-red-dark'}`}>
+                                    PLENO
+                                </span>
+                            </button>
+                        ) : null}
+
+                        {/* 3. Tulis Aspirasi */}
                         {!isProfilePage ? (
                             <button
                                 type="button"
                                 onClick={() => handleNavClick('create')}
                                 className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
                                     currentNav === 'create'
-                                        ? 'bg-hima-red-dark text-white border-hima-red-dark shadow-brutal-sm translate-x-0.5'
-                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-red-50'
+                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm translate-x-0.5'
+                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-blue-50'
                                 }`}
                             >
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,6 +206,7 @@ export default function Authenticated({
                             </button>
                         ) : null}
 
+                        {/* 4. Aspirasi Saya */}
                         {!isProfilePage ? (
                             <button
                                 type="button"
@@ -263,7 +289,7 @@ export default function Authenticated({
                         Portal Aspirasi Mahasiswa HIMA IF • Institut LPKIA
                     </p>
                     <div className="flex items-center gap-2 font-bold uppercase text-[10px] text-hima-blue-dark">
-                        <span>Pemberdayaan Suara Mahasiswa</span>
+                        <span>Pemberdayaan Suara Mahasiswa & Sidang KSM</span>
                     </div>
                 </footer>
             </div>

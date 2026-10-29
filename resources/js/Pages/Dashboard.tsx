@@ -1,142 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import {
+    AspirationItem,
+    addCommentSharedAspiration,
+    addSharedAspiration,
+    getSharedAspirations,
+    subscribeAspirations,
+    toggleVoteSharedAspiration,
+} from '@/data/aspirations';
 import { Head, usePage } from '@inertiajs/react';
-import { useState, useMemo } from 'react';
-
-interface CommentItem {
-    id: number;
-    authorName: string;
-    authorNim: string;
-    authorRole?: string;
-    isOfficial?: boolean;
-    content: string;
-    createdAt: string;
-}
-
-interface AspirationItem {
-    id: number;
-    title: string;
-    category: string;
-    content: string;
-    authorName: string;
-    authorNim: string;
-    isAnonymous: boolean;
-    status: 'baru' | 'kurasi' | 'ksm' | 'tindak_lanjut';
-    votes: number;
-    hasVoted: boolean;
-    createdAt: string;
-    comments: CommentItem[];
-}
-
-const INITIAL_ASPIRATIONS: AspirationItem[] = [
-    {
-        id: 1,
-        title: 'Penambahan Kapasitas RAM & Update Tool AI di Lab Komputer 3',
-        category: 'Fasilitas & Lab',
-        content: 'Saat praktikum Machine Learning & Mobile Programming, PC di Lab 3 sering mengalami lag dan freeze saat emulator Android Studio dijalankan bersamaan. Mohon diajukan penambahan RAM menjadi minimal 16GB dan update SSD.',
-        authorName: 'Rian Pratama',
-        authorNim: '230414012',
-        isAnonymous: false,
-        status: 'ksm',
-        votes: 42,
-        hasVoted: false,
-        createdAt: '3 jam lalu',
-        comments: [
-            {
-                id: 101,
-                authorName: 'Divisi Advokasi & Ristek HMIF',
-                authorNim: 'HMIF-OFFICIAL',
-                authorRole: 'Pengurus HIMA IF',
-                isOfficial: true,
-                content: 'Aspirasi ini telah kami verifikasi dan masuk ke dalam agenda prioritas sidang KSM bersama Kepala Lab dan Prodi.',
-                createdAt: '2 jam lalu',
-            },
-            {
-                id: 102,
-                authorName: 'Bagas Aditya',
-                authorNim: '220414055',
-                content: 'Setuju banget, kemarin pas responsi sempat crash dan project harus di-reopen dari backup.',
-                createdAt: '1 jam lalu',
-            },
-        ],
-    },
-    {
-        id: 2,
-        title: 'Pengadaan Akun GitHub Enterprise & JetBrains Student Pack Kampus',
-        category: 'Akademik & Kurikulum',
-        content: 'Banyak mahasiswa terkendala verifikasi email saat klaim JetBrains dan Copilot. Alangkah baiknya jika HIMA memfasilitasi kerja sama atau panduan kolektif lisensi software dev untuk seluruh angkatan.',
-        authorName: 'Mahasiswa IF',
-        authorNim: '240414***',
-        isAnonymous: true,
-        status: 'kurasi',
-        votes: 38,
-        hasVoted: false,
-        createdAt: '5 jam lalu',
-        comments: [
-            {
-                id: 201,
-                authorName: 'Divisi Diklat HMIF',
-                authorNim: 'HMIF-OFFICIAL',
-                authorRole: 'Pengurus HIMA IF',
-                isOfficial: true,
-                content: 'Sedang kami koordinasikan dengan pihak BAAK dan Pusat Komputer kampus terkait domain DNS fellow untuk whitelist GitHub Student Developer Pack.',
-                createdAt: '3 jam lalu',
-            },
-        ],
-    },
-    {
-        id: 3,
-        title: 'Perbaikan Stabilitas Wi-Fi Gedung B Lantai 2 Khusus Jam Kuliah',
-        category: 'Fasilitas & Lab',
-        content: 'Koneksi Wi-Fi sering terputus mendadak terutama pada jam 10.00 - 14.00 WIB. Mengingat sebagian besar materi praktikum dan submit tugas menggunakan LMS cloud, hal ini sangat mengganggu.',
-        authorName: 'Siti Nurhaliza',
-        authorNim: '220414005',
-        isAnonymous: false,
-        status: 'tindak_lanjut',
-        votes: 65,
-        hasVoted: true,
-        createdAt: '1 hari lalu',
-        comments: [
-            {
-                id: 301,
-                authorName: 'Dimas Prasetyo',
-                authorNim: '210414019',
-                content: 'Sangat terasa di ruang B203 sinyalnya sering drop ke 1 bar.',
-                createdAt: '20 jam lalu',
-            },
-            {
-                id: 302,
-                authorName: 'Divisi Advokasi HMIF',
-                authorNim: 'HMIF-OFFICIAL',
-                authorRole: 'Pengurus HIMA IF',
-                isOfficial: true,
-                content: 'Surat rekomendasi perbaikan Access Point sudah diteruskan ke Biro Sarana & IT Kampus kemarin sore.',
-                createdAt: '18 jam lalu',
-            },
-        ],
-    },
-    {
-        id: 4,
-        title: 'Workshop Persiapan Magang Industri & Bootcamp Fast-Track Portofolio',
-        category: 'Kemahasiswaan & HIMA',
-        content: 'Usulan program kerja untuk Divisi Diklat HMIF: adakan simulasi tech-interview (live coding + system design) dan review CV ATS khusus mahasiswa semester 4 ke atas sebelum mendaftar MSIB / magang mandiri.',
-        authorName: 'Ahmad Fauzi',
-        authorNim: '230414088',
-        isAnonymous: false,
-        status: 'baru',
-        votes: 19,
-        hasVoted: false,
-        createdAt: '2 hari lalu',
-        comments: [
-            {
-                id: 401,
-                authorName: 'Rina Kusuma',
-                authorNim: '230414015',
-                content: 'Bagus banget usulannya, terutama bedah portofolio proyek kuliah biar layak dilirik HR.',
-                createdAt: '1 hari lalu',
-            },
-        ],
-    },
-];
+import { useEffect, useMemo, useState } from 'react';
 
 const CATEGORIES = [
     'Semua',
@@ -150,11 +22,11 @@ export default function Dashboard() {
     const user = usePage().props.auth.user;
     const userNim = user.nim || (user.email.includes('@') ? user.email.split('@')[0] : '250414010');
 
-    // Navigasi Tampilan (feed / create / my)
-    const [activeNav, setActiveNav] = useState<'feed' | 'create' | 'my'>('feed');
+    // Navigasi Tampilan (feed / ksm / create / my)
+    const [activeNav, setActiveNav] = useState<'feed' | 'ksm' | 'create' | 'my'>('feed');
 
-    // Data State Aspirasi
-    const [aspirations, setAspirations] = useState<AspirationItem[]>(INITIAL_ASPIRATIONS);
+    // Data State Aspirasi Tersinkronisasi
+    const [aspirations, setAspirations] = useState<AspirationItem[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
     const [sortBy, setSortBy] = useState<'trending' | 'terbaru'>('trending');
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -168,23 +40,22 @@ export default function Dashboard() {
     const [formCategory, setFormCategory] = useState('Akademik & Kurikulum');
     const [formContent, setFormContent] = useState('');
     const [formIsAnonymous, setFormIsAnonymous] = useState(false);
+    const [formIsKsmAgenda, setFormIsKsmAgenda] = useState(false);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-    // Toggle Upvote Interaktif dengan Animasi Pop
+    // Load & Subscribe Sinkronisasi Data Dua Arah
+    useEffect(() => {
+        setAspirations(getSharedAspirations());
+        const unsubscribe = subscribeAspirations((updated) => {
+            setAspirations(updated);
+        });
+        return unsubscribe;
+    }, []);
+
+    // Toggle Upvote Tersinkron
     const handleToggleVote = (id: number) => {
-        setAspirations((prev) =>
-            prev.map((item) => {
-                if (item.id === id) {
-                    const newHasVoted = !item.hasVoted;
-                    return {
-                        ...item,
-                        hasVoted: newHasVoted,
-                        votes: newHasVoted ? item.votes + 1 : item.votes - 1,
-                    };
-                }
-                return item;
-            }),
-        );
+        const updated = toggleVoteSharedAspiration(id);
+        setAspirations(updated);
     };
 
     // Toggle Buka/Tutup Komentar Tanggapan
@@ -192,64 +63,47 @@ export default function Dashboard() {
         setOpenCommentId(openCommentId === aspirationId ? null : aspirationId);
     };
 
-    // Kirim Tanggapan Baru
+    // Kirim Tanggapan Baru Tersinkron
     const handleAddComment = (aspirationId: number, e: React.FormEvent) => {
         e.preventDefault();
         const text = (commentInputs[aspirationId] || '').trim();
         if (!text) return;
 
-        const newComment: CommentItem = {
-            id: Date.now(),
+        const updated = addCommentSharedAspiration(aspirationId, {
             authorName: user.name,
             authorNim: userNim,
             content: text,
-            createdAt: 'Baru saja',
-        };
+        });
 
-        setAspirations((prev) =>
-            prev.map((item) => {
-                if (item.id === aspirationId) {
-                    return {
-                        ...item,
-                        comments: [...item.comments, newComment],
-                    };
-                }
-                return item;
-            }),
-        );
-
+        setAspirations(updated);
         setCommentInputs((prev) => ({
             ...prev,
             [aspirationId]: '',
         }));
     };
 
-    // Submit Aspirasi Baru
+    // Submit Aspirasi Baru Tersinkron
     const handleSubmitAspiration = (e: React.FormEvent) => {
         e.preventDefault();
         if (!formTitle.trim() || !formContent.trim()) return;
 
-        const newAspiration: AspirationItem = {
-            id: Date.now(),
+        addSharedAspiration({
             title: formTitle.trim(),
             category: formCategory,
             content: formContent.trim(),
             authorName: formIsAnonymous ? 'Mahasiswa IF' : user.name,
             authorNim: formIsAnonymous ? `${userNim.slice(0, 5)}***` : userNim,
             isAnonymous: formIsAnonymous,
-            status: 'baru',
-            votes: 1,
-            hasVoted: true,
-            createdAt: 'Baru saja',
-            comments: [],
-        };
+            status: formIsKsmAgenda ? 'ksm' : 'baru',
+            isKsmAgenda: formIsKsmAgenda,
+        });
 
-        setAspirations([newAspiration, ...aspirations]);
         setFormTitle('');
         setFormContent('');
         setFormIsAnonymous(false);
+        setFormIsKsmAgenda(false);
         setShowSuccessAlert(true);
-        setActiveNav('feed');
+        setActiveNav(formIsKsmAgenda ? 'ksm' : 'feed');
 
         setTimeout(() => {
             setShowSuccessAlert(false);
@@ -260,16 +114,26 @@ export default function Dashboard() {
     const filteredAspirations = useMemo(() => {
         return aspirations
             .filter((item) => {
+                // Tab KSM: Hanya tampilkan topik KSM
+                if (activeNav === 'ksm') {
+                    if (item.status !== 'ksm' && !item.isKsmAgenda) {
+                        return false;
+                    }
+                }
+
+                // Tab Aspirasi Saya
                 if (activeNav === 'my') {
                     if (item.authorNim !== userNim && !item.isAnonymous) {
                         return false;
                     }
                 }
 
+                // Filter Kategori
                 if (selectedCategory !== 'Semua' && item.category !== selectedCategory) {
                     return false;
                 }
 
+                // Search Query
                 if (searchQuery.trim()) {
                     const query = searchQuery.toLowerCase();
                     const matchTitle = item.title.toLowerCase().includes(query);
@@ -289,14 +153,23 @@ export default function Dashboard() {
             });
     }, [aspirations, activeNav, selectedCategory, searchQuery, sortBy, userNim]);
 
-    const getStatusBadge = (status: AspirationItem['status']) => {
-        switch (status) {
-            case 'ksm':
-                return (
+    const getStatusBadge = (item: AspirationItem) => {
+        if (item.status === 'ksm' || item.isKsmAgenda) {
+            return (
+                <div className="flex items-center gap-1.5">
                     <span className="bg-red-50 border border-hima-red-dark text-hima-red-dark px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
                         Siap Masuk KSM
                     </span>
-                );
+                    {item.ksmDocketNumber && (
+                        <span className="bg-hima-red-dark text-white px-1.5 py-0.5 text-[9px] font-mono font-black uppercase">
+                            {item.ksmDocketNumber}
+                        </span>
+                    )}
+                </div>
+            );
+        }
+
+        switch (item.status) {
             case 'kurasi':
                 return (
                     <span className="bg-blue-50 border border-hima-blue-dark text-hima-blue-dark px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
@@ -322,20 +195,31 @@ export default function Dashboard() {
     return (
         <AuthenticatedLayout
             activeNav={activeNav}
-            onSelectNav={(nav) => setActiveNav(nav as 'feed' | 'create' | 'my')}
+            onSelectNav={(nav) => setActiveNav(nav as 'feed' | 'ksm' | 'create' | 'my')}
             header={
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                        <h1 className="text-lg sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-lg sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
+                                {activeNav === 'create'
+                                    ? 'Form Pengajuan Aspirasi Mahasiswa'
+                                    : activeNav === 'ksm'
+                                    ? 'Agenda Sidang Pleno KSM HIMA IF'
+                                    : activeNav === 'my'
+                                    ? 'Aspirasi Saya'
+                                    : 'Forum Aspirasi Mahasiswa'}
+                            </h1>
+                            {activeNav === 'ksm' && (
+                                <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-2 py-0.5">
+                                    SIDANG KSM
+                                </span>
+                            )}
+                        </div>
+                        <p className="text-xs text-gray-600 font-medium mt-0.5">
                             {activeNav === 'create'
-                                ? 'Form Aspirasi Mahasiswa'
-                                : activeNav === 'my'
-                                ? 'Aspirasi Saya'
-                                : 'Forum Aspirasi Mahasiswa'}
-                        </h1>
-                        <p className="text-xs text-gray-600 font-medium">
-                            {activeNav === 'create'
-                                ? 'Tuliskan aspirasi, keluhan fasilitas, atau saran akademik Anda secara terarah.'
+                                ? 'Tuliskan aspirasi atau rekomendasikan langsung topik untuk dibawa ke sidang KSM.'
+                                : activeNav === 'ksm'
+                                ? 'Daftar topik teratas yang lolos kurasi Ristek dan siap disidangkan bersama pimpinan prodi.'
                                 : 'Suarakan masukan dan dukung aspirasi rekan mahasiswa untuk kemajuan himpunan & prodi.'}
                         </p>
                     </div>
@@ -365,7 +249,7 @@ export default function Dashboard() {
                 </div>
             }
         >
-            <Head title="Portal Aspirasi Mahasiswa" />
+            <Head title="Portal Aspirasi & Sidang KSM" />
 
             {/* FULL WIDTH CONTAINER DENGAN MIKRO-ANIMASI */}
             <div className="w-full space-y-3">
@@ -376,7 +260,7 @@ export default function Dashboard() {
                             <span className="w-5 h-5 bg-green-700 text-white font-black flex items-center justify-center text-[10px]">
                                 ✓
                             </span>
-                            <span>Aspirasi Anda berhasil dikirim dan masuk dalam antrean kurasi HMIF!</span>
+                            <span>Aspirasi Anda berhasil dikirim, tersinkronisasi, dan masuk dalam antrean kurasi HMIF!</span>
                         </div>
                         <button
                             type="button"
@@ -388,7 +272,37 @@ export default function Dashboard() {
                     </div>
                 )}
 
-                {/* 1. TAMPILAN FOKUS: FORM INPUT ASPIRASI (FULL WIDTH) */}
+                {/* BANNER KHUSUS TAB KSM */}
+                {activeNav === 'ksm' && (
+                    <div className="w-full bg-red-50 border-2 border-hima-red-dark p-4 sm:p-5 shadow-brutal-red anim-feed-item flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="bg-hima-red-dark text-white text-[10px] font-black uppercase px-2 py-0.5">
+                                    MEJA KSM HMIF
+                                </span>
+                                <span className="text-xs font-black uppercase text-hima-red-dark">
+                                    Sidang Pleno Mahasiswa
+                                </span>
+                            </div>
+                            <h2 className="text-base sm:text-lg font-black text-gray-950 mt-1">
+                                Berkas Aspirasi Resmi yang Dibawa ke Sidang KSM
+                            </h2>
+                            <p className="text-xs text-gray-700 font-medium mt-0.5">
+                                Topik di bawah ini memiliki dukungan suara tertinggi dan sedang diajukan untuk menghasilkan Surat Keputusan / Aksi Bersama Kaprodi.
+                            </p>
+                        </div>
+                        <div className="shrink-0 bg-white border-2 border-hima-red-dark p-2.5 text-center shadow-sm">
+                            <span className="text-xl font-black text-hima-red-dark font-mono block leading-none">
+                                {aspirations.filter((a) => a.status === 'ksm' || a.isKsmAgenda).length}
+                            </span>
+                            <span className="text-[9px] font-black uppercase text-gray-600 block mt-0.5">
+                                Topik KSM
+                            </span>
+                        </div>
+                    </div>
+                )}
+
+                {/* 1. TAMPILAN FOKUS: FORM INPUT ASPIRASI */}
                 {activeNav === 'create' ? (
                     <div className="w-full bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm anim-feed-item">
                         <div className="border-b border-gray-200 pb-3 mb-5">
@@ -396,7 +310,7 @@ export default function Dashboard() {
                                 Tulis Masukan & Aspirasi
                             </h2>
                             <p className="text-xs text-gray-500 mt-0.5">
-                                Masukkan detail aspirasi dengan jelas agar mudah dikaji oleh tim HIMA IF.
+                                Masukkan detail aspirasi dengan jelas agar mudah dikaji oleh tim HIMA IF dan diajukan ke KSM.
                             </p>
                         </div>
 
@@ -417,7 +331,7 @@ export default function Dashboard() {
                                 />
                             </div>
 
-                            {/* Kategori & Identitas dalam 2 Kolom Rapi */}
+                            {/* Kategori & Identitas */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-xs font-black uppercase text-hima-blue-dark mb-1">
@@ -458,6 +372,26 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
+                            {/* OPSI USULAN KSM (FITUR KSM) */}
+                            <div className="border-2 border-hima-red-dark bg-red-50/60 p-3 shadow-brutal-sm">
+                                <label className="flex items-start gap-2.5 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={formIsKsmAgenda}
+                                        onChange={(e) => setFormIsKsmAgenda(e.target.checked)}
+                                        className="mt-0.5 w-4 h-4 rounded-none border-2 border-hima-red-dark text-hima-red-dark focus:ring-0 cursor-pointer"
+                                    />
+                                    <div>
+                                        <span className="text-xs font-black uppercase text-hima-red-dark block leading-snug">
+                                            Rekomendasikan Langsung ke Agenda Sidang Pleno KSM HMIF
+                                        </span>
+                                        <span className="text-[11px] text-gray-600 block mt-0.5">
+                                            Centang jika aspirasi ini mendesak dan menyangkut kebijakan umum satu angkatan/prodi agar diprioritaskan masuk berkas sidang KSM.
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
+
                             {/* Isi Uraian */}
                             <div>
                                 <label className="block text-xs font-black uppercase text-hima-blue-dark mb-1">
@@ -492,7 +426,7 @@ export default function Dashboard() {
                         </form>
                     </div>
                 ) : (
-                    /* 2. TAMPILAN FEED ASPIRASI (FULL WIDTH + STAGGERED ENTRANCE ANIMATION) */
+                    /* 2. TAMPILAN FEED ASPIRASI & AGENDA KSM */
                     <div className="w-full space-y-3">
                         {/* Filter & Pencarian Full Width */}
                         <div className="w-full bg-white border-2 border-hima-blue-dark p-3 sm:p-3.5 shadow-brutal-sm space-y-2.5 anim-feed-item">
@@ -503,7 +437,11 @@ export default function Dashboard() {
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Cari aspirasi mahasiswa..."
+                                        placeholder={
+                                            activeNav === 'ksm'
+                                                ? 'Cari berkas agenda KSM...'
+                                                : 'Cari aspirasi mahasiswa...'
+                                        }
                                         className="w-full px-3 py-1.5 border-2 border-hima-blue-dark text-xs sm:text-sm font-semibold text-gray-900 placeholder-gray-400 focus:outline-none rounded-none shadow-[2px_2px_0px_0px_#1A467C] transition-shadow"
                                     />
                                 </div>
@@ -558,10 +496,14 @@ export default function Dashboard() {
                         {filteredAspirations.length === 0 ? (
                             <div className="w-full bg-white border-2 border-hima-blue-dark p-8 text-center shadow-brutal-sm anim-feed-item">
                                 <p className="text-sm font-black uppercase text-hima-blue-dark">
-                                    Belum Ada Aspirasi
+                                    {activeNav === 'ksm'
+                                        ? 'Belum Ada Berkas Agenda KSM'
+                                        : 'Belum Ada Aspirasi'}
                                 </p>
                                 <p className="text-xs text-gray-500 mt-1">
-                                    {searchQuery ? 'Tidak ada hasil yang sesuai dengan pencarian.' : 'Mulai sampaikan aspirasi pertama Anda.'}
+                                    {searchQuery
+                                        ? 'Tidak ada hasil yang sesuai dengan pencarian.'
+                                        : 'Mulai sampaikan aspirasi pertama Anda untuk dibawa ke sidang KSM.'}
                                 </p>
                                 <button
                                     type="button"
@@ -578,15 +520,27 @@ export default function Dashboard() {
                                 return (
                                     <div
                                         key={item.id}
-                                        style={{ animationDelay: `${index * 60}ms` }}
-                                        className="w-full bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-sm hover:border-hima-blue-light hover:-translate-y-0.5 transition-all duration-200 anim-feed-item space-y-2.5"
+                                        style={{ animationDelay: `${index * 50}ms` }}
+                                        className={`w-full bg-white border-2 p-4 shadow-brutal-sm hover:-translate-y-0.5 transition-all duration-200 anim-feed-item space-y-2.5 ${
+                                            item.status === 'ksm' || item.isKsmAgenda
+                                                ? 'border-hima-blue-dark hover:border-hima-red-dark'
+                                                : 'border-hima-blue-dark hover:border-hima-blue-light'
+                                        }`}
                                     >
                                         {/* Baris Status & Kategori Tag */}
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            {getStatusBadge(item.status)}
-                                            <span className="text-[10px] font-bold text-gray-500 uppercase">
-                                                {item.category} • {item.createdAt}
-                                            </span>
+                                        <div className="flex flex-wrap items-center justify-between gap-2">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                {getStatusBadge(item)}
+                                                <span className="text-[10px] font-bold text-gray-500 uppercase">
+                                                    {item.category} • {item.createdAt}
+                                                </span>
+                                            </div>
+
+                                            {item.ksmPlenoSchedule && (
+                                                <span className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5">
+                                                    📅 {item.ksmPlenoSchedule}
+                                                </span>
+                                            )}
                                         </div>
 
                                         {/* Judul Aspirasi */}
