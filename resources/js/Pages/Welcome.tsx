@@ -244,6 +244,15 @@ export default function Welcome({
                                     HOT
                                 </span>
                             </Link>
+                            <Link
+                                href={route('ksm.survey.index')}
+                                className="hover:text-hima-blue-light transition-colors flex items-center gap-1"
+                            >
+                                <span>Survei KSM</span>
+                                <span className="text-[9px] bg-hima-blue-dark text-white px-1.5 py-0.2 font-black">
+                                    NEW
+                                </span>
+                            </Link>
                             <a
                                 href="#cara-kerja"
                                 onClick={(e) => scrollToSection(e, 'cara-kerja')}

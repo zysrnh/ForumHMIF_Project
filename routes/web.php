@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KsmSurveyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,14 @@ Route::get('/topik', function () {
         'canRegister' => Route::has('register'),
     ]);
 })->name('topik.index');
+
+// Rute Survei Peminatan KSM untuk Mahasiswa
+Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
+Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])->name('ksm.survey.store');
+
+// Rute Dashboard Admin Kelola Data Survei KSM
+Route::get('/admin/ksm-survey', [KsmSurveyController::class, 'adminDashboard'])->name('admin.ksm.dashboard');
+Route::get('/admin/ksm-survey/export', [KsmSurveyController::class, 'exportCsv'])->name('admin.ksm.export');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
