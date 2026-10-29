@@ -18,11 +18,12 @@ export default function Authenticated({
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // Format NIM dari database atau dari format fellow email
-    const displayNim = user.nim || (user.email.includes('@') ? user.email.split('@')[0] : 'MAHASISWA');
+    const displayNim =
+        user.nim || (user.email.includes('@') ? user.email.split('@')[0] : 'MAHASISWA');
 
     // Menentukan nav aktif berdasarkan url jika tidak di-pass manual
     const isProfilePage = route().current('profile.edit');
-    const currentNav = isProfilePage ? 'profile' : (activeNav || 'feed');
+    const currentNav = isProfilePage ? 'profile' : activeNav || 'feed';
 
     const handleNavClick = (navId: string) => {
         if (onSelectNav) {
@@ -33,33 +34,43 @@ export default function Authenticated({
 
     return (
         <div className="min-h-screen bg-slate-50 text-black flex flex-col md:flex-row">
-            {/* Mobile Topbar */}
-            <div className="md:hidden bg-white border-b-2 border-hima-blue-dark px-4 py-3 flex items-center justify-between shadow-brutal-sm sticky top-0 z-40">
+            {/* Mobile Topbar (App-Like Header) */}
+            <div className="md:hidden bg-white border-b-2 border-hima-blue-dark px-4 py-2.5 flex items-center justify-between shadow-brutal-sm sticky top-0 z-40">
                 <Link href="/dashboard" className="flex items-center gap-2.5">
-                    <ApplicationLogo className="h-8 w-auto" />
+                    <ApplicationLogo className="h-7 w-auto" />
                     <div>
-                        <span className="font-black text-hima-blue-dark text-sm tracking-tight block leading-tight">
+                        <span className="font-black text-hima-blue-dark text-xs tracking-tight block leading-tight">
                             PORTAL ASPIRASI
                         </span>
-                        <span className="text-[10px] font-bold text-hima-red-dark uppercase tracking-wider block">
+                        <span className="text-[9px] font-bold text-hima-red-dark uppercase tracking-wider block">
                             HIMA INFORMATIKA
                         </span>
                     </div>
                 </Link>
-                <button
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    type="button"
-                    aria-label="Toggle menu navigasi"
-                    className="p-2 border-2 border-hima-blue-dark bg-white shadow-brutal-sm hover:bg-blue-50 active:translate-x-0.5 active:translate-y-0.5"
-                >
-                    <svg className="w-5 h-5 text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        {sidebarOpen ? (
-                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-                        ) : (
-                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
-                        )}
-                    </svg>
-                </button>
+
+                <div className="flex items-center gap-2">
+                    <Link
+                        href="/"
+                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider"
+                    >
+                        Publik
+                    </Link>
+
+                    <button
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                        type="button"
+                        aria-label="Toggle menu navigasi"
+                        className="p-1.5 border-2 border-hima-blue-dark bg-white shadow-brutal-sm hover:bg-blue-50 active:translate-x-0.5 active:translate-y-0.5"
+                    >
+                        <svg className="w-4 h-4 text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {sidebarOpen ? (
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                            ) : (
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                            )}
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Backdrop */}
@@ -70,7 +81,7 @@ export default function Authenticated({
                 />
             )}
 
-            {/* Sidebar (Desktop Fixed & Mobile Slide-in) */}
+            {/* Sidebar (Desktop Fixed & Mobile Slide-in Drawer) */}
             <aside
                 className={`fixed md:sticky top-0 left-0 h-screen w-64 lg:w-72 bg-white border-r-2 border-hima-blue-dark z-50 flex flex-col justify-between transition-transform duration-200 ease-in-out shadow-brutal md:shadow-none ${
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -131,7 +142,7 @@ export default function Authenticated({
                         </div>
                     </div>
 
-                    {/* Navigation Menu */}
+                    {/* Navigation Menu Desktop & Drawer */}
                     <nav className="p-3 sm:p-4 space-y-1.5 flex-1">
                         <div className="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">
                             Menu Forum & KSM
@@ -165,7 +176,7 @@ export default function Authenticated({
                             </button>
                         )}
 
-                        {/* 2. Agenda Sidang KSM (Fitur Khusus KSM) */}
+                        {/* 2. Agenda Sidang KSM */}
                         {!isProfilePage ? (
                             <button
                                 type="button"
@@ -244,6 +255,16 @@ export default function Authenticated({
                         </Link>
 
                         <Link
+                            href={route('topik.index')}
+                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border border-gray-300 text-gray-700 bg-white hover:border-hima-blue-dark hover:bg-gray-50"
+                        >
+                            <svg className="w-4 h-4 shrink-0 text-hima-red-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                            </svg>
+                            <span>Halaman Topik Rame</span>
+                        </Link>
+
+                        <Link
                             href="/"
                             className="w-full flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border border-gray-300 text-gray-700 bg-white hover:border-hima-blue-dark hover:bg-gray-50"
                         >
@@ -279,12 +300,13 @@ export default function Authenticated({
                     </header>
                 )}
 
-                <main className="flex-1 p-4 sm:p-6">
+                {/* Padding bottom diperbesar di mobile (pb-28) agar tidak tertutup toolbar bawah */}
+                <main className="flex-1 p-3.5 sm:p-6 pb-28 md:pb-6">
                     {children}
                 </main>
 
                 {/* Dashboard Simple Footer */}
-                <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+                <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 pb-28 md:pb-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
                     <p className="font-medium">
                         Portal Aspirasi Mahasiswa HIMA IF • Institut LPKIA
                     </p>
@@ -293,6 +315,167 @@ export default function Authenticated({
                     </div>
                 </footer>
             </div>
+
+            {/* ========================================================================= */}
+            {/* MOBILE APP BOTTOM NAVIGATION TOOLBAR (KHUSUS MOBILE SCREEN < MD)           */}
+            {/* ========================================================================= */}
+            <nav
+                aria-label="Mobile app navigation toolbar"
+                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-4px_10px_rgba(26,70,124,0.15)] px-2 py-1.5"
+            >
+                <div className="flex items-center justify-around gap-1 relative">
+                    {/* 1. Feed / Semua Aspirasi */}
+                    {isProfilePage ? (
+                        <Link
+                            href={route('dashboard')}
+                            className="flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 text-gray-600 hover:text-hima-blue-dark font-bold"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                            </svg>
+                            <span className="text-[10px] uppercase tracking-tight mt-0.5">Semua</span>
+                        </Link>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={() => handleNavClick('feed')}
+                            className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
+                                currentNav === 'feed'
+                                    ? 'text-hima-blue-dark font-black'
+                                    : 'text-gray-500 hover:text-gray-900 font-bold'
+                            }`}
+                        >
+                            <div
+                                className={`p-1 border transition-all ${
+                                    currentNav === 'feed'
+                                        ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
+                                        : 'border-transparent'
+                                }`}
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                            </div>
+                            <span className="text-[10px] uppercase tracking-tight mt-0.5">Semua</span>
+                        </button>
+                    )}
+
+                    {/* 2. Agenda KSM (Badge Pleno) */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (isProfilePage) {
+                                window.location.href = '/dashboard';
+                            } else {
+                                handleNavClick('ksm');
+                            }
+                        }}
+                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 relative ${
+                            currentNav === 'ksm'
+                                ? 'text-hima-red-dark font-black'
+                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        }`}
+                    >
+                        <div
+                            className={`p-1 border transition-all relative ${
+                                currentNav === 'ksm'
+                                    ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A]'
+                                    : 'border-transparent'
+                            }`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-hima-red-light border border-white" />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-tight mt-0.5">KSM</span>
+                    </button>
+
+                    {/* 3. Tulis Aspirasi (Flat Tab Sejajar Tanpa Floating +) */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (isProfilePage) {
+                                window.location.href = '/dashboard';
+                            } else {
+                                handleNavClick('create');
+                            }
+                        }}
+                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
+                            currentNav === 'create'
+                                ? 'text-hima-red-dark font-black'
+                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        }`}
+                    >
+                        <div
+                            className={`p-1 border transition-all ${
+                                currentNav === 'create'
+                                    ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A]'
+                                    : 'border-transparent'
+                            }`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </div>
+                        <span className="text-[10px] uppercase tracking-tight mt-0.5">Tulis</span>
+                    </button>
+
+                    {/* 4. Aspirasi Saya */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (isProfilePage) {
+                                window.location.href = '/dashboard';
+                            } else {
+                                handleNavClick('my');
+                            }
+                        }}
+                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
+                            currentNav === 'my'
+                                ? 'text-hima-blue-dark font-black'
+                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        }`}
+                    >
+                        <div
+                            className={`p-1 border transition-all ${
+                                currentNav === 'my'
+                                    ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
+                                    : 'border-transparent'
+                            }`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <span className="text-[10px] uppercase tracking-tight mt-0.5">Saya</span>
+                    </button>
+
+                    {/* 5. Akun Saya */}
+                    <Link
+                        href={route('profile.edit')}
+                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
+                            isProfilePage
+                                ? 'text-hima-blue-dark font-black'
+                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        }`}
+                    >
+                        <div
+                            className={`p-1 border transition-all ${
+                                isProfilePage
+                                    ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
+                                    : 'border-transparent'
+                            }`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <span className="text-[10px] uppercase tracking-tight mt-0.5">Akun</span>
+                    </Link>
+                </div>
+            </nav>
         </div>
     );
 }

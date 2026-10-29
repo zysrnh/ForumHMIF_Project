@@ -112,7 +112,7 @@ export default function Welcome({
     // Animated Counters (Langsung berjalan sesuai data aktual)
     const countAspirasi = useCountUp(stats.total, 1200);
     const countTopikKsm = useCountUp(stats.ksmCount, 1000);
-    const countProgramAksi = useCountUp(stats.actionCount, 900);
+    const countProker = useCountUp(stats.actionCount, 900);
 
     // Fungsi Smooth Scroll Halus Tanpa Teleport Tiba-tiba
     const scrollToSection = (e: React.MouseEvent, id: string) => {
@@ -150,11 +150,11 @@ export default function Welcome({
         {
             step: 3,
             number: '03',
-            shortTitle: 'Meja KSM & Aksi',
+            shortTitle: 'Meja KSM & Proker',
             badge: 'Eksekusi Nyata',
-            title: 'Bahas di Sidang KSM & Wujudkan Jadi Program',
-            desc: 'Pengurus HIMA IF mengkaji topik teratas dalam agenda Sidang Pleno KSM (Kelompok Studi Mahasiswa), menerbitkan nomor berkas pleno, lalu menjadikannya aksi nyata.',
-            actionHint: 'Hasil resolusi dan keputusan pleno dipublikasikan terbuka di dashboard.',
+            title: 'Bahas di Sidang KSM & Wujudkan Jadi Proker',
+            desc: 'Pengurus HIMA IF mengkaji topik teratas dalam agenda Sidang Pleno KSM (Kelompok Studi Mahasiswa), menerbitkan nomor berkas pleno, lalu menjadikannya proker nyata.',
+            actionHint: 'Hasil resolusi dan keputusan pleno dipublikasikan terbuka di dashboard & halaman topik.',
             tagBg: 'bg-hima-blue-light text-white',
             borderColor: 'border-hima-blue-light',
         },
@@ -179,7 +179,10 @@ export default function Welcome({
                 : aspirationContent;
 
         const currentAuthor = auth.user ? auth.user.name : 'Mahasiswa IF';
-        const currentNim = auth.user && 'nim' in auth.user ? (auth.user as { nim?: string }).nim || '240414***' : '240414***';
+        const currentNim =
+            auth.user && 'nim' in auth.user
+                ? (auth.user as { nim?: string }).nim || '240414***'
+                : '240414***';
 
         addSharedAspiration({
             title,
@@ -236,7 +239,7 @@ export default function Welcome({
                             </div>
                         </Link>
 
-                        {/* Menu Nav Santai dengan Smooth Scroll */}
+                        {/* Menu Nav Santai */}
                         <nav className="hidden md:flex items-center gap-8 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
                             <a
                                 href="#aspirasi"
@@ -245,6 +248,15 @@ export default function Welcome({
                             >
                                 Aspirasi
                             </a>
+                            <Link
+                                href={route('topik.index')}
+                                className="hover:text-hima-red-light transition-colors flex items-center gap-1"
+                            >
+                                <span>Topik Rame</span>
+                                <span className="text-[9px] bg-hima-red-light text-white px-1.5 py-0.2 font-black">
+                                    HOT
+                                </span>
+                            </Link>
                             <a
                                 href="#cara-kerja"
                                 onClick={(e) => scrollToSection(e, 'cara-kerja')}
@@ -279,7 +291,7 @@ export default function Welcome({
                         {/* Kiri: Indikator Tepat di Atas Kata "Suara" + Headline & CTA */}
                         <div className="anim-brutal-stamp-left lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-9 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
                             <div className="space-y-6">
-                                {/* INDIKATOR STATISTIK TEPAT DI ATAS HEADLINE SUARA (Data Nyata Tersinkron) */}
+                                {/* INDIKATOR STATISTIK: Aspirasi Masuk, Topik di KSM, Proker */}
                                 <div className="grid grid-cols-3 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C]">
                                     <div className="p-2 sm:p-3 text-center">
                                         <span className="text-xl sm:text-2xl lg:text-3xl font-black text-hima-blue-dark block font-mono leading-none">
@@ -299,10 +311,10 @@ export default function Welcome({
                                     </div>
                                     <div className="p-2 sm:p-3 text-center">
                                         <span className="text-xl sm:text-2xl lg:text-3xl font-black text-hima-blue-light block font-mono leading-none">
-                                            {countProgramAksi}
+                                            {countProker}
                                         </span>
                                         <span className="text-[10px] sm:text-xs font-black text-gray-700 uppercase tracking-wider mt-1 block">
-                                            Program & Aksi
+                                            Proker
                                         </span>
                                     </div>
                                 </div>
@@ -328,17 +340,16 @@ export default function Welcome({
                                 >
                                     Kirim Aspirasi
                                 </a>
-                                <a
-                                    href="#aspirasi"
-                                    onClick={(e) => scrollToSection(e, 'aspirasi')}
+                                <Link
+                                    href={route('topik.index')}
                                     className="btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-6 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-blue-50"
                                 >
-                                    Lihat Topik Masuk
-                                </a>
+                                    Lihat Topik Lagi Rame &rarr;
+                                </Link>
                             </div>
                         </div>
 
-                        {/* Kanan: Mini Form Aspirasi Langsung (Sinkron ke Dashboard & KSM) */}
+                        {/* Kanan: Mini Form Aspirasi Langsung */}
                         <div
                             id="form-aspirasi"
                             className="anim-brutal-stamp-right lg:col-span-5 bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
@@ -441,10 +452,10 @@ export default function Welcome({
                                     Data Tersinkron
                                 </span>
                                 <Link
-                                    href={auth.user ? route('dashboard') : route('login')}
-                                    className="text-[11px] font-bold text-white bg-hima-blue-dark px-2.5 py-1 uppercase tracking-wider border border-hima-blue-dark hover:bg-hima-blue-light transition-colors"
+                                    href={route('topik.index')}
+                                    className="text-[11px] font-black text-white bg-hima-blue-dark px-3 py-1 uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-sm hover:bg-hima-blue-light transition-all active:translate-x-0.5 active:translate-y-0.5"
                                 >
-                                    Lihat Semua &rarr;
+                                    Buka Halaman Topik &rarr;
                                 </Link>
                             </div>
                         </div>
@@ -502,7 +513,7 @@ export default function Welcome({
                                                     </span>
                                                 ) : item.status === 'tindak_lanjut' ? (
                                                     <span className="text-[10px] font-black uppercase tracking-wider border px-2 py-0.5 bg-sky-50 text-hima-blue-light border-hima-blue-light">
-                                                        PROGRAM AKSI
+                                                        PROKER
                                                     </span>
                                                 ) : item.status === 'kurasi' ? (
                                                     <span className="text-[10px] font-black uppercase tracking-wider border px-2 py-0.5 bg-blue-50 text-hima-blue-dark border-hima-blue-dark">
@@ -576,7 +587,7 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 4. CARA KERJA FORUM: GARIS ALUR INTERAKTIF BISA DITEKAN-TEKAN (TIMELINE STEPPER) */}
+                    {/* 4. CARA KERJA FORUM: GARIS ALUR INTERAKTIF (TIMELINE STEPPER) */}
                     <section
                         id="cara-kerja"
                         ref={caraKerjaSection.ref}
@@ -587,18 +598,15 @@ export default function Welcome({
                                 Cara Kerja Forum & Sidang KSM
                             </h2>
                             <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                Garis alur transparan dari unek-unek kamu sampai jadi berkas sidang pleno KSM dan aksi nyata himpunan. Tekan tiap tahap untuk melihat detailnya.
+                                Garis alur transparan dari unek-unek kamu sampai jadi berkas sidang pleno KSM dan proker nyata himpunan. Tekan tiap tahap untuk melihat detailnya.
                             </p>
                         </div>
 
                         {/* Kartu Garis Alur Interaktif */}
                         <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1A467C] space-y-8">
-                            {/* Garis Alur Horizontal Stepper */}
                             <div className="relative">
-                                {/* Garis Penghubung Horizontal Solid */}
                                 <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 bg-hima-blue-dark -translate-y-1/2 z-0" />
 
-                                {/* 3 Tombol Titik Langkah Interaktif */}
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
                                     {workflowSteps.map((s) => {
                                         const isCurrent = activeStep === s.step;
@@ -630,7 +638,7 @@ export default function Welcome({
                                                         <span
                                                             className={`text-[10px] font-bold uppercase tracking-wider mt-0.5 block ${
                                                                 isCurrent ? 'text-blue-200' : 'text-gray-500'
-                                                            }`}
+                                                             }`}
                                                         >
                                                             {s.badge}
                                                         </span>
@@ -658,7 +666,7 @@ export default function Welcome({
                                         </span>
                                     </div>
 
-                                    {/* Tombol Navigasi Stepper Berbentuk Kotak Ikon SVG Compact */}
+                                    {/* Tombol Navigasi Stepper */}
                                     <div className="flex items-center gap-2 self-end sm:self-auto">
                                         <button
                                             type="button"

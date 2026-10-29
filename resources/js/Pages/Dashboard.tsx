@@ -178,8 +178,8 @@ export default function Dashboard() {
                 );
             case 'tindak_lanjut':
                 return (
-                    <span className="bg-green-50 border border-green-700 text-green-800 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
-                        Ditindaklanjuti
+                    <span className="bg-sky-50 border border-hima-blue-light text-hima-blue-light px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
+                        PROKER
                     </span>
                 );
             case 'baru':

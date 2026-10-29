@@ -14,6 +14,13 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/topik', function () {
+    return Inertia::render('Topik', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+    ]);
+})->name('topik.index');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
