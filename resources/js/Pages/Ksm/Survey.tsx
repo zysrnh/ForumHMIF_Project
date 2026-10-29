@@ -16,7 +16,6 @@ export default function Survey({ user }: Props) {
     // State untuk opsi 'Yang lain'
     const [customCourse, setCustomCourse] = useState('');
     const [customField, setCustomField] = useState('');
-    const [customActivity, setCustomActivity] = useState('');
 
     const { data, setData, post, processing, errors, reset, wasSuccessful } = useForm({
         respondent_name: user?.name || '',
@@ -123,7 +122,6 @@ export default function Survey({ user }: Props) {
                 reset();
                 setCustomCourse('');
                 setCustomField('');
-                setCustomActivity('');
             },
         });
     };
@@ -132,84 +130,95 @@ export default function Survey({ user }: Props) {
         <>
             <Head title="Kuesioner Survei Minat KSM - HIMA IF" />
 
-            <div className="bg-blueprint text-black min-h-screen py-4 px-3 sm:px-6 lg:px-8 selection:bg-hima-red-light selection:text-white">
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {/* Header Nav Bar */}
-                    <div className="bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-brutal-sm flex items-center justify-between gap-3">
-                        <Link href="/" className="flex items-center gap-2.5">
+            <div className="min-h-screen bg-slate-50 text-black flex flex-col selection:bg-hima-red-light selection:text-white">
+                {/* 1. HEADER MENEMPEL PENUH DI ATAS (EDGE-TO-EDGE & STICKY) */}
+                <header className="sticky top-0 z-40 bg-white border-b-2 border-hima-blue-dark px-3 py-2 sm:px-6 sm:py-3 shadow-sm w-full">
+                    <div className="max-w-3xl mx-auto flex items-center justify-between gap-2">
+                        <Link href="/" className="flex items-center gap-2 min-w-0">
                             <img
                                 src="/logo/logo.png"
                                 alt="Logo HIMA IF"
-                                className="w-8 h-8 object-contain"
+                                className="w-7 h-7 sm:w-8 sm:h-8 object-contain shrink-0"
                             />
-                            <div>
-                                <span className="font-black text-hima-blue-dark text-xs sm:text-sm block leading-tight">
+                            <div className="min-w-0">
+                                <span className="font-black text-hima-blue-dark text-xs sm:text-sm block leading-none truncate">
                                     SURVEI KSM HMIF
                                 </span>
-                                <span className="text-[9px] font-bold text-hima-red-dark uppercase tracking-wider block">
+                                <span className="text-[9px] font-bold text-hima-red-dark uppercase tracking-wider block mt-0.5 truncate">
                                     Kelompok Studi Mahasiswa
                                 </span>
                             </div>
                         </Link>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 shrink-0">
                             <Link
                                 href={route('admin.ksm.dashboard')}
-                                className="text-[11px] font-black uppercase text-hima-blue-dark border border-hima-blue-dark px-2.5 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
+                                className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border border-hima-blue-dark px-2 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
                             >
-                                Dashboard Admin
+                                Admin
                             </Link>
                             <Link
                                 href={user ? route('dashboard') : '/'}
-                                className="text-[11px] font-bold uppercase text-gray-700 border border-gray-400 px-2.5 py-1 bg-white hover:bg-gray-100 transition-colors"
+                                className="text-[10px] sm:text-[11px] font-bold uppercase text-gray-700 border border-gray-400 px-2 py-1 bg-white hover:bg-gray-100 transition-colors"
                             >
                                 ← Kembali
                             </Link>
                         </div>
                     </div>
+                </header>
 
+                {/* 2. MAIN CONTAINER - PAS SELEBAR LAYAR HP TANPA CELAH SAMPING */}
+                <main className="w-full max-w-3xl mx-auto px-2.5 sm:px-6 py-3.5 sm:py-5 space-y-3.5 flex-1">
                     {/* Notifikasi Berhasil */}
                     {(wasSuccessful || successFlash) && (
-                        <div className="bg-green-50 border-2 border-green-700 p-4 shadow-brutal-sm text-green-950 space-y-2">
-                            <div className="flex items-center gap-2 font-black text-sm">
-                                <span className="w-5 h-5 bg-green-700 text-white flex items-center justify-center text-xs">
+                        <div className="bg-green-50 border-2 border-green-700 p-3 sm:p-4 shadow-sm text-green-950 space-y-1.5 anim-feed-item">
+                            <div className="flex items-center gap-2 font-black text-xs sm:text-sm">
+                                <span className="w-4 h-4 bg-green-700 text-white flex items-center justify-center text-[10px] shrink-0">
                                     ✓
                                 </span>
                                 <span>Jawaban Survei KSM Berhasil Dikirim!</span>
                             </div>
-                            <p className="text-xs text-green-800">
+                            <p className="text-[11px] sm:text-xs text-green-800 leading-relaxed">
                                 Terima kasih atas partisipasimu. Masukanmu akan menjadi dasar kurikulum dan jadwal kegiatan Kelompok Studi Mahasiswa HIMA IF.
                             </p>
                         </div>
                     )}
 
                     {/* Banner Intro Survei */}
-                    <div className="bg-white border-2 border-hima-blue-dark border-t-8 border-t-hima-blue-dark p-5 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] space-y-3">
-                        <div className="inline-block bg-hima-red-dark text-white text-[10px] font-black uppercase px-2 py-0.5 tracking-wider">
-                            Formulir Peminatan Belajar
+                    <div className="bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-2.5">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-1.5 py-0.5 tracking-wider">
+                                Formulir Peminatan
+                            </span>
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                                Mahasiswa Teknik Informatika
+                            </span>
                         </div>
-                        <h1 className="text-xl sm:text-2xl font-black text-hima-blue-dark uppercase tracking-tight">
+
+                        <h1 className="text-base sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight leading-snug">
                             Survei Kebutuhan & Minat Kelompok Studi Mahasiswa (KSM)
                         </h1>
-                        <p className="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed">
-                            Formulir ini bertujuan untuk memetakan materi matkul dan bidang teknologi yang paling dibutuhkan mahasiswa Teknik Informatika, serta menyesuaikan waktu dan format mentoring agar efektif.
+
+                        <p className="text-xs font-medium text-gray-600 leading-relaxed">
+                            Formulir ini memetakan materi mata kuliah dan bidang teknologi yang paling kamu butuhkan, serta menyesuaikan waktu dan format mentoring agar efektif.
                         </p>
-                        <div className="text-[11px] font-bold text-hima-red-dark border-t border-gray-200 pt-2 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-hima-red-dark inline-block" />
+
+                        <div className="text-[11px] font-bold text-hima-red-dark border-t border-gray-100 pt-2 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 bg-hima-red-dark inline-block shrink-0" />
                             <span>Tanda bintang (*) menandakan pertanyaan wajib diisi.</span>
                         </div>
                     </div>
 
                     {/* FORM PERTANYAAN */}
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-3.5">
                         {/* IDENTITAS PENGISI */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
-                            <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-200 pb-2">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                            <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-100 pb-2">
                                 Identitas Responden
                             </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                                 <div>
-                                    <label className="block text-xs font-bold uppercase text-gray-800 mb-1">
+                                    <label className="block text-xs font-black uppercase text-gray-800 mb-1">
                                         Nama Lengkap *
                                     </label>
                                     <input
@@ -218,7 +227,7 @@ export default function Survey({ user }: Props) {
                                         value={data.respondent_name}
                                         onChange={(e) => setData('respondent_name', e.target.value)}
                                         placeholder="Contoh: Muhammad Fikri"
-                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-semibold rounded-none focus:outline-none focus:border-hima-blue-light"
+                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
                                     />
                                     {errors.respondent_name && (
                                         <p className="text-[11px] text-hima-red-dark font-bold mt-1">
@@ -227,7 +236,7 @@ export default function Survey({ user }: Props) {
                                     )}
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold uppercase text-gray-800 mb-1">
+                                    <label className="block text-xs font-black uppercase text-gray-800 mb-1">
                                         NIM Mahasiswa
                                     </label>
                                     <input
@@ -235,15 +244,15 @@ export default function Survey({ user }: Props) {
                                         value={data.respondent_nim}
                                         onChange={(e) => setData('respondent_nim', e.target.value)}
                                         placeholder="Contoh: 230414010"
-                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-semibold rounded-none focus:outline-none focus:border-hima-blue-light"
+                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
                                     />
                                 </div>
                             </div>
                         </div>
 
                         {/* PERTANYAAN 1: MATKUL SEMESTER 3 */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
-                            <div className="space-y-1">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                            <div className="space-y-0.5">
                                 <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                     Dari mata kuliah semester 3, materi mana yang paling ingin kamu pelajari lebih awal? <span className="text-hima-red-dark">*</span>
                                 </label>
@@ -252,13 +261,13 @@ export default function Survey({ user }: Props) {
                                 </p>
                             </div>
 
-                            <div className="space-y-2 pt-1">
+                            <div className="space-y-2 pt-0.5">
                                 {matkulSemester3Options.map((opt) => (
                                     <label
                                         key={opt}
-                                        className={`flex items-center gap-3 p-2.5 border-2 cursor-pointer transition-all ${
+                                        className={`flex items-center gap-3 p-3 border-2 cursor-pointer transition-all ${
                                             data.semester_course === opt
-                                                ? 'bg-blue-50 border-hima-blue-dark font-bold text-hima-blue-dark'
+                                                ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
                                                 : 'border-gray-200 hover:border-gray-400 bg-white'
                                         }`}
                                     >
@@ -271,21 +280,21 @@ export default function Survey({ user }: Props) {
                                                 setData('semester_course', opt);
                                                 setCustomCourse('');
                                             }}
-                                            className="w-4 h-4 text-hima-blue-dark focus:ring-0 cursor-pointer"
+                                            className="w-4 h-4 text-hima-blue-dark focus:ring-0 cursor-pointer shrink-0"
                                         />
-                                        <span className="text-xs sm:text-sm">{opt}</span>
+                                        <span className="text-xs sm:text-sm leading-snug">{opt}</span>
                                     </label>
                                 ))}
 
                                 {/* Opsi Yang Lain */}
                                 <label
-                                    className={`flex flex-col sm:flex-row sm:items-center gap-2 p-2.5 border-2 cursor-pointer transition-all ${
+                                    className={`flex flex-col sm:flex-row sm:items-center gap-2 p-3 border-2 cursor-pointer transition-all ${
                                         data.semester_course && !matkulSemester3Options.includes(data.semester_course)
-                                            ? 'bg-blue-50 border-hima-blue-dark font-bold text-hima-blue-dark'
+                                            ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
                                             : 'border-gray-200 hover:border-gray-400 bg-white'
                                     }`}
                                 >
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-3 shrink-0">
                                         <input
                                             type="radio"
                                             name="semester_course"
@@ -295,9 +304,9 @@ export default function Survey({ user }: Props) {
                                                     setData('semester_course', customCourse.trim());
                                                 }
                                             }}
-                                            className="w-4 h-4 text-hima-blue-dark focus:ring-0 cursor-pointer"
+                                            className="w-4 h-4 text-hima-blue-dark focus:ring-0 cursor-pointer shrink-0"
                                         />
-                                        <span className="text-xs sm:text-sm shrink-0">Yang lain:</span>
+                                        <span className="text-xs sm:text-sm">Yang lain:</span>
                                     </div>
                                     <input
                                         type="text"
@@ -306,8 +315,8 @@ export default function Survey({ user }: Props) {
                                             setCustomCourse(e.target.value);
                                             setData('semester_course', e.target.value);
                                         }}
-                                        placeholder="Tuliskan mata kuliah lainnya..."
-                                        className="flex-1 border-b-2 border-gray-400 bg-transparent px-2 py-1 text-xs focus:outline-none focus:border-hima-blue-dark"
+                                        placeholder="Ketik mata kuliah lainnya..."
+                                        className="flex-1 border-b-2 border-gray-400 bg-transparent px-1 py-0.5 text-xs focus:outline-none focus:border-hima-blue-dark"
                                     />
                                 </label>
                             </div>
@@ -319,26 +328,26 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 2: BIDANG TEKNOLOGI (MAKSIMAL 3) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
                             <div className="flex items-start justify-between gap-2">
-                                <div className="space-y-1">
+                                <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                         Selain materi perkuliahan, bidang apa yang ingin kamu pelajari? <span className="text-hima-red-dark">*</span>
                                     </label>
-                                    <p className="text-[11px] text-gray-600 font-semibold italic">
+                                    <p className="text-[11px] text-gray-600 font-bold italic">
                                         (Pilih maksimal 3 bidang)
                                     </p>
                                 </div>
-                                <span className={`text-xs font-black px-2 py-0.5 border shrink-0 ${
+                                <span className={`text-[10px] sm:text-xs font-black px-2 py-0.5 border shrink-0 ${
                                     data.interested_fields.length === 3
                                         ? 'bg-hima-red-dark text-white border-hima-red-dark'
                                         : 'bg-slate-100 text-hima-blue-dark border-hima-blue-dark'
                                 }`}>
-                                    {data.interested_fields.length} / 3 Terpilih
+                                    {data.interested_fields.length} / 3
                                 </span>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
                                 {bidangOptions.map((field) => {
                                     const isSelected = data.interested_fields.includes(field);
                                     const isDisabled = !isSelected && data.interested_fields.length >= 3;
@@ -346,9 +355,9 @@ export default function Survey({ user }: Props) {
                                     return (
                                         <label
                                             key={field}
-                                            className={`flex items-center gap-2.5 p-2.5 border-2 transition-all ${
+                                            className={`flex items-center gap-2.5 p-3 border-2 transition-all ${
                                                 isSelected
-                                                    ? 'bg-blue-50 border-hima-blue-dark font-bold text-hima-blue-dark shadow-xs'
+                                                    ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
                                                     : isDisabled
                                                     ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
                                                     : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer'
@@ -359,26 +368,26 @@ export default function Survey({ user }: Props) {
                                                 checked={isSelected}
                                                 disabled={isDisabled}
                                                 onChange={() => handleToggleField(field)}
-                                                className="w-4 h-4 rounded-none border-2 border-hima-blue-dark text-hima-blue-dark focus:ring-0 cursor-pointer"
+                                                className="w-4 h-4 rounded-none border-2 border-hima-blue-dark text-hima-blue-dark focus:ring-0 cursor-pointer shrink-0"
                                             />
-                                            <span className="text-xs sm:text-sm">{field}</span>
+                                            <span className="text-xs sm:text-sm leading-snug">{field}</span>
                                         </label>
                                     );
                                 })}
                             </div>
 
-                            {/* Opsi Yang Lain untuk Bidang */}
-                            <div className="pt-1 flex flex-col sm:flex-row sm:items-center gap-2 border-t border-gray-100">
-                                <span className="text-xs font-bold text-gray-700 shrink-0">
-                                    Bidang lain yang kamu mau:
+                            {/* Opsi Tambahan untuk Bidang */}
+                            <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-2 border-t border-gray-100">
+                                <span className="text-[11px] font-bold text-gray-700 shrink-0">
+                                    Bidang lain yang kamu minati:
                                 </span>
-                                <div className="flex gap-2 flex-1">
+                                <div className="flex gap-1.5 flex-1">
                                     <input
                                         type="text"
                                         value={customField}
                                         onChange={(e) => setCustomField(e.target.value)}
-                                        placeholder="Contoh: Blockchain, Game 3D..."
-                                        className="flex-1 border-2 border-gray-300 px-2.5 py-1 text-xs focus:outline-none focus:border-hima-blue-dark"
+                                        placeholder="Contoh: Game 3D, Blockchain..."
+                                        className="flex-1 border-2 border-gray-300 px-2 py-1 text-xs focus:outline-none focus:border-hima-blue-dark bg-white"
                                     />
                                     <button
                                         type="button"
@@ -389,7 +398,7 @@ export default function Survey({ user }: Props) {
                                             }
                                         }}
                                         disabled={!customField.trim() || data.interested_fields.length >= 3}
-                                        className="btn-brutal px-3 py-1 bg-hima-blue-dark text-white text-xs font-bold disabled:opacity-40"
+                                        className="btn-brutal px-3 py-1 bg-hima-blue-dark text-white text-xs font-bold disabled:opacity-40 shrink-0"
                                     >
                                         + Tambah
                                     </button>
@@ -404,26 +413,26 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 3: BENTUK KEGIATAN (MAKSIMAL 2) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
                             <div className="flex items-start justify-between gap-2">
-                                <div className="space-y-1">
+                                <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                         Bentuk kegiatan seperti apa yang paling ingin kamu ikuti? <span className="text-hima-red-dark">*</span>
                                     </label>
-                                    <p className="text-[11px] text-gray-600 font-semibold italic">
+                                    <p className="text-[11px] text-gray-600 font-bold italic">
                                         (Pilih maksimal 2 bentuk kegiatan)
                                     </p>
                                 </div>
-                                <span className={`text-xs font-black px-2 py-0.5 border shrink-0 ${
+                                <span className={`text-[10px] sm:text-xs font-black px-2 py-0.5 border shrink-0 ${
                                     data.activity_types.length === 2
                                         ? 'bg-hima-red-dark text-white border-hima-red-dark'
                                         : 'bg-slate-100 text-hima-blue-dark border-hima-blue-dark'
                                 }`}>
-                                    {data.activity_types.length} / 2 Terpilih
+                                    {data.activity_types.length} / 2
                                 </span>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
                                 {bentukKegiatanOptions.map((act) => {
                                     const isSelected = data.activity_types.includes(act);
                                     const isDisabled = !isSelected && data.activity_types.length >= 2;
@@ -431,9 +440,9 @@ export default function Survey({ user }: Props) {
                                     return (
                                         <label
                                             key={act}
-                                            className={`flex items-center gap-2.5 p-2.5 border-2 transition-all ${
+                                            className={`flex items-center gap-2.5 p-3 border-2 transition-all ${
                                                 isSelected
-                                                    ? 'bg-red-50 border-hima-red-dark font-bold text-hima-red-dark shadow-xs'
+                                                    ? 'bg-red-50 border-hima-red-dark font-black text-hima-red-dark'
                                                     : isDisabled
                                                     ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
                                                     : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer'
@@ -444,9 +453,9 @@ export default function Survey({ user }: Props) {
                                                 checked={isSelected}
                                                 disabled={isDisabled}
                                                 onChange={() => handleToggleActivity(act)}
-                                                className="w-4 h-4 rounded-none border-2 border-hima-red-dark text-hima-red-dark focus:ring-0 cursor-pointer"
+                                                className="w-4 h-4 rounded-none border-2 border-hima-red-dark text-hima-red-dark focus:ring-0 cursor-pointer shrink-0"
                                             />
-                                            <span className="text-xs sm:text-sm">{act}</span>
+                                            <span className="text-xs sm:text-sm leading-snug">{act}</span>
                                         </label>
                                     );
                                 })}
@@ -459,18 +468,18 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 4: METODE BELAJAR EFEKTIF */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Menurutmu, metode belajar yang paling efektif seperti apa? <span className="text-hima-red-dark">*</span>
                             </label>
 
-                            <div className="space-y-2 pt-1">
+                            <div className="space-y-2 pt-0.5">
                                 {metodeBelajarOptions.map((m) => (
                                     <label
                                         key={m}
-                                        className={`flex items-center gap-3 p-2.5 border-2 cursor-pointer transition-all ${
+                                        className={`flex items-center gap-3 p-3 border-2 cursor-pointer transition-all ${
                                             data.learning_method === m
-                                                ? 'bg-blue-50 border-hima-blue-dark font-bold text-hima-blue-dark'
+                                                ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
                                                 : 'border-gray-200 hover:border-gray-400 bg-white'
                                         }`}
                                     >
@@ -480,9 +489,9 @@ export default function Survey({ user }: Props) {
                                             value={m}
                                             checked={data.learning_method === m}
                                             onChange={() => setData('learning_method', m)}
-                                            className="w-4 h-4 text-hima-blue-dark focus:ring-0 cursor-pointer"
+                                            className="w-4 h-4 text-hima-blue-dark focus:ring-0 cursor-pointer shrink-0"
                                         />
-                                        <span className="text-xs sm:text-sm">{m}</span>
+                                        <span className="text-xs sm:text-sm leading-snug">{m}</span>
                                     </label>
                                 ))}
                             </div>
@@ -494,38 +503,38 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 5: TINGKAT KETERTARIKAN (SKALA 1 - 4) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-4">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Seberapa tertarik kamu untuk kegiatan KSM? <span className="text-hima-red-dark">*</span>
                             </label>
 
-                            <div className="border border-gray-200 p-3 sm:p-4 bg-slate-50">
-                                <div className="flex items-center justify-between text-xs font-bold text-gray-500 mb-2">
+                            <div className="border border-gray-200 p-2.5 sm:p-3 bg-slate-50">
+                                <div className="flex items-center justify-between text-[11px] font-bold text-gray-500 mb-2">
                                     <span>Tidak tertarik</span>
                                     <span>Sangat tertarik</span>
                                 </div>
 
-                                <div className="grid grid-cols-4 gap-2">
+                                <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                                     {[1, 2, 3, 4].map((scale) => (
                                         <button
                                             key={scale}
                                             type="button"
                                             onClick={() => setData('interest_scale', scale)}
-                                            className={`p-3 border-2 font-black text-base text-center transition-all ${
+                                            className={`py-3 px-1 border-2 font-black text-center transition-all ${
                                                 data.interest_scale === scale
-                                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm scale-102'
+                                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
                                                     : 'bg-white text-gray-800 border-gray-300 hover:border-hima-blue-dark'
                                             }`}
                                         >
-                                            <span className="block">{scale}</span>
-                                            <span className="text-[9px] uppercase font-bold block text-gray-400 mt-0.5">
+                                            <span className="block text-base sm:text-lg leading-none">{scale}</span>
+                                            <span className="text-[9px] uppercase font-bold block opacity-75 mt-1">
                                                 {scale === 1
-                                                    ? 'Level 1'
+                                                    ? 'Min'
                                                     : scale === 2
-                                                    ? 'Level 2'
+                                                    ? 'Cukup'
                                                     : scale === 3
-                                                    ? 'Level 3'
-                                                    : 'Level 4'}
+                                                    ? 'Tertarik'
+                                                    : 'Max'}
                                             </span>
                                         </button>
                                     ))}
@@ -534,26 +543,26 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 6: HARI YANG MEMUNGKINKAN (MAKSIMAL 2) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
                             <div className="flex items-start justify-between gap-2">
-                                <div className="space-y-1">
+                                <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                         Jika KSM mengadakan kegiatan, hari apa yang paling memungkinkan bagi anda untuk mengikuti kegiatan? <span className="text-hima-red-dark">*</span>
                                     </label>
-                                    <p className="text-[11px] text-gray-600 font-semibold italic">
-                                        (Pilih maksimal 2 hari yang paling memungkinkan)
+                                    <p className="text-[11px] text-gray-600 font-bold italic">
+                                        (Pilih maksimal 2 hari)
                                     </p>
                                 </div>
-                                <span className={`text-xs font-black px-2 py-0.5 border shrink-0 ${
+                                <span className={`text-[10px] sm:text-xs font-black px-2 py-0.5 border shrink-0 ${
                                     data.preferred_days.length === 2
                                         ? 'bg-hima-red-dark text-white border-hima-red-dark'
                                         : 'bg-slate-100 text-hima-blue-dark border-hima-blue-dark'
                                 }`}>
-                                    {data.preferred_days.length} / 2 Hari
+                                    {data.preferred_days.length} / 2
                                 </span>
                             </div>
 
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-0.5">
                                 {hariOptions.map((day) => {
                                     const isSelected = data.preferred_days.includes(day);
                                     const isDisabled = !isSelected && data.preferred_days.length >= 2;
@@ -561,9 +570,9 @@ export default function Survey({ user }: Props) {
                                     return (
                                         <label
                                             key={day}
-                                            className={`flex items-center gap-2 p-2.5 border-2 transition-all ${
+                                            className={`flex items-center gap-2 p-3 border-2 transition-all ${
                                                 isSelected
-                                                    ? 'bg-blue-50 border-hima-blue-dark font-bold text-hima-blue-dark'
+                                                    ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
                                                     : isDisabled
                                                     ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
                                                     : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer'
@@ -574,7 +583,7 @@ export default function Survey({ user }: Props) {
                                                 checked={isSelected}
                                                 disabled={isDisabled}
                                                 onChange={() => handleToggleDay(day)}
-                                                className="w-4 h-4 rounded-none border-2 border-hima-blue-dark text-hima-blue-dark focus:ring-0 cursor-pointer"
+                                                className="w-4 h-4 rounded-none border-2 border-hima-blue-dark text-hima-blue-dark focus:ring-0 cursor-pointer shrink-0"
                                             />
                                             <span className="text-xs sm:text-sm">{day}</span>
                                         </label>
@@ -589,16 +598,16 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 7: WAKTU PELAKSANAAN */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Waktu pelaksanaan yang paling anda inginkan adalah <span className="text-hima-red-dark">*</span>
                             </label>
 
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
                                 {waktuOptions.map((time) => (
                                     <label
                                         key={time}
-                                        className={`flex items-center justify-center gap-2 p-2.5 border-2 cursor-pointer transition-all ${
+                                        className={`flex items-center justify-center p-3 border-2 cursor-pointer transition-all ${
                                             data.preferred_time === time
                                                 ? 'bg-hima-blue-dark text-white border-hima-blue-dark font-black'
                                                 : 'border-gray-200 hover:border-gray-400 bg-white font-bold'
@@ -624,12 +633,12 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 8: SARAN / IDE LAIN */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-2.5">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Apakah kamu memiliki saran atau ide lain untuk kegiatan KSM?
                             </label>
                             <p className="text-[11px] text-gray-500 font-medium">
-                                (Tidak wajib diisi, masukkan ide topik atau masukan teknis bila ada)
+                                (Tidak wajib diisi, masukkan ide topik atau rekomendasi mentor jika ada)
                             </p>
 
                             <textarea
@@ -637,16 +646,16 @@ export default function Survey({ user }: Props) {
                                 value={data.feedback}
                                 onChange={(e) => setData('feedback', e.target.value)}
                                 placeholder="Tuliskan saran atau ide kegiatan kamu di sini..."
-                                className="w-full border-2 border-hima-blue-dark p-3 text-xs sm:text-sm font-medium rounded-none focus:outline-none focus:border-hima-blue-light resize-none"
+                                className="w-full border-2 border-hima-blue-dark p-2.5 text-xs sm:text-sm font-medium rounded-none focus:outline-none focus:border-hima-blue-light resize-none bg-white"
                             />
                         </div>
 
-                        {/* TOMBOL SUBMIT */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-sm flex items-center justify-between gap-3">
+                        {/* TOMBOL SUBMIT RESPONSIF & MUDAH DIJANGKAU */}
+                        <div className="bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
                             <button
                                 type="button"
                                 onClick={() => reset()}
-                                className="border border-gray-400 bg-white px-4 py-2 text-xs font-bold uppercase text-gray-700 hover:bg-gray-100 transition-colors"
+                                className="border border-gray-400 bg-white py-2 px-3 text-xs font-bold uppercase text-gray-700 hover:bg-gray-100 transition-colors order-2 sm:order-1 text-center"
                             >
                                 Kosongkan Formulir
                             </button>
@@ -654,7 +663,7 @@ export default function Survey({ user }: Props) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="btn-brutal bg-hima-red-dark text-white border-2 border-hima-blue-dark px-7 py-2.5 text-xs sm:text-sm font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-red-light transition-all disabled:opacity-50"
+                                className="btn-brutal bg-hima-red-dark text-white border-2 border-hima-blue-dark py-3 px-6 text-xs sm:text-sm font-black uppercase tracking-wider shadow-sm hover:bg-hima-red-light transition-all disabled:opacity-50 order-1 sm:order-2 text-center"
                             >
                                 {processing ? 'Mengirim...' : 'Kirim Jawaban Survei'}
                             </button>
@@ -662,10 +671,10 @@ export default function Survey({ user }: Props) {
                     </form>
 
                     {/* Footer Sederhana */}
-                    <div className="text-center py-4 text-xs font-semibold text-gray-500">
-                        Kelompok Studi Mahasiswa (KSM) &bull; Himpunan Mahasiswa Teknik Informatika (HIMA IF)
+                    <div className="text-center py-3 text-[11px] font-semibold text-gray-500">
+                        Kelompok Studi Mahasiswa (KSM) &bull; HIMA IF Institut LPKIA
                     </div>
-                </div>
+                </main>
             </div>
         </>
     );
