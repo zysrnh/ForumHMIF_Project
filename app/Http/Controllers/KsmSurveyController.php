@@ -30,6 +30,7 @@ class KsmSurveyController extends Controller
         $validated = $request->validate([
             'respondent_name' => ['required', 'string', 'max:255'],
             'respondent_nim' => ['nullable', 'string', 'max:50'],
+            'respondent_class' => ['nullable', 'string', 'max:50'],
             'semester_course' => ['required', 'string', 'max:255'],
             'interested_fields' => ['required', 'array', 'min:1', 'max:3'],
             'interested_fields.*' => ['string', 'max:255'],
@@ -67,6 +68,7 @@ class KsmSurveyController extends Controller
             $surveysQuery->where(function ($q) use ($search) {
                 $q->where('respondent_name', 'like', "%{$search}%")
                     ->orWhere('respondent_nim', 'like', "%{$search}%")
+                    ->orWhere('respondent_class', 'like', "%{$search}%")
                     ->orWhere('semester_course', 'like', "%{$search}%");
             });
         }
@@ -154,6 +156,7 @@ class KsmSurveyController extends Controller
             'ID',
             'Nama Responden',
             'NIM',
+            'Kelas',
             'Matkul Semester 3',
             'Bidang Minat',
             'Bentuk Kegiatan',
@@ -173,6 +176,7 @@ class KsmSurveyController extends Controller
                 $item->id,
                 $item->respondent_name,
                 $item->respondent_nim ?? '-',
+                $item->respondent_class ?? '-',
                 $item->semester_course,
                 is_array($item->interested_fields) ? implode(', ', $item->interested_fields) : '',
                 is_array($item->activity_types) ? implode(', ', $item->activity_types) : '',

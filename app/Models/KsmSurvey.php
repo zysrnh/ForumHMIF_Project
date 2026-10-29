@@ -19,6 +19,7 @@ class KsmSurvey extends Model
         'user_id',
         'respondent_name',
         'respondent_nim',
+        'respondent_class',
         'semester_course',
         'interested_fields',
         'activity_types',

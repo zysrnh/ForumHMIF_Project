@@ -5,6 +5,7 @@ interface SurveyItem {
     id: number;
     respondent_name: string;
     respondent_nim?: string;
+    respondent_class?: string;
     semester_course: string;
     interested_fields: string[];
     activity_types: string[];
@@ -310,6 +311,7 @@ export default function KsmDashboard({ surveys, stats, filters }: Props) {
                                     <tr className="bg-slate-100 border-b-2 border-hima-blue-dark text-[11px] font-black uppercase text-hima-blue-dark">
                                         <th className="p-2.5">No</th>
                                         <th className="p-2.5">Nama & NIM</th>
+                                        <th className="p-2.5">Kelas</th>
                                         <th className="p-2.5">Matkul Smt 3</th>
                                         <th className="p-2.5">Bidang Minat</th>
                                         <th className="p-2.5">Bentuk Kegiatan</th>
@@ -321,7 +323,7 @@ export default function KsmDashboard({ surveys, stats, filters }: Props) {
                                 <tbody className="divide-y divide-gray-200 font-medium text-gray-800">
                                     {surveys.data.length === 0 ? (
                                         <tr>
-                                            <td colSpan={8} className="p-6 text-center text-gray-500 italic">
+                                            <td colSpan={9} className="p-6 text-center text-gray-500 italic">
                                                 Belum ada data responden yang sesuai.
                                             </td>
                                         </tr>
@@ -337,6 +339,11 @@ export default function KsmDashboard({ surveys, stats, filters }: Props) {
                                                     </span>
                                                     <span className="text-[10px] text-gray-500 font-mono">
                                                         {item.respondent_nim || '-'}
+                                                    </span>
+                                                </td>
+                                                <td className="p-2.5">
+                                                    <span className="inline-block bg-slate-100 border border-slate-300 px-1.5 py-0.5 text-[10px] font-bold text-slate-700">
+                                                        {item.respondent_class || '-'}
                                                     </span>
                                                 </td>
                                                 <td className="p-2.5 font-semibold text-gray-900">
@@ -426,8 +433,9 @@ export default function KsmDashboard({ surveys, stats, filters }: Props) {
                                     <h3 className="font-black text-sm sm:text-base text-hima-blue-dark uppercase">
                                         Detail Jawaban Responden
                                     </h3>
-                                    <p className="text-xs text-gray-500 font-mono">
+                                    <p className="text-xs text-gray-600 font-mono">
                                         {selectedSurvey.respondent_name} ({selectedSurvey.respondent_nim || 'Tanpa NIM'})
+                                        {selectedSurvey.respondent_class ? ` • Kelas: ${selectedSurvey.respondent_class}` : ''}
                                     </p>
                                 </div>
                                 <button
@@ -440,6 +448,25 @@ export default function KsmDashboard({ surveys, stats, filters }: Props) {
                             </div>
 
                             <div className="space-y-3 text-xs">
+                                <div className="grid grid-cols-2 gap-2 bg-slate-50 border border-slate-200 p-2.5">
+                                    <div>
+                                        <span className="font-bold text-gray-500 uppercase text-[10px] block">
+                                            Kelas Mahasiswa:
+                                        </span>
+                                        <span className="font-black text-gray-900 text-xs">
+                                            {selectedSurvey.respondent_class || '-'}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span className="font-bold text-gray-500 uppercase text-[10px] block">
+                                            NIM Responden:
+                                        </span>
+                                        <span className="font-bold text-gray-900 font-mono text-xs">
+                                            {selectedSurvey.respondent_nim || '-'}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div>
                                     <span className="font-bold text-gray-500 uppercase text-[10px] block">
                                         Materi Matkul Smt 3:

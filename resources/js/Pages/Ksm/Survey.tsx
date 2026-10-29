@@ -21,6 +21,7 @@ export default function Survey({ user }: Props) {
     const { data, setData, post, processing, errors, reset, wasSuccessful } = useForm({
         respondent_name: user?.name || '',
         respondent_nim: user?.nim || (user?.email?.includes('@') ? user.email.split('@')[0] : ''),
+        respondent_class: '',
         semester_course: '',
         interested_fields: [] as string[],
         activity_types: [] as string[],
@@ -219,7 +220,7 @@ export default function Survey({ user }: Props) {
                             <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-100 pb-2">
                                 Identitas Responden
                             </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                                 <div>
                                     <label className="block text-xs font-black uppercase text-gray-800 mb-1">
                                         Nama Lengkap *
@@ -247,6 +248,18 @@ export default function Survey({ user }: Props) {
                                         value={data.respondent_nim}
                                         onChange={(e) => setData('respondent_nim', e.target.value)}
                                         placeholder="Contoh: 230414010"
+                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-black uppercase text-gray-800 mb-1">
+                                        Kelas Mahasiswa
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={data.respondent_class}
+                                        onChange={(e) => setData('respondent_class', e.target.value)}
+                                        placeholder="Contoh: IF 23-A / IF 24-Pagi"
                                         className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
                                     />
                                 </div>
