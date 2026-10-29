@@ -51,7 +51,7 @@ export default function Authenticated({
                 <div className="flex items-center gap-2">
                     <Link
                         href="/"
-                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider"
+                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
                     >
                         Publik
                     </Link>
@@ -295,19 +295,19 @@ export default function Authenticated({
             {/* Main Content Area */}
             <div className="flex-1 min-w-0 flex flex-col min-h-screen">
                 {header && (
-                    <header className="bg-white border-b-2 border-hima-blue-dark px-4 py-3 sm:px-6 shadow-brutal-sm">
+                    <header className="bg-white border-b-2 border-hima-blue-dark px-3 py-2.5 sm:px-6 sm:py-3 shadow-brutal-sm">
                         {header}
                     </header>
                 )}
 
-                {/* Padding bottom diperbesar di mobile (pb-28) agar tidak tertutup toolbar bawah */}
-                <main className="flex-1 p-3.5 sm:p-6 pb-28 md:pb-6">
+                {/* Padding bottom di mobile (pb-24) agar konten terbaca lega tanpa tertutup toolbar */}
+                <main className="flex-1 p-2.5 sm:p-6 pb-24 md:pb-6">
                     {children}
                 </main>
 
                 {/* Dashboard Simple Footer */}
-                <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 pb-28 md:pb-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-                    <p className="font-medium">
+                <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 pb-24 md:pb-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+                    <p className="font-medium text-center sm:text-left">
                         Portal Aspirasi Mahasiswa HIMA IF • Institut LPKIA
                     </p>
                     <div className="flex items-center gap-2 font-bold uppercase text-[10px] text-hima-blue-dark">
@@ -317,50 +317,75 @@ export default function Authenticated({
             </div>
 
             {/* ========================================================================= */}
-            {/* MOBILE APP BOTTOM NAVIGATION TOOLBAR (KHUSUS MOBILE SCREEN < MD)           */}
+            {/* MOBILE APP BOTTOM NAVIGATION TOOLBAR DENGAN HOVER & ACTIVE INTERAKTIF      */}
             {/* ========================================================================= */}
             <nav
                 aria-label="Mobile app navigation toolbar"
-                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-4px_10px_rgba(26,70,124,0.15)] px-2 py-1.5"
+                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-3px_10px_rgba(26,70,124,0.12)] px-1 py-1"
             >
                 <div className="flex items-center justify-around gap-1 relative">
-                    {/* 1. Feed / Semua Aspirasi */}
+                    {/* 1. Feed / Semua */}
                     {isProfilePage ? (
                         <Link
                             href={route('dashboard')}
-                            className="flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 text-gray-600 hover:text-hima-blue-dark font-bold"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/60"
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                            </svg>
-                            <span className="text-[10px] uppercase tracking-tight mt-0.5">Semua</span>
+                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                <svg className="w-5 h-5 text-gray-500 group-hover:text-hima-blue-dark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                            </div>
+                            <span className="text-[10px] uppercase tracking-tight mt-0.5 text-gray-500 group-hover:text-hima-blue-dark font-bold">
+                                Semua
+                            </span>
+                            <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-hima-blue-dark opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
                     ) : (
                         <button
                             type="button"
                             onClick={() => handleNavClick('feed')}
-                            className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
-                                currentNav === 'feed'
-                                    ? 'text-hima-blue-dark font-black'
-                                    : 'text-gray-500 hover:text-gray-900 font-bold'
+                            className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
+                                currentNav === 'feed' ? 'bg-blue-50/40' : ''
                             }`}
                         >
                             <div
                                 className={`p-1 border transition-all ${
                                     currentNav === 'feed'
                                         ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
-                                        : 'border-transparent'
+                                        : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
                                 }`}
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg
+                                    className={`w-5 h-5 transition-colors ${
+                                        currentNav === 'feed' ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
+                                    }`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                                 </svg>
                             </div>
-                            <span className="text-[10px] uppercase tracking-tight mt-0.5">Semua</span>
+                            <span
+                                className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
+                                    currentNav === 'feed'
+                                        ? 'text-hima-blue-dark font-black'
+                                        : 'text-gray-500 group-hover:text-hima-blue-dark font-bold'
+                                }`}
+                            >
+                                Semua
+                            </span>
+                            <span
+                                className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                    currentNav === 'feed'
+                                        ? 'bg-hima-blue-dark opacity-100'
+                                        : 'bg-hima-blue-dark opacity-0 group-hover:opacity-100'
+                                }`}
+                            />
                         </button>
                     )}
 
-                    {/* 2. Agenda KSM (Badge Pleno) */}
+                    {/* 2. Agenda KSM */}
                     <button
                         type="button"
                         onClick={() => {
@@ -370,28 +395,48 @@ export default function Authenticated({
                                 handleNavClick('ksm');
                             }
                         }}
-                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 relative ${
-                            currentNav === 'ksm'
-                                ? 'text-hima-red-dark font-black'
-                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70 ${
+                            currentNav === 'ksm' ? 'bg-red-50/40' : ''
                         }`}
                     >
                         <div
                             className={`p-1 border transition-all relative ${
                                 currentNav === 'ksm'
                                     ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A]'
-                                    : 'border-transparent'
+                                    : 'border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50'
                             }`}
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg
+                                className={`w-5 h-5 transition-colors ${
+                                    currentNav === 'ksm' ? 'text-hima-red-dark' : 'text-gray-500 group-hover:text-hima-red-dark'
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             <span className="absolute -top-1 -right-1 w-2 h-2 bg-hima-red-light border border-white" />
                         </div>
-                        <span className="text-[10px] uppercase tracking-tight mt-0.5">KSM</span>
+                        <span
+                            className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
+                                currentNav === 'ksm'
+                                    ? 'text-hima-red-dark font-black'
+                                    : 'text-gray-500 group-hover:text-hima-red-dark font-bold'
+                            }`}
+                        >
+                            KSM
+                        </span>
+                        <span
+                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                currentNav === 'ksm'
+                                    ? 'bg-hima-red-dark opacity-100'
+                                    : 'bg-hima-red-dark opacity-0 group-hover:opacity-100'
+                            }`}
+                        />
                     </button>
 
-                    {/* 3. Tulis Aspirasi (Flat Tab Sejajar Tanpa Floating +) */}
+                    {/* 3. Tulis Aspirasi */}
                     <button
                         type="button"
                         onClick={() => {
@@ -401,24 +446,44 @@ export default function Authenticated({
                                 handleNavClick('create');
                             }
                         }}
-                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
-                            currentNav === 'create'
-                                ? 'text-hima-red-dark font-black'
-                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70 ${
+                            currentNav === 'create' ? 'bg-red-50/40' : ''
                         }`}
                     >
                         <div
                             className={`p-1 border transition-all ${
                                 currentNav === 'create'
                                     ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A]'
-                                    : 'border-transparent'
+                                    : 'border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50'
                             }`}
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg
+                                className={`w-5 h-5 transition-colors ${
+                                    currentNav === 'create' ? 'text-hima-red-dark' : 'text-gray-500 group-hover:text-hima-red-dark'
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                         </div>
-                        <span className="text-[10px] uppercase tracking-tight mt-0.5">Tulis</span>
+                        <span
+                            className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
+                                currentNav === 'create'
+                                    ? 'text-hima-red-dark font-black'
+                                    : 'text-gray-500 group-hover:text-hima-red-dark font-bold'
+                            }`}
+                        >
+                            Tulis
+                        </span>
+                        <span
+                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                currentNav === 'create'
+                                    ? 'bg-hima-red-dark opacity-100'
+                                    : 'bg-hima-red-dark opacity-0 group-hover:opacity-100'
+                            }`}
+                        />
                     </button>
 
                     {/* 4. Aspirasi Saya */}
@@ -431,48 +496,88 @@ export default function Authenticated({
                                 handleNavClick('my');
                             }
                         }}
-                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
-                            currentNav === 'my'
-                                ? 'text-hima-blue-dark font-black'
-                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
+                            currentNav === 'my' ? 'bg-blue-50/40' : ''
                         }`}
                     >
                         <div
                             className={`p-1 border transition-all ${
                                 currentNav === 'my'
                                     ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
-                                    : 'border-transparent'
+                                    : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
                             }`}
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg
+                                className={`w-5 h-5 transition-colors ${
+                                    currentNav === 'my' ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
-                        <span className="text-[10px] uppercase tracking-tight mt-0.5">Saya</span>
+                        <span
+                            className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
+                                currentNav === 'my'
+                                    ? 'text-hima-blue-dark font-black'
+                                    : 'text-gray-500 group-hover:text-hima-blue-dark font-bold'
+                            }`}
+                        >
+                            Saya
+                        </span>
+                        <span
+                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                currentNav === 'my'
+                                    ? 'bg-hima-blue-dark opacity-100'
+                                    : 'bg-hima-blue-dark opacity-0 group-hover:opacity-100'
+                            }`}
+                        />
                     </button>
 
                     {/* 5. Akun Saya */}
                     <Link
                         href={route('profile.edit')}
-                        className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
-                            isProfilePage
-                                ? 'text-hima-blue-dark font-black'
-                                : 'text-gray-500 hover:text-gray-900 font-bold'
+                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
+                            isProfilePage ? 'bg-blue-50/40' : ''
                         }`}
                     >
                         <div
                             className={`p-1 border transition-all ${
                                 isProfilePage
                                     ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
-                                    : 'border-transparent'
+                                    : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
                             }`}
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg
+                                className={`w-5 h-5 transition-colors ${
+                                    isProfilePage ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <span className="text-[10px] uppercase tracking-tight mt-0.5">Akun</span>
+                        <span
+                            className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
+                                isProfilePage
+                                    ? 'text-hima-blue-dark font-black'
+                                    : 'text-gray-500 group-hover:text-hima-blue-dark font-bold'
+                            }`}
+                        >
+                            Akun
+                        </span>
+                        <span
+                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                isProfilePage
+                                    ? 'bg-hima-blue-dark opacity-100'
+                                    : 'bg-hima-blue-dark opacity-0 group-hover:opacity-100'
+                            }`}
+                        />
                     </Link>
                 </div>
             </nav>
