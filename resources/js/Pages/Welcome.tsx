@@ -97,9 +97,8 @@ export default function Welcome({
     const stats = getAspirationStats(sharedList);
 
     // State Mini Form Aspirasi Hero
-    const [aspirationCategory, setAspirationCategory] = useState<string>('Fasilitas & Lab Komputer');
+    const [aspirationCategory, setAspirationCategory] = useState<string>('Akademik & Praktikum');
     const [aspirationContent, setAspirationContent] = useState<string>('');
-    const [recommendToKsm, setRecommendToKsm] = useState<boolean>(true);
     const [aspirationSuccess, setAspirationSuccess] = useState<boolean>(false);
 
     // State Interaktif Alur Garis Stepper Cara Kerja Forum
@@ -111,8 +110,7 @@ export default function Welcome({
 
     // Animated Counters (Langsung berjalan sesuai data aktual)
     const countAspirasi = useCountUp(stats.total, 1200);
-    const countTopikKsm = useCountUp(stats.ksmCount, 1000);
-    const countProker = useCountUp(stats.actionCount, 900);
+    const countTotalVote = useCountUp(sharedList.reduce((sum, item) => sum + item.votes, 0), 1000);
 
     // Fungsi Smooth Scroll Halus Tanpa Teleport Tiba-tiba
     const scrollToSection = (e: React.MouseEvent, id: string) => {
@@ -131,8 +129,8 @@ export default function Welcome({
             shortTitle: 'Tulis Aspirasi',
             badge: 'Kanal Terbuka',
             title: 'Tulis Aspirasi Bebas & Terbuka',
-            desc: 'Mahasiswa IF dapat menyampaikan ide proker, saran akademik, atau kritik sarana lab komputasi secara bebas, transparan, atau anonim melalui form aspirasi.',
-            actionHint: 'Kategori tersedia: Akademik & Praktikum, Fasilitas & Lab, Proker, Advokasi, dan Karier.',
+            desc: 'Mahasiswa IF dapat menyampaikan ide, usulan akademik, atau keluhan sarana lab secara mudah, baik dengan identitas publik maupun mode anonim.',
+            actionHint: 'Kategori tersedia: Akademik, Fasilitas Lab, Proker, Advokasi, dan Karier.',
             tagBg: 'bg-hima-blue-dark text-white',
             borderColor: 'border-hima-blue-dark',
         },
@@ -140,21 +138,21 @@ export default function Welcome({
             step: 2,
             number: '02',
             shortTitle: 'Dukungan & Vote',
-            badge: 'Dukungan Massal',
+            badge: 'Suara Bersama',
             title: 'Mahasiswa Bersuara Lewat Upvote',
-            desc: 'Setiap aspirasi yang terkirim langsung tampil di radar forum untuk didukung sesama mahasiswa. Topik dengan suara tertinggi akan otomatis naik prioritas.',
-            actionHint: 'Satu suara dari kalian menentukan apa yang diangkat ke rapat pimpinan himpunan.',
+            desc: 'Aspirasi yang dikirim langsung tampil di forum dan dapat didukung oleh rekan mahasiswa lain lewat tombol upvote.',
+            actionHint: 'Aspirasi dengan vote tertinggi menjadi prioritas utama perhatian pengurus himpunan.',
             tagBg: 'bg-hima-red-light text-white',
             borderColor: 'border-hima-red-light',
         },
         {
             step: 3,
             number: '03',
-            shortTitle: 'Meja KSM & Proker',
+            shortTitle: 'Tindak Lanjut & Aksi',
             badge: 'Eksekusi Nyata',
-            title: 'Bahas di Sidang KSM & Wujudkan Jadi Proker',
-            desc: 'Pengurus HIMA IF mengkaji topik teratas dalam agenda Sidang Pleno KSM (Kelompok Studi Mahasiswa), menerbitkan nomor berkas pleno, lalu menjadikannya proker nyata.',
-            actionHint: 'Hasil resolusi dan keputusan pleno dipublikasikan terbuka di dashboard & halaman topik.',
+            title: 'Tindak Lanjut & Wujudkan Jadi Solusi',
+            desc: 'Pengurus HIMA IF mengkaji aspirasi mahasiswa, berkoordinasi dengan pihak program studi, dan merealisasikan usulan menjadi aksi nyata.',
+            actionHint: 'Pembaruan dan tanggapan resmi pengurus dapat dipantau langsung di forum.',
             tagBg: 'bg-hima-blue-light text-white',
             borderColor: 'border-hima-blue-light',
         },
@@ -168,7 +166,7 @@ export default function Welcome({
         toggleVoteSharedAspiration(id);
     };
 
-    // Quick Submit dari Hero Section Langsung Terhubung ke Dashboard
+    // Quick Submit dari Hero Section
     const handleQuickSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!aspirationContent.trim()) return;
@@ -191,8 +189,7 @@ export default function Welcome({
             authorName: currentAuthor,
             authorNim: currentNim,
             isAnonymous: !auth.user,
-            status: recommendToKsm ? 'ksm' : 'baru',
-            isKsmAgenda: recommendToKsm,
+            status: 'baru',
         });
 
         setAspirationContent('');
@@ -204,20 +201,11 @@ export default function Welcome({
 
     return (
         <>
-            <Head title="Forum HMIF - Suara Kalian, Arah KSM Kita" />
+            <Head title="Forum HMIF - Suara Mahasiswa Teknik Informatika" />
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-8 xl:p-10 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
-                {/* Ambient Floating Geometric Accents */}
-                <div className="hidden xl:block absolute top-6 left-4 2xl:left-10 w-12 h-12 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-6 z-0" />
-                <div className="hidden xl:block absolute top-[20rem] left-3 2xl:left-8 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2 -rotate-12 z-0" />
-                <div className="hidden xl:block absolute top-[42rem] left-4 2xl:left-10 w-12 h-12 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-3 z-0" />
-
-                <div className="hidden xl:block absolute top-8 right-4 2xl:right-10 w-14 h-14 bg-white border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-2 -rotate-6 z-0" />
-                <div className="hidden xl:block absolute top-[21rem] right-3 2xl:right-8 w-11 h-11 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1 rotate-12 z-0" />
-                <div className="hidden xl:block absolute top-[43rem] right-5 2xl:right-10 w-10 h-10 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2 -rotate-3 z-0" />
-
                 {/* Main Wrapper */}
-                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-10 my-2">
+                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-8 my-2">
                     {/* 1. NAVBAR FORUM */}
                     <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-4">
                         <Link href="/" className="flex items-center gap-3 group">
@@ -233,7 +221,7 @@ export default function Welcome({
                                     FORUM HMIF
                                 </span>
                                 <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                    Suara Mahasiswa IF &bull; Agenda KSM
+                                    Suara Mahasiswa Informatika
                                 </span>
                             </div>
                         </Link>
@@ -261,7 +249,7 @@ export default function Welcome({
                                 onClick={(e) => scrollToSection(e, 'cara-kerja')}
                                 className="hover:text-hima-blue-light transition-colors"
                             >
-                                Cara Kerja KSM
+                                Cara Kerja
                             </a>
                         </nav>
 
@@ -289,41 +277,33 @@ export default function Welcome({
                     <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
                         <div className="anim-brutal-stamp-left lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-9 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
                             <div className="space-y-6">
-                                {/* INDIKATOR STATISTIK */}
-                                <div className="grid grid-cols-3 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C]">
-                                    <div className="p-2 sm:p-3 text-center">
-                                        <span className="text-xl sm:text-2xl lg:text-3xl font-black text-hima-blue-dark block font-mono leading-none">
+                                {/* INDIKATOR STATISTIK BERSIH */}
+                                <div className="grid grid-cols-2 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] max-w-sm">
+                                    <div className="p-3 text-center">
+                                        <span className="text-2xl sm:text-3xl font-black text-hima-blue-dark block font-mono leading-none">
                                             {countAspirasi}
                                         </span>
                                         <span className="text-[10px] sm:text-xs font-black text-gray-700 uppercase tracking-wider mt-1 block">
-                                            Aspirasi Masuk
+                                            Aspirasi Terkumpul
                                         </span>
                                     </div>
-                                    <div className="p-2 sm:p-3 text-center">
-                                        <span className="text-xl sm:text-2xl lg:text-3xl font-black text-hima-red-light block font-mono leading-none">
-                                            {countTopikKsm}
+                                    <div className="p-3 text-center">
+                                        <span className="text-2xl sm:text-3xl font-black text-hima-red-light block font-mono leading-none">
+                                            {countTotalVote}
                                         </span>
                                         <span className="text-[10px] sm:text-xs font-black text-gray-700 uppercase tracking-wider mt-1 block">
-                                            Topik di KSM
-                                        </span>
-                                    </div>
-                                    <div className="p-2 sm:p-3 text-center">
-                                        <span className="text-xl sm:text-2xl lg:text-3xl font-black text-hima-blue-light block font-mono leading-none">
-                                            {countProker}
-                                        </span>
-                                        <span className="text-[10px] sm:text-xs font-black text-gray-700 uppercase tracking-wider mt-1 block">
-                                            Proker
+                                            Total Dukungan
                                         </span>
                                     </div>
                                 </div>
 
                                 <div className="space-y-3">
                                     <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-hima-blue-dark tracking-tight leading-tight">
-                                        Suara Kalian, Arah KSM Kita.
+                                        Suara Kalian, Solusi Bersama.
                                     </h1>
 
                                     <p className="text-base sm:text-lg font-medium text-gray-700 leading-relaxed max-w-2xl">
-                                        Ruang terbuka buat anak IF tumpahin unek-unek, usul ide kegiatan, sampai nentuin topik bahasan sidang pleno KSM himpunan bareng-bareng.
+                                        Ruang terbuka mahasiswa Teknik Informatika untuk menyampaikan aspirasi, usulan fasilitas, dan ide kegiatan secara transparan, mudah, dan bebas ribet.
                                     </p>
                                 </div>
                             </div>
@@ -340,40 +320,40 @@ export default function Welcome({
                                     href={route('topik.index')}
                                     className="btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-6 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-blue-50"
                                 >
-                                    Lihat Topik Lagi Rame &rarr;
+                                    Lihat Topik Rame &rarr;
                                 </Link>
                             </div>
                         </div>
 
-                        {/* Kanan: Mini Form Aspirasi Langsung */}
+                        {/* Kanan: Form Aspirasi Langsung Ringkas & Efisien */}
                         <div
                             id="form-aspirasi"
-                            className="anim-brutal-stamp-right lg:col-span-5 bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
+                            className="anim-brutal-stamp-right lg:col-span-5 bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
                         >
                             <form onSubmit={handleQuickSubmit} className="space-y-4">
                                 <div className="border-b-2 border-hima-blue-dark pb-2.5 flex items-center justify-between">
                                     <h2 className="text-base font-black text-hima-blue-dark uppercase tracking-wider">
-                                        Tumpahin Aspirasimu
+                                        Kirim Aspirasi Cepat
                                     </h2>
                                     <span className="text-[10px] font-bold bg-hima-blue-light text-white px-2 py-0.5 border border-hima-blue-dark uppercase">
-                                        Publik &bull; Live Sync
+                                        Langsung Masuk
                                     </span>
                                 </div>
 
                                 {/* Category Chips dari APP_CATEGORIES */}
                                 <div className="space-y-1.5">
                                     <label className="text-[11px] font-bold text-gray-600 block uppercase">
-                                        Kategori Topik:
+                                        Pilih Kategori:
                                     </label>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-1.5">
                                         {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
                                             <button
                                                 key={cat}
                                                 type="button"
                                                 onClick={() => setAspirationCategory(cat)}
-                                                className={`text-xs font-bold px-3 py-1 border-2 border-hima-blue-dark transition-all duration-150 ${
+                                                className={`text-xs font-bold px-2.5 py-1 border-2 border-hima-blue-dark transition-all duration-150 ${
                                                     aspirationCategory === cat
-                                                        ? 'bg-hima-blue-dark text-white shadow-[3px_3px_0px_0px_#1A467C] translate-x-[-1px] translate-y-[-1px]'
+                                                        ? 'bg-hima-blue-dark text-white shadow-xs'
                                                         : 'bg-white text-hima-blue-dark hover:bg-gray-100'
                                                 }`}
                                             >
@@ -389,41 +369,28 @@ export default function Welcome({
                                         rows={4}
                                         value={aspirationContent}
                                         onChange={(e) => setAspirationContent(e.target.value)}
-                                        placeholder="Tulis unek-unek, usulan event, atau saran lab di sini..."
-                                        className="w-full border-2 border-hima-blue-dark p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light resize-none rounded-none shadow-brutal-sm"
+                                        placeholder="Tuliskan aspirasi, kebutuhan fasilitas, atau usulan kamu di sini..."
+                                        className="w-full border-2 border-hima-blue-dark p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light resize-none rounded-none shadow-xs"
                                     />
                                 </div>
-
-                                {/* Checkbox Agenda KSM */}
-                                <label className="flex items-center gap-2.5 bg-red-50/70 border border-hima-red-light p-2.5 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={recommendToKsm}
-                                        onChange={(e) => setRecommendToKsm(e.target.checked)}
-                                        className="w-4 h-4 rounded-none border-2 border-hima-red-light text-hima-red-light focus:ring-0 cursor-pointer"
-                                    />
-                                    <span className="text-[11px] font-bold text-hima-red-dark">
-                                        Rekomendasikan langsung ke Sidang Pleno KSM HMIF
-                                    </span>
-                                </label>
 
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
                                     className="w-full btn-brutal bg-hima-red-light text-white font-black py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
-                                    Lempar ke Forum & KSM
+                                    Kirim ke Forum
                                 </button>
 
                                 {aspirationSuccess && (
                                     <div className="p-2.5 bg-green-50 border-2 border-green-700 text-green-900 text-xs font-bold text-center">
-                                        Aspirasi kamu berhasil masuk ke daftar topik & tersinkron ke dashboard!
+                                        Aspirasi berhasil dikirim dan tersinkron ke dashboard!
                                     </div>
                                 )}
                             </form>
 
-                            <p className="text-[11px] text-gray-500 font-medium text-center pt-3">
-                                Setiap suara akan dikurasi dan dibahas dalam agenda rapat pleno KSM HIMA IF.
+                            <p className="text-[11px] text-gray-500 font-medium text-center pt-2">
+                                Setiap suara akan dipelajari dan ditindaklanjuti oleh tim HIMA IF.
                             </p>
                         </div>
                     </section>
@@ -432,26 +399,23 @@ export default function Welcome({
                     <section
                         id="aspirasi"
                         ref={topicsSection.ref}
-                        className="space-y-5"
+                        className="space-y-4"
                     >
                         <div className="border-b-2 border-hima-blue-dark pb-2.5 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                             <div>
                                 <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
-                                    Topik Lagi Rame
+                                    Topik Paling Banyak Didukung
                                 </h2>
                                 <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                    Aspirasi terhangat dengan dukungan vote terbanyak dari anak IF (sinkron realtime).
+                                    Aspirasi terkini dengan dukungan vote tertinggi dari rekan mahasiswa.
                                 </p>
                             </div>
                             <div className="flex items-center gap-2 self-start sm:self-auto">
-                                <span className="text-[11px] font-bold text-hima-blue-dark bg-white border border-hima-blue-dark px-2.5 py-1 uppercase tracking-wider shadow-brutal-sm">
-                                    Data Tersinkron
-                                </span>
                                 <Link
                                     href={route('topik.index')}
-                                    className="text-[11px] font-black text-white bg-hima-blue-dark px-3 py-1 uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-sm hover:bg-hima-blue-light transition-all active:translate-x-0.5 active:translate-y-0.5"
+                                    className="text-[11px] font-black text-white bg-hima-blue-dark px-3 py-1.5 uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-sm hover:bg-hima-blue-light transition-all active:translate-x-0.5 active:translate-y-0.5"
                                 >
-                                    Buka Halaman Topik &rarr;
+                                    Lihat Semua &rarr;
                                 </Link>
                             </div>
                         </div>
@@ -459,22 +423,6 @@ export default function Welcome({
                         {/* List Topik */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
                             {topTopics.map((item, index) => {
-                                const snapClass =
-                                    index === 0
-                                        ? 'spring-snap-1'
-                                        : index === 1
-                                        ? 'spring-snap-2'
-                                        : 'spring-snap-3';
-
-                                const tiltTransform =
-                                    topicsSection.isVisible
-                                        ? 'translate-y-0 scale-100 rotate-0'
-                                        : index === 0
-                                        ? 'translate-y-8 scale-[0.98]'
-                                        : index === 1
-                                        ? 'translate-y-10 scale-[0.98]'
-                                        : 'translate-y-8 scale-[0.98]';
-
                                 const borderTopColor =
                                     index === 0
                                         ? 'border-t-4 border-t-hima-red-light'
@@ -482,44 +430,20 @@ export default function Welcome({
                                         ? 'border-t-4 border-t-hima-blue-dark'
                                         : 'border-t-4 border-t-hima-blue-light';
 
-                                const isKsm = item.status === 'ksm' || item.isKsmAgenda;
-
                                 return (
                                     <div
                                         key={item.id}
-                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-6 shadow-[6px_6px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-4 relative ${snapClass} ${tiltTransform}`}
+                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-5 sm:p-6 shadow-[5px_5px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-3.5`}
                                     >
-                                        <div className="space-y-3.5">
-                                            {/* Tag & Status Badge Khusus Tiap Card */}
-                                            <div className="flex items-center justify-between gap-2 flex-wrap">
-                                                <div className="flex items-center gap-1.5">
-                                                    <span className="text-[11px] font-black uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2.5 py-0.5 shadow-[1px_1px_0px_0px_#1A467C]">
-                                                        {item.category}
-                                                    </span>
-                                                    {index === 0 && (
-                                                        <span className="text-[10px] font-black uppercase tracking-wide bg-hima-red-light text-white px-2 py-0.5 shadow-[2px_2px_0px_0px_#1A467C]">
-                                                            TOP #1
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                {isKsm ? (
-                                                    <span className="text-[10px] font-black uppercase tracking-wider border px-2 py-0.5 bg-red-50 text-hima-red-light border-hima-red-light">
-                                                        {item.ksmDocketNumber || 'AGENDA KSM'}
-                                                    </span>
-                                                ) : item.status === 'tindak_lanjut' ? (
-                                                    <span className="text-[10px] font-black uppercase tracking-wider border px-2 py-0.5 bg-sky-50 text-hima-blue-light border-hima-blue-light">
-                                                        PROKER
-                                                    </span>
-                                                ) : item.status === 'kurasi' ? (
-                                                    <span className="text-[10px] font-black uppercase tracking-wider border px-2 py-0.5 bg-blue-50 text-hima-blue-dark border-hima-blue-dark">
-                                                        KURASI ADVOKASI
-                                                    </span>
-                                                ) : (
-                                                    <span className="text-[10px] font-black uppercase tracking-wider border px-2 py-0.5 bg-gray-100 text-gray-800 border-gray-400">
-                                                        BARU MASUK
-                                                    </span>
-                                                )}
+                                        <div className="space-y-2.5">
+                                            {/* Tag Kategori & Waktu */}
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5 shadow-xs">
+                                                    {item.category}
+                                                </span>
+                                                <span className="text-[10px] font-medium text-gray-400">
+                                                    {item.createdAt}
+                                                </span>
                                             </div>
 
                                             {/* Judul Topik */}
@@ -531,54 +455,38 @@ export default function Welcome({
                                             <p className="text-xs sm:text-sm font-medium text-gray-600 line-clamp-3 leading-relaxed">
                                                 {item.content}
                                             </p>
-
-                                            {/* KSM Schedule Note Tanpa Emoji */}
-                                            {item.ksmPlenoSchedule && (
-                                                <div className="flex items-center gap-1.5 p-2 bg-red-50/60 border border-red-200 text-[10px] font-semibold text-hima-red-dark">
-                                                    <svg className="w-3 h-3 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    <span>Sidang: {item.ksmPlenoSchedule}</span>
-                                                </div>
-                                            )}
                                         </div>
 
-                                        {/* Footer Kartu: Inisial Avatar Penulis, Komentar & Tombol Vote */}
-                                        <div className="pt-4 border-t-2 border-gray-100 flex items-center justify-between gap-2">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-7 h-7 border border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-[11px] shadow-[1px_1px_0px_0px_#1A467C]">
+                                        {/* Footer Kartu: Inisial Avatar Penulis & Tombol Vote */}
+                                        <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                                            <div className="flex items-center gap-2 truncate max-w-[55%]">
+                                                <div className="w-6 h-6 border border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-[10px] shadow-xs shrink-0">
                                                     {getInitials(item.authorName)}
                                                 </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-xs font-bold text-gray-800 leading-none">
-                                                        {item.isAnonymous ? 'Anonim' : item.authorName}
-                                                    </span>
-                                                    <span className="text-[10px] font-medium text-gray-400 mt-0.5">
-                                                        {item.createdAt}
-                                                    </span>
-                                                </div>
+                                                <span className="text-xs font-bold text-gray-800 truncate">
+                                                    {item.isAnonymous ? 'Anonim' : item.authorName}
+                                                </span>
                                             </div>
 
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-1.5 shrink-0">
                                                 {item.comments && item.comments.length > 0 && (
                                                     <span className="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-300 px-1.5 py-1">
-                                                        {item.comments.length} pesan
+                                                        {item.comments.length}
                                                     </span>
                                                 )}
                                                 <button
                                                     type="button"
                                                     onClick={() => handleVote(item.id)}
-                                                    className={`btn-brutal inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black border-2 border-hima-blue-dark transition-all ${
+                                                    className={`btn-brutal inline-flex items-center gap-1 px-2.5 py-1 text-xs font-black border-2 border-hima-blue-dark transition-all ${
                                                         item.hasVoted
-                                                            ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C]'
-                                                            : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-[3px_3px_0px_0px_#1A467C]'
+                                                            ? 'bg-hima-red-light text-white shadow-xs'
+                                                            : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-xs'
                                                     }`}
                                                 >
                                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M5 15l7-7 7 7" />
                                                     </svg>
                                                     <span>{item.votes}</span>
-                                                    <span className="text-[10px] uppercase font-bold">Vote</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -592,23 +500,23 @@ export default function Welcome({
                     <section
                         id="cara-kerja"
                         ref={caraKerjaSection.ref}
-                        className="space-y-6"
+                        className="space-y-4"
                     >
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
                             <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
-                                Cara Kerja Forum & Sidang KSM
+                                Alur Penyampaian Aspirasi
                             </h2>
                             <p className="text-xs sm:text-sm font-semibold text-gray-600">
-                                Garis alur transparan dari unek-unek kamu sampai jadi berkas sidang pleno KSM dan proker nyata himpunan. Tekan tiap tahap untuk melihat detailnya.
+                                Proses transparan dari pengiriman aspirasi sampai ditindaklanjuti oleh pengurus himpunan.
                             </p>
                         </div>
 
                         {/* Kartu Garis Alur Interaktif */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1A467C] space-y-8">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] space-y-6">
                             <div className="relative">
                                 <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 bg-hima-blue-dark -translate-y-1/2 z-0" />
 
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
                                     {workflowSteps.map((s) => {
                                         const isCurrent = activeStep === s.step;
                                         return (
@@ -616,15 +524,15 @@ export default function Welcome({
                                                 key={s.step}
                                                 type="button"
                                                 onClick={() => setActiveStep(s.step)}
-                                                className={`text-left p-3.5 sm:p-4 border-2 border-hima-blue-dark transition-all duration-150 flex items-center justify-between gap-3 ${
+                                                className={`text-left p-3.5 border-2 border-hima-blue-dark transition-all duration-150 flex items-center justify-between gap-3 ${
                                                     isCurrent
-                                                        ? 'bg-hima-blue-dark text-white shadow-[4px_4px_0px_0px_#1A467C] -translate-y-1'
+                                                        ? 'bg-hima-blue-dark text-white shadow-[4px_4px_0px_0px_#1A467C] -translate-y-0.5'
                                                         : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-[2px_2px_0px_0px_#1A467C]'
                                                 }`}
                                             >
-                                                <div className="flex items-center gap-3">
+                                                <div className="flex items-center gap-2.5">
                                                     <span
-                                                        className={`w-8 h-8 border-2 border-hima-blue-dark flex items-center justify-center font-black text-xs ${
+                                                        className={`w-7 h-7 border-2 border-hima-blue-dark flex items-center justify-center font-black text-xs ${
                                                             isCurrent
                                                                 ? 'bg-hima-red-light text-white'
                                                                 : 'bg-blue-50 text-hima-blue-dark'
@@ -637,9 +545,9 @@ export default function Welcome({
                                                             {s.shortTitle}
                                                         </span>
                                                         <span
-                                                            className={`text-[10px] font-bold uppercase tracking-wider mt-0.5 block ${
+                                                            className={`text-[9px] font-bold uppercase tracking-wider mt-0.5 block ${
                                                                 isCurrent ? 'text-blue-200' : 'text-gray-500'
-                                                             }`}
+                                                            }`}
                                                         >
                                                             {s.badge}
                                                         </span>
@@ -654,7 +562,7 @@ export default function Welcome({
                             </div>
 
                             {/* Panel Detail Langkah yang Sedang Aktif */}
-                            <div className="bg-blue-50/50 border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[4px_4px_0px_0px_#1A467C] space-y-4">
+                            <div className="bg-blue-50/50 border-2 border-hima-blue-dark p-5 sm:p-6 shadow-[4px_4px_0px_0px_#1A467C] space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-hima-blue-dark/20 pb-3">
                                     <div className="flex items-center gap-2">
                                         <span className="px-2.5 py-0.5 border border-hima-blue-dark bg-hima-blue-dark text-white text-[11px] font-black uppercase tracking-wider">
@@ -711,16 +619,16 @@ export default function Welcome({
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <h3 className="text-xl sm:text-2xl font-black text-hima-blue-dark">
+                                <div className="space-y-1.5">
+                                    <h3 className="text-lg sm:text-xl font-black text-hima-blue-dark">
                                         {currentStepData.title}
                                     </h3>
-                                    <p className="text-sm sm:text-base font-medium text-gray-700 leading-relaxed max-w-3xl">
+                                    <p className="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed max-w-3xl">
                                         {currentStepData.desc}
                                     </p>
                                 </div>
 
-                                <div className="pt-2 flex items-center gap-2 text-xs font-semibold text-gray-600">
+                                <div className="pt-1 flex items-center gap-2 text-xs font-semibold text-gray-600">
                                     <span className="w-2 h-2 bg-hima-red-light inline-block" />
                                     <span>{currentStepData.actionHint}</span>
                                 </div>
@@ -729,18 +637,18 @@ export default function Welcome({
                     </section>
 
                     {/* 5. FOOTER */}
-                    <footer className="border-t-2 border-hima-blue-dark pt-8 pb-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-semibold text-gray-600">
+                    <footer className="border-t-2 border-hima-blue-dark pt-6 pb-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-semibold text-gray-600">
                         <div>
                             <p className="font-bold text-hima-blue-dark text-sm sm:text-base">
                                 Dibuat anak IF, buat anak IF.
                             </p>
                             <p className="text-xs text-gray-500 mt-0.5">
-                                Forum HMIF &bull; Himpunan Mahasiswa Teknik Informatika &bull; Kelompok Studi Mahasiswa (KSM)
+                                Forum HMIF &bull; Himpunan Mahasiswa Teknik Informatika
                             </p>
                         </div>
 
                         <div className="text-xs font-bold text-hima-blue-dark uppercase tracking-wider">
-                            &copy; 2026 HIMA IF &bull; All Rights Reserved
+                            &copy; 2026 HIMA IF &bull; Institut LPKIA
                         </div>
                     </footer>
                 </div>

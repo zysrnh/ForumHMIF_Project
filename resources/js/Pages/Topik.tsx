@@ -48,18 +48,13 @@ export default function Topik({
                 (item) =>
                     item.title.toLowerCase().includes(query) ||
                     item.content.toLowerCase().includes(query) ||
-                    item.authorName.toLowerCase().includes(query) ||
-                    (item.ksmDocketNumber && item.ksmDocketNumber.toLowerCase().includes(query)),
+                    item.authorName.toLowerCase().includes(query),
             );
         }
 
-        // Category / Status filter
+        // Category filter
         if (activeFilter === 'Lagi Rame') {
             result = result.filter((item) => item.votes >= 40);
-        } else if (activeFilter === 'Agenda KSM') {
-            result = result.filter((item) => item.isKsmAgenda || item.status === 'ksm');
-        } else if (activeFilter === 'Proker') {
-            result = result.filter((item) => item.status === 'tindak_lanjut');
         } else if (activeFilter !== 'Semua') {
             result = result.filter((item) => item.category === activeFilter);
         }
@@ -104,10 +99,10 @@ export default function Topik({
 
     return (
         <>
-            <Head title="Topik Lagi Rame & Agenda KSM - Forum HMIF" />
+            <Head title="Eksplorasi Topik Aspirasi - Forum HMIF" />
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-8 relative selection:bg-hima-red-light selection:text-white">
-                <div className="w-full max-w-7xl z-10 space-y-8 my-2">
+                <div className="w-full max-w-7xl z-10 space-y-6 my-2">
                     {/* 1. NAVBAR */}
                     <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-4">
                         <Link href="/" className="flex items-center gap-3 group">
@@ -123,7 +118,7 @@ export default function Topik({
                                     FORUM HMIF
                                 </span>
                                 <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                    Topik Lagi Rame &bull; Sidang KSM
+                                    Suara Mahasiswa Informatika
                                 </span>
                             </div>
                         </Link>
@@ -136,7 +131,7 @@ export default function Topik({
                                 href={route('topik.index')}
                                 className="text-hima-red-light border-b-2 border-hima-red-light pb-0.5"
                             >
-                                Topik Rame
+                                Topik Aspirasi
                             </Link>
                         </nav>
 
@@ -160,44 +155,36 @@ export default function Topik({
                     </header>
 
                     {/* 2. HEADER BANNER */}
-                    <section className="bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-[8px_8px_0px_0px_#1A467C] space-y-6">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b-2 border-hima-blue-dark pb-6">
-                            <div className="space-y-2 max-w-2xl">
-                                <div className="inline-block bg-hima-red-light text-white text-[10px] font-black uppercase px-2.5 py-1 tracking-wider border border-hima-blue-dark shadow-brutal-sm">
-                                    Radar Aspirasi Terbuka
+                    <section className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-[8px_8px_0px_0px_#1A467C] space-y-5">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 border-b-2 border-hima-blue-dark pb-5">
+                            <div className="space-y-1.5 max-w-2xl">
+                                <div className="inline-block bg-hima-blue-dark text-white text-[10px] font-black uppercase px-2.5 py-1 tracking-wider border border-hima-blue-dark shadow-brutal-sm">
+                                    Portal Aspirasi Publik
                                 </div>
-                                <h1 className="text-2xl sm:text-4xl font-black text-hima-blue-dark uppercase tracking-tight leading-tight">
-                                    Topik Lagi Rame & Agenda KSM
+                                <h1 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight leading-tight">
+                                    Eksplorasi Aspirasi Mahasiswa
                                 </h1>
                                 <p className="text-xs sm:text-sm font-semibold text-gray-600 leading-relaxed">
-                                    Eksplorasi seluruh unek-unek, ide proker, dan usulan fasilitas mahasiswa IF. Dukung dengan upvote agar lolos ke meja Sidang Pleno KSM!
+                                    Eksplorasi masukan, ide fasilitas, dan kebutuhan perkuliahan mahasiswa IF. Berikan vote untuk aspirasi yang kamu dukung!
                                 </p>
                             </div>
 
-                            {/* Summary Metrics */}
-                            <div className="grid grid-cols-3 border-2 border-hima-blue-dark bg-blue-50/50 divide-x-2 divide-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] shrink-0">
-                                <div className="p-3 text-center min-w-[85px] sm:min-w-[100px]">
+                            {/* Summary Metrics Sederhana */}
+                            <div className="flex border-2 border-hima-blue-dark bg-blue-50/50 divide-x-2 divide-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] shrink-0 self-start md:self-auto">
+                                <div className="p-3 text-center min-w-[95px] sm:min-w-[110px]">
                                     <span className="text-xl sm:text-2xl font-black text-hima-blue-dark block font-mono">
                                         {stats.total}
                                     </span>
                                     <span className="text-[10px] font-black text-gray-700 uppercase tracking-wider mt-0.5 block">
-                                        Total Masuk
+                                        Total Aspirasi
                                     </span>
                                 </div>
-                                <div className="p-3 text-center min-w-[85px] sm:min-w-[100px]">
+                                <div className="p-3 text-center min-w-[95px] sm:min-w-[110px]">
                                     <span className="text-xl sm:text-2xl font-black text-hima-red-light block font-mono">
-                                        {stats.ksmCount}
+                                        {aspirations.reduce((sum, item) => sum + item.votes, 0)}
                                     </span>
                                     <span className="text-[10px] font-black text-gray-700 uppercase tracking-wider mt-0.5 block">
-                                        Topik KSM
-                                    </span>
-                                </div>
-                                <div className="p-3 text-center min-w-[85px] sm:min-w-[100px]">
-                                    <span className="text-xl sm:text-2xl font-black text-hima-blue-light block font-mono">
-                                        {stats.actionCount}
-                                    </span>
-                                    <span className="text-[10px] font-black text-gray-700 uppercase tracking-wider mt-0.5 block">
-                                        Proker
+                                        Total Vote
                                     </span>
                                 </div>
                             </div>
@@ -210,12 +197,12 @@ export default function Topik({
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Cari aspirasi, nomor berkas #KSM, atau pengusul..."
+                                    placeholder="Cari aspirasi mahasiswa..."
                                     className="w-full border-2 border-hima-blue-dark p-2.5 sm:p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-brutal-sm"
                                 />
                             </div>
 
-                            <div className="flex items-center gap-1 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm shrink-0">
+                            <div className="flex items-center gap-1 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm shrink-0 self-end sm:self-auto">
                                 <button
                                     type="button"
                                     onClick={() => setSortBy('votes')}
@@ -228,7 +215,7 @@ export default function Topik({
                                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                                     </svg>
-                                    <span>Terbanyak Vote</span>
+                                    <span>Top Vote</span>
                                 </button>
                                 <button
                                     type="button"
@@ -244,7 +231,7 @@ export default function Topik({
                             </div>
                         </div>
 
-                        {/* Category Filter Pills Tanpa Emoji */}
+                        {/* Category Filter Pills */}
                         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                             <button
                                 type="button"
@@ -268,28 +255,6 @@ export default function Topik({
                             >
                                 Top Vote
                             </button>
-                            <button
-                                type="button"
-                                onClick={() => setActiveFilter('Agenda KSM')}
-                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
-                                    activeFilter === 'Agenda KSM'
-                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
-                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
-                                }`}
-                            >
-                                Agenda KSM
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setActiveFilter('Proker')}
-                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
-                                    activeFilter === 'Proker'
-                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
-                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
-                                }`}
-                            >
-                                Proker
-                            </button>
                             {APP_CATEGORIES.filter((c) => c !== 'Semua').map((tab) => (
                                 <button
                                     key={tab}
@@ -308,18 +273,18 @@ export default function Topik({
                     </section>
 
                     {/* 3. LIST TOPIK */}
-                    <section className="space-y-4">
+                    <section className="space-y-3.5">
                         <div className="flex items-center justify-between text-xs font-bold text-gray-600 px-1">
-                            <span>Menampilkan {filteredItems.length} topik aspirasi</span>
+                            <span>Menampilkan {filteredItems.length} aspirasi</span>
                             <span className="text-hima-blue-dark font-black">
-                                Status: Realtime Two-Way Sync
+                                Status: Realtime
                             </span>
                         </div>
 
                         {filteredItems.length === 0 ? (
                             <div className="bg-white border-2 border-hima-blue-dark p-12 text-center shadow-[6px_6px_0px_0px_#1A467C] space-y-3">
                                 <p className="text-base font-black text-hima-blue-dark uppercase">
-                                    Tidak ada topik yang cocok dengan pencarian
+                                    Tidak ada aspirasi yang sesuai pencarian
                                 </p>
                                 <p className="text-xs text-gray-500">
                                     Coba ubah kata kunci atau ganti filter kategori.
@@ -336,121 +301,75 @@ export default function Topik({
                                 </button>
                             </div>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-3.5">
                                 {filteredItems.map((item, index) => {
-                                    const isKsm = item.status === 'ksm' || item.isKsmAgenda;
                                     const isTop = index === 0 && sortBy === 'votes';
                                     const isExpanded = expandedComments[item.id] || false;
 
                                     return (
                                         <div
                                             key={item.id}
-                                            className="bg-white border-2 border-hima-blue-dark p-5 sm:p-6 shadow-[6px_6px_0px_0px_#1A467C] card-brutal-hover space-y-4"
+                                            className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[5px_5px_0px_0px_#1A467C] card-brutal-hover space-y-2.5"
                                         >
-                                            {/* Header Card: Category, KSM Docket, Status */}
+                                            {/* Header Card: Category & Waktu */}
                                             <div className="flex items-center justify-between gap-2 flex-wrap">
-                                                <div className="flex items-center gap-2 flex-wrap">
-                                                    <span className="text-[11px] font-black uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2.5 py-0.5 shadow-brutal-sm">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-hima-blue-dark bg-blue-50 border border-hima-blue-light px-2 py-0.5 shadow-xs">
                                                         {item.category}
                                                     </span>
 
                                                     {isTop && (
-                                                        <span className="text-[10px] font-black uppercase tracking-wide bg-hima-red-light text-white px-2 py-0.5 shadow-brutal-sm">
-                                                            TOP #1
-                                                        </span>
-                                                    )}
-
-                                                    {isKsm && item.ksmDocketNumber && (
-                                                        <span className="text-[10px] font-black uppercase tracking-wider bg-hima-red-dark text-white px-2 py-0.5 border border-hima-red-dark">
-                                                            {item.ksmDocketNumber}
+                                                        <span className="text-[10px] font-black uppercase tracking-wide bg-hima-red-light text-white px-2 py-0.5 shadow-xs">
+                                                            TOP VOTE #1
                                                         </span>
                                                     )}
                                                 </div>
 
-                                                <div>
-                                                    {isKsm ? (
-                                                        <span className="text-[10px] font-black uppercase tracking-wider border px-2.5 py-0.5 bg-red-50 text-hima-red-light border-hima-red-light">
-                                                            AGENDA KSM
-                                                        </span>
-                                                    ) : item.status === 'tindak_lanjut' ? (
-                                                        <span className="text-[10px] font-black uppercase tracking-wider border px-2.5 py-0.5 bg-sky-50 text-hima-blue-light border-hima-blue-light">
-                                                            PROKER
-                                                        </span>
-                                                    ) : item.status === 'kurasi' ? (
-                                                        <span className="text-[10px] font-black uppercase tracking-wider border px-2.5 py-0.5 bg-blue-50 text-hima-blue-dark border-hima-blue-dark">
-                                                            KURASI ADVOKASI
-                                                        </span>
-                                                    ) : (
-                                                        <span className="text-[10px] font-black uppercase tracking-wider border px-2.5 py-0.5 bg-gray-100 text-gray-800 border-gray-400">
-                                                            BARU MASUK
-                                                        </span>
-                                                    )}
-                                                </div>
+                                                <span className="text-[11px] font-medium text-gray-400">
+                                                    {item.createdAt}
+                                                </span>
                                             </div>
 
                                             {/* Judul & Isi Aspirasi */}
-                                            <div className="space-y-2">
-                                                <h2 className="text-base sm:text-xl font-black text-hima-blue-dark leading-snug">
+                                            <div className="space-y-1.5">
+                                                <h2 className="text-base sm:text-lg font-black text-hima-blue-dark leading-snug">
                                                     {item.title}
                                                 </h2>
-                                                <p className="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed whitespace-pre-line">
+                                                <p className="text-xs sm:text-[13px] font-medium text-gray-700 leading-relaxed whitespace-pre-line">
                                                     {item.content}
                                                 </p>
                                             </div>
 
-                                            {/* KSM Pleno Schedule Note Tanpa Emoji */}
-                                            {item.ksmPlenoSchedule && (
-                                                <div className="p-2.5 bg-red-50/70 border border-hima-red-light text-xs font-bold text-hima-red-dark flex items-center gap-2">
-                                                    <svg className="w-3.5 h-3.5 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    <span>Jadwal: {item.ksmPlenoSchedule}</span>
-                                                </div>
-                                            )}
-
                                             {/* Footer Card: Author, Tanggapan Toggle, Vote Button */}
-                                            <div className="pt-3 border-t-2 border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                                <div className="flex items-center gap-2.5">
-                                                    <div className="w-8 h-8 border border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-xs shadow-brutal-sm">
+                                            <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between gap-3">
+                                                <div className="flex items-center gap-2 truncate max-w-[50%]">
+                                                    <div className="w-6 h-6 border border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-[10px] shadow-xs shrink-0">
                                                         {getInitials(item.authorName)}
                                                     </div>
-                                                    <div>
-                                                        <span className="text-xs font-black text-gray-900 block leading-tight">
-                                                            {item.isAnonymous ? 'Mahasiswa Anonim' : item.authorName}
-                                                        </span>
-                                                        <span className="text-[10px] font-semibold text-gray-400">
-                                                            {item.createdAt}
-                                                        </span>
-                                                    </div>
+                                                    <span className="text-xs font-bold text-gray-900 truncate">
+                                                        {item.isAnonymous ? 'Mahasiswa Anonim' : item.authorName}
+                                                    </span>
                                                 </div>
 
-                                                <div className="flex items-center gap-2 self-end sm:self-auto">
+                                                <div className="flex items-center gap-2 shrink-0">
                                                     <button
                                                         type="button"
                                                         onClick={() => toggleExpandComment(item.id)}
-                                                        className="btn-brutal px-3 py-1.5 text-xs font-bold border-2 border-hima-blue-dark bg-slate-50 text-gray-800 hover:bg-slate-100 shadow-brutal-sm flex items-center gap-1.5"
+                                                        className="btn-brutal px-2.5 py-1 text-xs font-bold border border-hima-blue-dark bg-slate-50 text-gray-800 hover:bg-slate-100 shadow-xs flex items-center gap-1.5"
                                                     >
                                                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                                         </svg>
-                                                        <span>{item.comments ? item.comments.length : 0} Tanggapan</span>
-                                                        <svg
-                                                            className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-                                                        </svg>
+                                                        <span>{item.comments ? item.comments.length : 0} Pesan</span>
                                                     </button>
 
                                                     <button
                                                         type="button"
                                                         onClick={() => handleVote(item.id)}
-                                                        className={`btn-brutal inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-black border-2 border-hima-blue-dark transition-all ${
+                                                        className={`btn-brutal inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black border-2 border-hima-blue-dark transition-all ${
                                                             item.hasVoted
-                                                                ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C]'
-                                                                : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-[3px_3px_0px_0px_#1A467C]'
+                                                                ? 'bg-hima-red-light text-white shadow-xs'
+                                                                : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-xs'
                                                         }`}
                                                     >
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -458,7 +377,7 @@ export default function Topik({
                                                         </svg>
                                                         <span>{item.votes}</span>
                                                         <span className="text-[10px] uppercase font-bold">
-                                                            {item.hasVoted ? 'Didukung' : 'Dukung'}
+                                                            {item.hasVoted ? 'Didukung' : 'Vote'}
                                                         </span>
                                                     </button>
                                                 </div>
@@ -466,38 +385,38 @@ export default function Topik({
 
                                             {/* Expandable Comments Section */}
                                             {isExpanded && (
-                                                <div className="mt-4 pt-4 border-t-2 border-dashed border-gray-300 space-y-3 bg-slate-50/60 p-3 sm:p-4 border">
-                                                    <div className="text-xs font-black uppercase text-hima-blue-dark tracking-wider">
+                                                <div className="mt-3 pt-3 border-t border-dashed border-gray-300 space-y-2.5 bg-slate-50/70 p-3">
+                                                    <div className="text-[11px] font-black uppercase text-hima-blue-dark tracking-wider">
                                                         Tanggapan & Diskusi Mahasiswa ({item.comments?.length || 0})
                                                     </div>
 
                                                     {item.comments && item.comments.length > 0 ? (
-                                                        <div className="space-y-2">
+                                                        <div className="space-y-1.5">
                                                             {item.comments.map((c) => (
                                                                 <div
                                                                     key={c.id}
-                                                                    className={`p-3 border-2 ${
+                                                                    className={`p-2.5 border text-xs leading-relaxed ${
                                                                         c.isOfficial
-                                                                            ? 'border-hima-blue-dark bg-blue-50/70 shadow-brutal-sm'
+                                                                            ? 'border-hima-blue-dark bg-blue-50/80 shadow-xs'
                                                                             : 'border-gray-200 bg-white'
                                                                     }`}
                                                                 >
-                                                                    <div className="flex items-center justify-between gap-2 mb-1">
-                                                                        <div className="flex items-center gap-2">
-                                                                            <span className="text-xs font-black text-gray-900">
+                                                                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                                                                        <div className="flex items-center gap-1.5">
+                                                                            <span className="font-black text-gray-900">
                                                                                 {c.authorName}
                                                                             </span>
                                                                             {c.isOfficial && (
-                                                                                <span className="text-[9px] font-black uppercase bg-hima-blue-dark text-white px-1.5 py-0.2">
+                                                                                <span className="text-[8px] font-black uppercase bg-hima-blue-dark text-white px-1 py-0.2">
                                                                                     {c.authorRole || 'PENGURUS HIMA'}
                                                                                 </span>
                                                                             )}
                                                                         </div>
-                                                                        <span className="text-[10px] font-medium text-gray-400">
+                                                                        <span className="text-[10px] text-gray-400">
                                                                             {c.createdAt}
                                                                         </span>
                                                                     </div>
-                                                                    <p className="text-xs text-gray-700 leading-relaxed">
+                                                                    <p className="text-gray-700">
                                                                         {c.content}
                                                                     </p>
                                                                 </div>
@@ -512,7 +431,7 @@ export default function Topik({
                                                     {/* Quick Comment Input */}
                                                     <form
                                                         onSubmit={(e) => handleSendComment(e, item.id)}
-                                                        className="flex gap-2 pt-2"
+                                                        className="flex gap-2 pt-1"
                                                     >
                                                         <input
                                                             type="text"
@@ -523,12 +442,12 @@ export default function Topik({
                                                                     [item.id]: e.target.value,
                                                                 }))
                                                             }
-                                                            placeholder="Tulis tanggapan atau dukungan kamu..."
-                                                            className="flex-1 border-2 border-hima-blue-dark px-3 py-2 text-xs font-semibold focus:outline-none focus:border-hima-blue-light rounded-none shadow-brutal-sm"
+                                                            placeholder="Tulis tanggapan atau saran kamu..."
+                                                            className="flex-1 border-2 border-hima-blue-dark px-2.5 py-1.5 text-xs font-semibold focus:outline-none focus:border-hima-blue-light rounded-none shadow-xs bg-white"
                                                         />
                                                         <button
                                                             type="submit"
-                                                            className="btn-brutal bg-hima-blue-dark text-white font-black px-4 py-2 text-xs uppercase tracking-wider hover:bg-hima-blue-light"
+                                                            className="btn-brutal bg-hima-blue-dark text-white font-bold px-3 py-1.5 text-xs uppercase tracking-wider hover:bg-hima-blue-light shrink-0"
                                                         >
                                                             Kirim
                                                         </button>
@@ -543,18 +462,18 @@ export default function Topik({
                     </section>
 
                     {/* 4. FOOTER */}
-                    <footer className="border-t-2 border-hima-blue-dark pt-8 pb-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-semibold text-gray-600">
+                    <footer className="border-t-2 border-hima-blue-dark pt-6 pb-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-semibold text-gray-600">
                         <div>
                             <p className="font-bold text-hima-blue-dark text-sm sm:text-base">
                                 Dibuat anak IF, buat anak IF.
                             </p>
                             <p className="text-xs text-gray-500 mt-0.5">
-                                Forum HMIF &bull; Himpunan Mahasiswa Teknik Informatika &bull; Kelompok Studi Mahasiswa (KSM)
+                                Forum Aspirasi HMIF &bull; Himpunan Mahasiswa Teknik Informatika
                             </p>
                         </div>
 
                         <div className="text-xs font-bold text-hima-blue-dark uppercase tracking-wider">
-                            &copy; 2026 HIMA IF &bull; All Rights Reserved
+                            &copy; 2026 HIMA IF &bull; Institut LPKIA
                         </div>
                     </footer>
                 </div>

@@ -145,7 +145,7 @@ export default function Authenticated({
                     {/* Navigation Menu Desktop & Drawer */}
                     <nav className="p-3 sm:p-4 space-y-1.5 flex-1">
                         <div className="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">
-                            Menu Forum & KSM
+                            Menu Utama
                         </div>
 
                         {/* 1. Feed Aspirasi */}
@@ -176,30 +176,7 @@ export default function Authenticated({
                             </button>
                         )}
 
-                        {/* 2. Agenda Sidang KSM */}
-                        {!isProfilePage ? (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('ksm')}
-                                className={`w-full text-left flex items-center justify-between px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
-                                    currentNav === 'ksm'
-                                        ? 'bg-hima-red-dark text-white border-hima-red-dark shadow-brutal-sm translate-x-0.5'
-                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-red-50'
-                                }`}
-                            >
-                                <div className="flex items-center gap-2.5">
-                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <span>Agenda KSM</span>
-                                </div>
-                                <span className={`text-[9px] font-black uppercase px-1.5 py-0.2 ${currentNav === 'ksm' ? 'bg-white text-hima-red-dark' : 'bg-red-100 text-hima-red-dark'}`}>
-                                    PLENO
-                                </span>
-                            </button>
-                        ) : null}
-
-                        {/* 3. Tulis Aspirasi */}
+                        {/* 2. Tulis Aspirasi */}
                         {!isProfilePage ? (
                             <button
                                 type="button"
@@ -217,7 +194,7 @@ export default function Authenticated({
                             </button>
                         ) : null}
 
-                        {/* 4. Aspirasi Saya */}
+                        {/* 3. Aspirasi Saya */}
                         {!isProfilePage ? (
                             <button
                                 type="button"
@@ -236,7 +213,7 @@ export default function Authenticated({
                         ) : null}
 
                         <div className="pt-3 text-[10px] font-black uppercase tracking-wider text-gray-400 mb-1 px-1">
-                            Pengaturan
+                            Lainnya
                         </div>
 
                         <Link
@@ -311,19 +288,19 @@ export default function Authenticated({
                         Portal Aspirasi Mahasiswa HIMA IF • Institut LPKIA
                     </p>
                     <div className="flex items-center gap-2 font-bold uppercase text-[10px] text-hima-blue-dark">
-                        <span>Pemberdayaan Suara Mahasiswa & Sidang KSM</span>
+                        <span>Pemberdayaan Suara Mahasiswa</span>
                     </div>
                 </footer>
             </div>
 
             {/* ========================================================================= */}
-            {/* MOBILE APP BOTTOM NAVIGATION TOOLBAR DENGAN HOVER & ACTIVE INTERAKTIF      */}
+            {/* MOBILE APP BOTTOM NAVIGATION: 4 TOMBOL LEGA, RESPONSIF & TIDAK PADAT        */}
             {/* ========================================================================= */}
             <nav
                 aria-label="Mobile app navigation toolbar"
-                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-3px_10px_rgba(26,70,124,0.12)] px-1 py-1"
+                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-3px_10px_rgba(26,70,124,0.12)] px-2 py-1"
             >
-                <div className="flex items-center justify-around gap-1 relative">
+                <div className="flex items-center justify-between gap-1 relative">
                     {/* 1. Feed / Semua */}
                     {isProfilePage ? (
                         <Link
@@ -385,58 +362,7 @@ export default function Authenticated({
                         </button>
                     )}
 
-                    {/* 2. Agenda KSM */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            if (isProfilePage) {
-                                window.location.href = '/dashboard';
-                            } else {
-                                handleNavClick('ksm');
-                            }
-                        }}
-                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70 ${
-                            currentNav === 'ksm' ? 'bg-red-50/40' : ''
-                        }`}
-                    >
-                        <div
-                            className={`p-1 border transition-all relative ${
-                                currentNav === 'ksm'
-                                    ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A]'
-                                    : 'border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50'
-                            }`}
-                        >
-                            <svg
-                                className={`w-5 h-5 transition-colors ${
-                                    currentNav === 'ksm' ? 'text-hima-red-dark' : 'text-gray-500 group-hover:text-hima-red-dark'
-                                }`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-hima-red-light border border-white" />
-                        </div>
-                        <span
-                            className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
-                                currentNav === 'ksm'
-                                    ? 'text-hima-red-dark font-black'
-                                    : 'text-gray-500 group-hover:text-hima-red-dark font-bold'
-                            }`}
-                        >
-                            KSM
-                        </span>
-                        <span
-                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
-                                currentNav === 'ksm'
-                                    ? 'bg-hima-red-dark opacity-100'
-                                    : 'bg-hima-red-dark opacity-0 group-hover:opacity-100'
-                            }`}
-                        />
-                    </button>
-
-                    {/* 3. Tulis Aspirasi */}
+                    {/* 2. Tulis Aspirasi */}
                     <button
                         type="button"
                         onClick={() => {
@@ -486,7 +412,7 @@ export default function Authenticated({
                         />
                     </button>
 
-                    {/* 4. Aspirasi Saya */}
+                    {/* 3. Aspirasi Saya */}
                     <button
                         type="button"
                         onClick={() => {
@@ -536,7 +462,7 @@ export default function Authenticated({
                         />
                     </button>
 
-                    {/* 5. Akun Saya */}
+                    {/* 4. Akun Saya */}
                     <Link
                         href={route('profile.edit')}
                         className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
