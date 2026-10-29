@@ -15,6 +15,7 @@ export interface AspirationItem {
     content: string;
     authorName: string;
     authorNim: string;
+    authorClass?: string;
     isAnonymous: boolean;
     status: 'baru' | 'kurasi' | 'ksm' | 'tindak_lanjut';
     isKsmAgenda?: boolean;

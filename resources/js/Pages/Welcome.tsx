@@ -98,6 +98,12 @@ export default function Welcome({
 
     // State Mini Form Aspirasi Hero
     const [aspirationCategory, setAspirationCategory] = useState<string>('Akademik & Praktikum');
+    const [aspirationAuthorName, setAspirationAuthorName] = useState<string>(auth?.user?.name || '');
+    const [aspirationAuthorNim, setAspirationAuthorNim] = useState<string>(
+        (auth?.user && 'nim' in auth.user && (auth.user as { nim?: string }).nim) ||
+        (auth?.user?.email?.includes('@') ? auth.user.email.split('@')[0] : '')
+    );
+    const [aspirationAuthorClass, setAspirationAuthorClass] = useState<string>('');
     const [aspirationContent, setAspirationContent] = useState<string>('');
     const [aspirationSuccess, setAspirationSuccess] = useState<boolean>(false);
 
@@ -176,11 +182,13 @@ export default function Welcome({
                 ? aspirationContent.slice(0, 52) + '...'
                 : aspirationContent;
 
-        const currentAuthor = auth.user ? auth.user.name : 'Mahasiswa IF';
+        const currentAuthor = aspirationAuthorName.trim() || (auth.user ? auth.user.name : 'Mahasiswa IF');
         const currentNim =
-            auth.user && 'nim' in auth.user
-                ? (auth.user as { nim?: string }).nim || '240414***'
-                : '240414***';
+            aspirationAuthorNim.trim() ||
+            (auth.user && 'nim' in auth.user
+                ? (auth.user as { nim?: string }).nim || '250414***'
+                : '250414***');
+        const currentClass = aspirationAuthorClass.trim();
 
         addSharedAspiration({
             title,
@@ -188,11 +196,17 @@ export default function Welcome({
             content: aspirationContent,
             authorName: currentAuthor,
             authorNim: currentNim,
-            isAnonymous: !auth.user,
+            authorClass: currentClass || undefined,
+            isAnonymous: !aspirationAuthorName.trim() && !auth.user,
             status: 'baru',
         });
 
         setAspirationContent('');
+        if (!auth.user) {
+            setAspirationAuthorName('');
+            setAspirationAuthorNim('');
+            setAspirationAuthorClass('');
+        }
         setAspirationSuccess(true);
         setTimeout(() => setAspirationSuccess(false), 3500);
     };
@@ -374,6 +388,48 @@ export default function Welcome({
                                     </div>
                                 </div>
 
+                                {/* Input Identitas Mahasiswa (Nama, NIM, Kelas) */}
+                                <div className="space-y-1.5 pt-1 border-t border-dashed border-gray-300">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
+                                                Nama Mahasiswa
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={aspirationAuthorName}
+                                                onChange={(e) => setAspirationAuthorName(e.target.value)}
+                                                placeholder="Nama lengkap..."
+                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
+                                                NIM
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={aspirationAuthorNim}
+                                                onChange={(e) => setAspirationAuthorNim(e.target.value)}
+                                                placeholder="Contoh: 250414010"
+                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
+                                                Kelas
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={aspirationAuthorClass}
+                                                onChange={(e) => setAspirationAuthorClass(e.target.value)}
+                                                placeholder="Contoh: IF 23-A"
+                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* Textarea Input */}
                                 <div className="space-y-1">
                                     <textarea
@@ -474,9 +530,16 @@ export default function Welcome({
                                                 <div className="w-6 h-6 border border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-[10px] shadow-xs shrink-0">
                                                     {getInitials(item.authorName)}
                                                 </div>
-                                                <span className="text-xs font-bold text-gray-800 truncate">
-                                                    {item.isAnonymous ? 'Anonim' : item.authorName}
-                                                </span>
+                                                <div className="min-w-0 truncate">
+                                                    <span className="text-xs font-bold text-gray-800 block truncate">
+                                                        {item.isAnonymous ? 'Anonim' : item.authorName}
+                                                    </span>
+                                                    {item.authorClass && (
+                                                        <span className="text-[9px] font-bold text-gray-500 font-mono block -mt-0.5 truncate">
+                                                            {item.authorClass}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
 
                                             <div className="flex items-center gap-1.5 shrink-0">

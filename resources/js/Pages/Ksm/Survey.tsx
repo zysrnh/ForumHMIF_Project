@@ -153,7 +153,7 @@ export default function Survey({ user }: Props) {
                         </Link>
 
                         <div className="flex items-center gap-1.5 shrink-0">
-                            {user?.role === 'admin' && (
+                            {['admin', 'super_admin'].includes(user?.role || '') && (
                                 <Link
                                     href={route('admin.ksm.dashboard')}
                                     className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border border-hima-blue-dark px-2 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"

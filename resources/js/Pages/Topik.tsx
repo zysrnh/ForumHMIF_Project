@@ -346,9 +346,16 @@ export default function Topik({
                                                     <div className="w-6 h-6 border border-hima-blue-dark bg-hima-blue-dark text-white flex items-center justify-center font-black text-[10px] shadow-xs shrink-0">
                                                         {getInitials(item.authorName)}
                                                     </div>
-                                                    <span className="text-xs font-bold text-gray-900 truncate">
-                                                        {item.isAnonymous ? 'Mahasiswa Anonim' : item.authorName}
-                                                    </span>
+                                                    <div className="min-w-0 truncate">
+                                                        <span className="text-xs font-bold text-gray-900 block truncate">
+                                                            {item.isAnonymous ? 'Mahasiswa Anonim' : item.authorName}
+                                                        </span>
+                                                        {item.authorClass && (
+                                                            <span className="text-[9px] font-bold text-gray-500 font-mono block -mt-0.5 truncate">
+                                                                {item.authorClass}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
 
                                                 <div className="flex items-center gap-2 shrink-0">
