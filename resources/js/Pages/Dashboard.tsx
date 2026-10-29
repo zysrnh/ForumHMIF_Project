@@ -264,7 +264,7 @@ export default function Dashboard() {
         >
             <Head title="Portal Aspirasi Mahasiswa" />
 
-            {/* FULL WIDTH CONTAINER TANPA GAP SAMPING */}
+            {/* FULL WIDTH CONTAINER */}
             <div className="w-full space-y-3">
                 {/* Notifikasi Sukses Sederhana */}
                 {showSuccessAlert && (
@@ -389,7 +389,7 @@ export default function Dashboard() {
                         </form>
                     </div>
                 ) : (
-                    /* 2. TAMPILAN FEED ASPIRASI (FULL WIDTH MEMBENTANG RAPI TANPA GAP KOSONG) */
+                    /* 2. TAMPILAN FEED ASPIRASI (BERSIH, TANPA KOTAK VOTE KIRI YANG KAKU) */
                     <div className="w-full space-y-3">
                         {/* Filter & Pencarian Full Width */}
                         <div className="w-full bg-white border-2 border-hima-blue-dark p-3 sm:p-3.5 shadow-brutal-sm space-y-2.5">
@@ -451,7 +451,7 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        {/* List Aspirasi Cards (Full Width) */}
+                        {/* List Aspirasi Cards (Bersih, Rapi & Lapang) */}
                         {filteredAspirations.length === 0 ? (
                             <div className="w-full bg-white border-2 border-hima-blue-dark p-8 text-center shadow-brutal-sm">
                                 <p className="text-sm font-black uppercase text-hima-blue-dark">
@@ -472,59 +472,65 @@ export default function Dashboard() {
                             filteredAspirations.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="w-full bg-white border-2 border-hima-blue-dark p-3.5 sm:p-4 shadow-brutal-sm hover:border-hima-blue-light transition-all flex flex-col sm:flex-row items-start gap-3.5"
+                                    className="w-full bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal-sm hover:border-hima-blue-light transition-all space-y-2.5"
                                 >
-                                    {/* Kolom Upvote Ringkas */}
-                                    <button
-                                        type="button"
-                                        onClick={() => handleToggleVote(item.id)}
-                                        aria-label={`Upvote: ${item.title}`}
-                                        className={`btn-brutal shrink-0 flex sm:flex-col items-center justify-center gap-1 w-full sm:w-14 py-1.5 sm:py-2.5 border-2 transition-all ${
-                                            item.hasVoted
-                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm'
-                                                : 'bg-slate-50 text-hima-blue-dark border-hima-blue-dark hover:bg-white'
-                                        }`}
-                                    >
-                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        <span className="font-black text-sm leading-none">
-                                            {item.votes}
+                                    {/* Baris Status & Kategori Tag */}
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        {getStatusBadge(item.status)}
+                                        <span className="text-[10px] font-bold text-gray-500 uppercase">
+                                            {item.category} • {item.createdAt}
                                         </span>
-                                        <span className="text-[8px] font-black uppercase">
-                                            {item.hasVoted ? 'Didukung' : 'Dukung'}
-                                        </span>
-                                    </button>
+                                    </div>
 
-                                    {/* Konten Aspirasi */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex flex-wrap items-center gap-2 mb-1">
-                                            {getStatusBadge(item.status)}
-                                            <span className="text-[10px] font-bold text-gray-500 uppercase">
-                                                {item.category} • {item.createdAt}
-                                            </span>
-                                        </div>
+                                    {/* Judul Aspirasi */}
+                                    <h3 className="text-sm sm:text-base font-black text-gray-950 tracking-tight leading-snug">
+                                        {item.title}
+                                    </h3>
 
-                                        <h3 className="text-sm sm:text-base font-black text-gray-950 tracking-tight leading-snug">
-                                            {item.title}
-                                        </h3>
+                                    {/* Uraian Aspirasi */}
+                                    <p className="text-xs font-medium text-gray-600 leading-relaxed">
+                                        {item.content}
+                                    </p>
 
-                                        <p className="text-xs font-medium text-gray-600 mt-1 leading-relaxed">
-                                            {item.content}
-                                        </p>
-
-                                        {/* Footer Baris Penulis */}
-                                        <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500 font-semibold">
+                                    {/* Footer Kartu: Penulis di Kiri, Tombol Vote & Tanggapan di Kanan */}
+                                    <div className="pt-2.5 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                                        {/* Info Penulis */}
+                                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
+                                            <div className="w-5 h-5 bg-hima-blue-dark text-white text-[10px] font-black flex items-center justify-center shrink-0 border border-hima-blue-dark">
+                                                {item.authorName.charAt(0)}
+                                            </div>
                                             <span>
                                                 Oleh: <strong className="text-hima-blue-dark">{item.authorName}</strong> ({item.authorNim})
                                             </span>
-                                            <span>
+                                        </div>
+
+                                        {/* Aksi Vote & Tanggapan */}
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xs font-bold text-gray-500">
                                                 💬 {item.commentsCount} Tanggapan
                                             </span>
+
+                                            {/* Tombol Voting Compact Horizontal */}
+                                            <button
+                                                type="button"
+                                                onClick={() => handleToggleVote(item.id)}
+                                                aria-label={`Dukung aspirasi: ${item.title}`}
+                                                className={`btn-brutal inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 transition-all ${
+                                                    item.hasVoted
+                                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm'
+                                                        : 'bg-white text-hima-blue-dark border-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
+                                                }`}
+                                            >
+                                                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                                <span>{item.votes}</span>
+                                                <span>{item.hasVoted ? 'Didukung' : 'Dukung'}</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
