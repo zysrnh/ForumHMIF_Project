@@ -237,21 +237,15 @@ export default function Welcome({
                             </a>
                             <Link
                                 href={route('topik.index')}
-                                className="hover:text-hima-red-light transition-colors flex items-center gap-1"
+                                className="hover:text-hima-red-light transition-colors"
                             >
-                                <span>Topik Rame</span>
-                                <span className="text-[9px] bg-hima-red-light text-white px-1.5 py-0.2 font-black">
-                                    HOT
-                                </span>
+                                Topik Rame
                             </Link>
                             <Link
                                 href={route('ksm.survey.index')}
-                                className="hover:text-hima-blue-light transition-colors flex items-center gap-1"
+                                className="hover:text-hima-blue-light transition-colors"
                             >
-                                <span>Survei KSM</span>
-                                <span className="text-[9px] bg-hima-blue-dark text-white px-1.5 py-0.2 font-black">
-                                    NEW
-                                </span>
+                                Survei KSM
                             </Link>
                             <a
                                 href="#cara-kerja"
@@ -713,16 +707,13 @@ export default function Welcome({
                         {/* 3. Topik Rame */}
                         <Link
                             href={route('topik.index')}
-                            className="group relative flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                            className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
                         >
-                            <div className="relative p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
                                 <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
                                 </svg>
-                                <span className="absolute -top-1 -right-1 text-[8px] bg-hima-red-light text-white font-black px-1 leading-none">
-                                    HOT
-                                </span>
                             </div>
                             <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-red-dark font-bold">
                                 Topik Rame
@@ -732,15 +723,12 @@ export default function Welcome({
                         {/* 4. Survei KSM */}
                         <Link
                             href={route('ksm.survey.index')}
-                            className="group relative flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                            className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
                         >
-                            <div className="relative p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
                                 <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                 </svg>
-                                <span className="absolute -top-1 -right-1 text-[8px] bg-hima-blue-dark text-white font-black px-1 leading-none">
-                                    NEW
-                                </span>
                             </div>
                             <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
                                 Survei KSM
