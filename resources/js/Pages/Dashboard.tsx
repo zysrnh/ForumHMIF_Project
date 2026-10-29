@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {
+    APP_CATEGORIES,
     AspirationItem,
     addCommentSharedAspiration,
     addSharedAspiration,
@@ -9,14 +10,6 @@ import {
 } from '@/data/aspirations';
 import { Head, usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
-
-const CATEGORIES = [
-    'Semua',
-    'Akademik & Kurikulum',
-    'Fasilitas & Lab',
-    'Kemahasiswaan & HIMA',
-    'Kebijakan Kampus',
-];
 
 export default function Dashboard() {
     const user = usePage().props.auth.user;
@@ -37,7 +30,7 @@ export default function Dashboard() {
 
     // State Form Aspirasi Baru
     const [formTitle, setFormTitle] = useState('');
-    const [formCategory, setFormCategory] = useState('Akademik & Kurikulum');
+    const [formCategory, setFormCategory] = useState<string>('Akademik & Praktikum');
     const [formContent, setFormContent] = useState('');
     const [formIsAnonymous, setFormIsAnonymous] = useState(false);
     const [formIsKsmAgenda, setFormIsKsmAgenda] = useState(false);
@@ -272,7 +265,7 @@ export default function Dashboard() {
                     </div>
                 )}
 
-                {/* BANNER KHUSUS TAB KSM (RINGKAS & TIDAK MAKAN TEMPAT DI MOBILE) */}
+                {/* BANNER KHUSUS TAB KSM */}
                 {activeNav === 'ksm' && (
                     <div className="w-full bg-red-50 border-2 border-hima-red-dark p-3 sm:p-4 shadow-sm sm:shadow-brutal-red anim-feed-item flex items-center justify-between gap-3">
                         <div>
@@ -339,10 +332,11 @@ export default function Dashboard() {
                                         onChange={(e) => setFormCategory(e.target.value)}
                                         className="w-full border-2 border-hima-blue-dark bg-white p-2 text-xs sm:text-sm font-bold text-gray-900 focus:outline-none rounded-none shadow-sm"
                                     >
-                                        <option value="Akademik & Kurikulum">Akademik & Kurikulum</option>
-                                        <option value="Fasilitas & Lab">Fasilitas & Lab Komputer</option>
-                                        <option value="Kemahasiswaan & HIMA">Kemahasiswaan & HIMA</option>
-                                        <option value="Kebijakan Kampus">Kebijakan Kampus</option>
+                                        {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
+                                            <option key={cat} value={cat}>
+                                                {cat}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 
@@ -423,7 +417,7 @@ export default function Dashboard() {
                         </form>
                     </div>
                 ) : (
-                    /* 2. TAMPILAN FEED ASPIRASI: BERSIH, RINGKAS, NYAMAN DI HP */
+                    /* 2. TAMPILAN FEED ASPIRASI */
                     <div className="w-full space-y-2.5">
                         {/* Filter & Pencarian Ramping */}
                         <div className="w-full bg-white border-2 border-hima-blue-dark p-2.5 sm:p-3 shadow-sm sm:shadow-brutal-sm space-y-2 anim-feed-item">
@@ -443,18 +437,21 @@ export default function Dashboard() {
                                     />
                                 </div>
 
-                                {/* Urutan Tombol */}
+                                {/* Urutan Tombol Tanpa Emoji */}
                                 <div className="flex items-center gap-1 shrink-0 self-end sm:self-auto">
                                     <button
                                         type="button"
                                         onClick={() => setSortBy('trending')}
-                                        className={`border px-2 py-0.5 text-[11px] font-black uppercase tracking-wider transition-all ${
+                                        className={`inline-flex items-center gap-1 border px-2 py-0.5 text-[11px] font-black uppercase tracking-wider transition-all ${
                                             sortBy === 'trending'
                                                 ? 'bg-hima-blue-dark text-white border-hima-blue-dark'
                                                 : 'bg-white text-gray-700 border-gray-300'
                                         }`}
                                     >
-                                        🔥 Top Vote
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                        </svg>
+                                        <span>Top Vote</span>
                                     </button>
                                     <button
                                         type="button"
@@ -472,7 +469,7 @@ export default function Dashboard() {
 
                             {/* Kategori Chips Halus */}
                             <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs scrollbar-none">
-                                {CATEGORIES.map((cat) => (
+                                {APP_CATEGORIES.map((cat) => (
                                     <button
                                         key={cat}
                                         type="button"
@@ -489,7 +486,7 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        {/* List Aspirasi Cards: Bersih, Lega, Nyaman di Mata */}
+                        {/* List Aspirasi Cards */}
                         {filteredAspirations.length === 0 ? (
                             <div className="w-full bg-white border-2 border-hima-blue-dark p-6 text-center shadow-sm anim-feed-item">
                                 <p className="text-xs sm:text-sm font-black uppercase text-hima-blue-dark">
@@ -527,10 +524,13 @@ export default function Dashboard() {
                                             </span>
                                         </div>
 
-                                        {/* Jadwal Sidang KSM (Bila ada) */}
+                                        {/* Jadwal Sidang KSM (Bila ada) Tanpa Emoji */}
                                         {item.ksmPlenoSchedule && (
-                                            <div className="text-[10px] font-semibold text-hima-red-dark bg-red-50/70 border border-red-200 px-2 py-0.5">
-                                                🏛️ {item.ksmPlenoSchedule}
+                                            <div className="flex items-center gap-1.5 text-[10px] font-semibold text-hima-red-dark bg-red-50/70 border border-red-200 px-2 py-0.5">
+                                                <svg className="w-3 h-3 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                <span>{item.ksmPlenoSchedule}</span>
                                             </div>
                                         )}
 
@@ -544,7 +544,7 @@ export default function Dashboard() {
                                             {item.content}
                                         </p>
 
-                                        {/* Footer Kartu: Penulis & Aksi */}
+                                        {/* Footer Kartu */}
                                         <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
                                             {/* Info Penulis Ringkas */}
                                             <div className="flex items-center gap-1.5 text-xs text-gray-600 truncate max-w-[50%]">
@@ -556,7 +556,7 @@ export default function Dashboard() {
                                                 </span>
                                             </div>
 
-                                            {/* Aksi Vote & Tanggapan */}
+                                            {/* Aksi Vote & Tanggapan Tanpa Emoji */}
                                             <div className="flex items-center gap-1.5 shrink-0">
                                                 {/* Tombol Tanggapan */}
                                                 <button
@@ -568,7 +568,9 @@ export default function Dashboard() {
                                                             : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
                                                     }`}
                                                 >
-                                                    <span>💬</span>
+                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                    </svg>
                                                     <span>{item.comments.length}</span>
                                                     <span className="hidden sm:inline">Pesan</span>
                                                 </button>
@@ -584,7 +586,9 @@ export default function Dashboard() {
                                                             : 'bg-white text-hima-blue-dark border-hima-blue-dark hover:bg-blue-50 shadow-xs'
                                                     }`}
                                                 >
-                                                    <span>▲</span>
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M5 15l7-7 7 7" />
+                                                    </svg>
                                                     <span>{item.votes}</span>
                                                     <span className="text-[9px]">
                                                         {item.hasVoted ? 'Didukung' : 'Vote'}

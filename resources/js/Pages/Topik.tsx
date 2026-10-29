@@ -2,6 +2,7 @@ import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
 import {
+    APP_CATEGORIES,
     AspirationItem,
     addCommentSharedAspiration,
     getAspirationStats,
@@ -218,13 +219,16 @@ export default function Topik({
                                 <button
                                     type="button"
                                     onClick={() => setSortBy('votes')}
-                                    className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
+                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
                                         sortBy === 'votes'
                                             ? 'bg-hima-blue-dark text-white'
                                             : 'bg-white text-gray-700 hover:bg-gray-100'
                                     }`}
                                 >
-                                    🔥 Terbanyak Vote
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                    </svg>
+                                    <span>Terbanyak Vote</span>
                                 </button>
                                 <button
                                     type="button"
@@ -240,18 +244,53 @@ export default function Topik({
                             </div>
                         </div>
 
-                        {/* Category Filter Pills */}
+                        {/* Category Filter Pills Tanpa Emoji */}
                         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                            {[
-                                'Semua',
-                                'Lagi Rame',
-                                'Agenda KSM',
-                                'Proker',
-                                'Fasilitas & Lab',
-                                'Akademik & Kurikulum',
-                                'Kemahasiswaan & HIMA',
-                                'Kebijakan Kampus',
-                            ].map((tab) => (
+                            <button
+                                type="button"
+                                onClick={() => setActiveFilter('Semua')}
+                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
+                                    activeFilter === 'Semua'
+                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
+                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
+                                }`}
+                            >
+                                Semua
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setActiveFilter('Lagi Rame')}
+                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
+                                    activeFilter === 'Lagi Rame'
+                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
+                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
+                                }`}
+                            >
+                                Top Vote
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setActiveFilter('Agenda KSM')}
+                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
+                                    activeFilter === 'Agenda KSM'
+                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
+                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
+                                }`}
+                            >
+                                Agenda KSM
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setActiveFilter('Proker')}
+                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
+                                    activeFilter === 'Proker'
+                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
+                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
+                                }`}
+                            >
+                                Proker
+                            </button>
+                            {APP_CATEGORIES.filter((c) => c !== 'Semua').map((tab) => (
                                 <button
                                     key={tab}
                                     type="button"
@@ -359,10 +398,12 @@ export default function Topik({
                                                 </p>
                                             </div>
 
-                                            {/* KSM Pleno Schedule Note */}
+                                            {/* KSM Pleno Schedule Note Tanpa Emoji */}
                                             {item.ksmPlenoSchedule && (
                                                 <div className="p-2.5 bg-red-50/70 border border-hima-red-light text-xs font-bold text-hima-red-dark flex items-center gap-2">
-                                                    <span>🏛️</span>
+                                                    <svg className="w-3.5 h-3.5 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
                                                     <span>Jadwal: {item.ksmPlenoSchedule}</span>
                                                 </div>
                                             )}
@@ -389,11 +430,18 @@ export default function Topik({
                                                         onClick={() => toggleExpandComment(item.id)}
                                                         className="btn-brutal px-3 py-1.5 text-xs font-bold border-2 border-hima-blue-dark bg-slate-50 text-gray-800 hover:bg-slate-100 shadow-brutal-sm flex items-center gap-1.5"
                                                     >
-                                                        <span>💬</span>
+                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                        </svg>
                                                         <span>{item.comments ? item.comments.length : 0} Tanggapan</span>
-                                                        <span className="text-[9px]">
-                                                            {isExpanded ? '▲' : '▼'}
-                                                        </span>
+                                                        <svg
+                                                            className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                                        </svg>
                                                     </button>
 
                                                     <button
@@ -405,7 +453,9 @@ export default function Topik({
                                                                 : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-[3px_3px_0px_0px_#1A467C]'
                                                         }`}
                                                     >
-                                                        <span>▲</span>
+                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M5 15l7-7 7 7" />
+                                                        </svg>
                                                         <span>{item.votes}</span>
                                                         <span className="text-[10px] uppercase font-bold">
                                                             {item.hasVoted ? 'Didukung' : 'Dukung'}

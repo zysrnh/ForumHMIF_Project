@@ -26,11 +26,21 @@ export interface AspirationItem {
     comments: CommentItem[];
 }
 
+export const APP_CATEGORIES = [
+    'Semua',
+    'Akademik & Praktikum',
+    'Fasilitas & Lab Komputer',
+    'Proker & Event HIMA',
+    'Advokasi & Kebijakan Kampus',
+    'Karier & Magang',
+    'Umum',
+] as const;
+
 export const DEFAULT_ASPIRATIONS: AspirationItem[] = [
     {
         id: 1,
         title: 'Penambahan Kapasitas RAM & Update Tool AI di Lab Komputer 3',
-        category: 'Fasilitas & Lab',
+        category: 'Fasilitas & Lab Komputer',
         content: 'Saat praktikum Machine Learning & Mobile Programming, PC di Lab 3 sering mengalami lag dan freeze saat emulator Android Studio dijalankan bersamaan. Mohon diajukan penambahan RAM menjadi minimal 16GB dan update SSD.',
         authorName: 'Rian Pratama',
         authorNim: '230414012',
@@ -64,7 +74,7 @@ export const DEFAULT_ASPIRATIONS: AspirationItem[] = [
     {
         id: 2,
         title: 'Request Bimbingan & Mentoring Struktur Data dari Kakak Tingkat',
-        category: 'Akademik & Kurikulum',
+        category: 'Akademik & Praktikum',
         content: 'Banyak mahasiswa tingkat awal yang keteteran di materi Pointer, Graph, dan Dynamic Programming. Perlu ada sesi klinik koding mingguan yang dibimbing divisi ristek HIMA sebelum UTS.',
         authorName: 'Mahasiswa 2026',
         authorNim: '250414088',
@@ -91,7 +101,7 @@ export const DEFAULT_ASPIRATIONS: AspirationItem[] = [
     {
         id: 3,
         title: 'Perbaikan Stabilitas Wi-Fi Gedung B Lantai 2 Khusus Jam Kuliah',
-        category: 'Fasilitas & Lab',
+        category: 'Fasilitas & Lab Komputer',
         content: 'Koneksi Wi-Fi sering terputus mendadak terutama pada jam 10.00 - 14.00 WIB. Mengingat sebagian besar materi praktikum dan submit tugas menggunakan LMS cloud, hal ini sangat mengganggu aktivitas kuliah.',
         authorName: 'Siti Nurhaliza',
         authorNim: '220414005',
@@ -123,7 +133,7 @@ export const DEFAULT_ASPIRATIONS: AspirationItem[] = [
     {
         id: 4,
         title: 'Adakan Hackathon Internal IF dengan Tema AI Agents & Web Modern',
-        category: 'Kemahasiswaan & HIMA',
+        category: 'Proker & Event HIMA',
         content: 'Biar portofolio anak IF makin nendang buat magang industri, usul KSM adakan kompetisi hackathon 24 jam di kampus bareng mentor alumni dan praktisi startup.',
         authorName: 'Fullstack Enthusiast',
         authorNim: '230414067',
@@ -148,7 +158,7 @@ export const DEFAULT_ASPIRATIONS: AspirationItem[] = [
     {
         id: 5,
         title: 'Pengadaan Akun GitHub Enterprise & JetBrains Student Pack Kampus',
-        category: 'Akademik & Kurikulum',
+        category: 'Akademik & Praktikum',
         content: 'Banyak mahasiswa terkendala verifikasi email saat klaim JetBrains dan Copilot. Alangkah baiknya jika HIMA memfasilitasi kerja sama atau panduan kolektif lisensi software dev untuk seluruh angkatan.',
         authorName: 'Mahasiswa IF',
         authorNim: '240414***',
@@ -170,9 +180,24 @@ export const DEFAULT_ASPIRATIONS: AspirationItem[] = [
             },
         ],
     },
+    {
+        id: 6,
+        title: 'Workshop Persiapan Magang Kampus Merdeka & Portofolio Tech',
+        category: 'Karier & Magang',
+        content: 'Perlu sharing session dari alumni yang lolos MSIB Bangkit dan tech companies ternama, agar mahasiswa semester 5-6 bisa mempersiapkan CV ATS dan tes koding.',
+        authorName: 'Dian Permana',
+        authorNim: '230414033',
+        isAnonymous: false,
+        status: 'kurasi',
+        isKsmAgenda: false,
+        votes: 42,
+        hasVoted: false,
+        createdAt: '3 hari lalu',
+        comments: [],
+    },
 ];
 
-const STORAGE_KEY = 'hmif_shared_aspirations_v1';
+const STORAGE_KEY = 'hmif_shared_aspirations_v2';
 const EVENT_NAME = 'hmif-aspirations-synced';
 
 export function getSharedAspirations(): AspirationItem[] {

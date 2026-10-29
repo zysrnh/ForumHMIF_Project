@@ -2,6 +2,7 @@ import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import {
+    APP_CATEGORIES,
     AspirationItem,
     addSharedAspiration,
     getAspirationStats,
@@ -54,7 +55,6 @@ function useCountUp(target: number, duration: number = 1200) {
         const step = (timestamp: number) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            // Ease-out cubic curve
             const eased = 1 - Math.pow(1 - progress, 3);
             setCount(Math.floor(eased * target));
             if (progress < 1) {
@@ -97,7 +97,7 @@ export default function Welcome({
     const stats = getAspirationStats(sharedList);
 
     // State Mini Form Aspirasi Hero
-    const [aspirationCategory, setAspirationCategory] = useState<string>('Fasilitas & Lab');
+    const [aspirationCategory, setAspirationCategory] = useState<string>('Fasilitas & Lab Komputer');
     const [aspirationContent, setAspirationContent] = useState<string>('');
     const [recommendToKsm, setRecommendToKsm] = useState<boolean>(true);
     const [aspirationSuccess, setAspirationSuccess] = useState<boolean>(false);
@@ -132,7 +132,7 @@ export default function Welcome({
             badge: 'Kanal Terbuka',
             title: 'Tulis Aspirasi Bebas & Terbuka',
             desc: 'Mahasiswa IF dapat menyampaikan ide proker, saran akademik, atau kritik sarana lab komputasi secara bebas, transparan, atau anonim melalui form aspirasi.',
-            actionHint: 'Kategori tersedia: Akademik & Kurikulum, Fasilitas & Lab, Kegiatan & Proker, dan Advokasi.',
+            actionHint: 'Kategori tersedia: Akademik & Praktikum, Fasilitas & Lab, Proker, Advokasi, dan Karier.',
             tagBg: 'bg-hima-blue-dark text-white',
             borderColor: 'border-hima-blue-dark',
         },
@@ -218,9 +218,8 @@ export default function Welcome({
 
                 {/* Main Wrapper */}
                 <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-10 my-2">
-                    {/* 1. NAVBAR FORUM (Drop Slam Animation) */}
+                    {/* 1. NAVBAR FORUM */}
                     <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-4">
-                        {/* Logo & Brand */}
                         <Link href="/" className="flex items-center gap-3 group">
                             <div className="w-10 h-10 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200">
                                 <img
@@ -286,12 +285,11 @@ export default function Welcome({
                         </div>
                     </header>
 
-                    {/* 2. HERO SECTION: INDIKATOR DI ATAS HEADLINE SUARA + FORM ASPIRASI */}
+                    {/* 2. HERO SECTION */}
                     <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-                        {/* Kiri: Indikator Tepat di Atas Kata "Suara" + Headline & CTA */}
                         <div className="anim-brutal-stamp-left lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-9 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
                             <div className="space-y-6">
-                                {/* INDIKATOR STATISTIK: Aspirasi Masuk, Topik di KSM, Proker */}
+                                {/* INDIKATOR STATISTIK */}
                                 <div className="grid grid-cols-3 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C]">
                                     <div className="p-2 sm:p-3 text-center">
                                         <span className="text-xl sm:text-2xl lg:text-3xl font-black text-hima-blue-dark block font-mono leading-none">
@@ -319,7 +317,6 @@ export default function Welcome({
                                     </div>
                                 </div>
 
-                                {/* Headline "Suara Kalian, Arah KSM Kita." */}
                                 <div className="space-y-3">
                                     <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-hima-blue-dark tracking-tight leading-tight">
                                         Suara Kalian, Arah KSM Kita.
@@ -331,7 +328,6 @@ export default function Welcome({
                                 </div>
                             </div>
 
-                            {/* Action Buttons dengan Smooth Scroll */}
                             <div className="pt-4 flex flex-wrap items-center gap-4">
                                 <a
                                     href="#form-aspirasi"
@@ -364,13 +360,13 @@ export default function Welcome({
                                     </span>
                                 </div>
 
-                                {/* Segment / Category Chips */}
+                                {/* Category Chips dari APP_CATEGORIES */}
                                 <div className="space-y-1.5">
                                     <label className="text-[11px] font-bold text-gray-600 block uppercase">
                                         Kategori Topik:
                                     </label>
                                     <div className="flex flex-wrap gap-2">
-                                        {['Fasilitas & Lab', 'Akademik & Kurikulum', 'Kegiatan & Proker', 'Advokasi'].map((cat) => (
+                                        {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
                                             <button
                                                 key={cat}
                                                 type="button"
@@ -432,7 +428,7 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 3. TOPIK LAGI RAME (TERSINKRON REALTIME DENGAN DASHBOARD) */}
+                    {/* 3. TOPIK LAGI RAME */}
                     <section
                         id="aspirasi"
                         ref={topicsSection.ref}
@@ -460,7 +456,7 @@ export default function Welcome({
                             </div>
                         </div>
 
-                        {/* List Topik (Grid 3 Kolom Proporsional) */}
+                        {/* List Topik */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
                             {topTopics.map((item, index) => {
                                 const snapClass =
@@ -536,10 +532,13 @@ export default function Welcome({
                                                 {item.content}
                                             </p>
 
-                                            {/* KSM Schedule Note */}
+                                            {/* KSM Schedule Note Tanpa Emoji */}
                                             {item.ksmPlenoSchedule && (
-                                                <div className="p-2 bg-red-50/60 border border-red-200 text-[10px] font-semibold text-hima-red-dark">
-                                                    Sidang: {item.ksmPlenoSchedule}
+                                                <div className="flex items-center gap-1.5 p-2 bg-red-50/60 border border-red-200 text-[10px] font-semibold text-hima-red-dark">
+                                                    <svg className="w-3 h-3 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    <span>Sidang: {item.ksmPlenoSchedule}</span>
                                                 </div>
                                             )}
                                         </div>
@@ -575,7 +574,9 @@ export default function Welcome({
                                                             : 'bg-white text-hima-blue-dark hover:bg-gray-100 shadow-[3px_3px_0px_0px_#1A467C]'
                                                     }`}
                                                 >
-                                                    <span>&#9650;</span>
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M5 15l7-7 7 7" />
+                                                    </svg>
                                                     <span>{item.votes}</span>
                                                     <span className="text-[10px] uppercase font-bold">Vote</span>
                                                 </button>
@@ -587,7 +588,7 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 4. CARA KERJA FORUM: GARIS ALUR INTERAKTIF (TIMELINE STEPPER) */}
+                    {/* 4. CARA KERJA FORUM: TIMELINE STEPPER */}
                     <section
                         id="cara-kerja"
                         ref={caraKerjaSection.ref}
@@ -645,9 +646,7 @@ export default function Welcome({
                                                     </div>
                                                 </div>
 
-                                                <span className={`text-xs font-black ${isCurrent ? 'text-white' : 'text-gray-400'}`}>
-                                                    {isCurrent ? '●' : '○'}
-                                                </span>
+                                                <span className={`w-2.5 h-2.5 border border-current ${isCurrent ? 'bg-white' : 'bg-transparent'}`} />
                                             </button>
                                         );
                                     })}
@@ -729,7 +728,7 @@ export default function Welcome({
                         </div>
                     </section>
 
-                    {/* 5. FOOTER SANTAI & BERSIH */}
+                    {/* 5. FOOTER */}
                     <footer className="border-t-2 border-hima-blue-dark pt-8 pb-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-semibold text-gray-600">
                         <div>
                             <p className="font-bold text-hima-blue-dark text-sm sm:text-base">
