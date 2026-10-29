@@ -26,9 +26,11 @@ Route::get('/topik', function () {
 Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
 Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])->name('ksm.survey.store');
 
-// Rute Dashboard Admin Kelola Data Survei KSM
-Route::get('/admin/ksm-survey', [KsmSurveyController::class, 'adminDashboard'])->name('admin.ksm.dashboard');
-Route::get('/admin/ksm-survey/export', [KsmSurveyController::class, 'exportCsv'])->name('admin.ksm.export');
+// Rute Khusus Admin HIMA IF (Wajib Login & Memiliki Role Admin)
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/ksm-survey', [KsmSurveyController::class, 'adminDashboard'])->name('admin.ksm.dashboard');
+    Route::get('/admin/ksm-survey/export', [KsmSurveyController::class, 'exportCsv'])->name('admin.ksm.export');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

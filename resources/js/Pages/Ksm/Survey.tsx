@@ -6,6 +6,7 @@ interface Props {
         name: string;
         email: string;
         nim?: string;
+        role?: string;
     } | null;
 }
 
@@ -151,12 +152,14 @@ export default function Survey({ user }: Props) {
                         </Link>
 
                         <div className="flex items-center gap-1.5 shrink-0">
-                            <Link
-                                href={route('admin.ksm.dashboard')}
-                                className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border border-hima-blue-dark px-2 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
-                            >
-                                Admin
-                            </Link>
+                            {user?.role === 'admin' && (
+                                <Link
+                                    href={route('admin.ksm.dashboard')}
+                                    className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border border-hima-blue-dark px-2 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
+                                >
+                                    Admin
+                                </Link>
+                            )}
                             <Link
                                 href={user ? route('dashboard') : '/'}
                                 className="text-[10px] sm:text-[11px] font-bold uppercase text-gray-700 border border-gray-400 px-2 py-1 bg-white hover:bg-gray-100 transition-colors"
