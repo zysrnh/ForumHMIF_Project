@@ -2,6 +2,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 import { useState, useMemo } from 'react';
 
+interface CommentItem {
+    id: number;
+    authorName: string;
+    authorNim: string;
+    authorRole?: string;
+    isOfficial?: boolean;
+    content: string;
+    createdAt: string;
+}
+
 interface AspirationItem {
     id: number;
     title: string;
@@ -14,7 +24,7 @@ interface AspirationItem {
     votes: number;
     hasVoted: boolean;
     createdAt: string;
-    commentsCount: number;
+    comments: CommentItem[];
 }
 
 const INITIAL_ASPIRATIONS: AspirationItem[] = [
@@ -30,7 +40,24 @@ const INITIAL_ASPIRATIONS: AspirationItem[] = [
         votes: 42,
         hasVoted: false,
         createdAt: '3 jam lalu',
-        commentsCount: 9,
+        comments: [
+            {
+                id: 101,
+                authorName: 'Divisi Advokasi & Ristek HMIF',
+                authorNim: 'HMIF-OFFICIAL',
+                authorRole: 'Pengurus HIMA IF',
+                isOfficial: true,
+                content: 'Aspirasi ini telah kami verifikasi dan masuk ke dalam agenda prioritas sidang KSM bersama Kepala Lab dan Prodi.',
+                createdAt: '2 jam lalu',
+            },
+            {
+                id: 102,
+                authorName: 'Bagas Aditya',
+                authorNim: '220414055',
+                content: 'Setuju banget, kemarin pas responsi sempat crash dan project harus di-reopen dari backup.',
+                createdAt: '1 jam lalu',
+            },
+        ],
     },
     {
         id: 2,
@@ -44,7 +71,17 @@ const INITIAL_ASPIRATIONS: AspirationItem[] = [
         votes: 38,
         hasVoted: false,
         createdAt: '5 jam lalu',
-        commentsCount: 14,
+        comments: [
+            {
+                id: 201,
+                authorName: 'Divisi Diklat HMIF',
+                authorNim: 'HMIF-OFFICIAL',
+                authorRole: 'Pengurus HIMA IF',
+                isOfficial: true,
+                content: 'Sedang kami koordinasikan dengan pihak BAAK dan Pusat Komputer kampus terkait domain DNS fellow untuk whitelist GitHub Student Developer Pack.',
+                createdAt: '3 jam lalu',
+            },
+        ],
     },
     {
         id: 3,
@@ -58,7 +95,24 @@ const INITIAL_ASPIRATIONS: AspirationItem[] = [
         votes: 65,
         hasVoted: true,
         createdAt: '1 hari lalu',
-        commentsCount: 21,
+        comments: [
+            {
+                id: 301,
+                authorName: 'Dimas Prasetyo',
+                authorNim: '210414019',
+                content: 'Sangat terasa di ruang B203 sinyalnya sering drop ke 1 bar.',
+                createdAt: '20 jam lalu',
+            },
+            {
+                id: 302,
+                authorName: 'Divisi Advokasi HMIF',
+                authorNim: 'HMIF-OFFICIAL',
+                authorRole: 'Pengurus HIMA IF',
+                isOfficial: true,
+                content: 'Surat rekomendasi perbaikan Access Point sudah diteruskan ke Biro Sarana & IT Kampus kemarin sore.',
+                createdAt: '18 jam lalu',
+            },
+        ],
     },
     {
         id: 4,
@@ -72,7 +126,15 @@ const INITIAL_ASPIRATIONS: AspirationItem[] = [
         votes: 19,
         hasVoted: false,
         createdAt: '2 hari lalu',
-        commentsCount: 5,
+        comments: [
+            {
+                id: 401,
+                authorName: 'Rina Kusuma',
+                authorNim: '230414015',
+                content: 'Bagus banget usulannya, terutama bedah portofolio proyek kuliah biar layak dilirik HR.',
+                createdAt: '1 hari lalu',
+            },
+        ],
     },
 ];
 
@@ -97,6 +159,10 @@ export default function Dashboard() {
     const [sortBy, setSortBy] = useState<'trending' | 'terbaru'>('trending');
     const [searchQuery, setSearchQuery] = useState<string>('');
 
+    // State Accordion Tanggapan
+    const [openCommentId, setOpenCommentId] = useState<number | null>(null);
+    const [commentInputs, setCommentInputs] = useState<{ [aspirationId: number]: string }>({});
+
     // State Form Aspirasi Baru
     const [formTitle, setFormTitle] = useState('');
     const [formCategory, setFormCategory] = useState('Akademik & Kurikulum');
@@ -104,7 +170,7 @@ export default function Dashboard() {
     const [formIsAnonymous, setFormIsAnonymous] = useState(false);
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-    // Toggle Upvote Interaktif
+    // Toggle Upvote Interaktif dengan Animasi Pop
     const handleToggleVote = (id: number) => {
         setAspirations((prev) =>
             prev.map((item) => {
@@ -119,6 +185,43 @@ export default function Dashboard() {
                 return item;
             }),
         );
+    };
+
+    // Toggle Buka/Tutup Komentar Tanggapan
+    const toggleComments = (aspirationId: number) => {
+        setOpenCommentId(openCommentId === aspirationId ? null : aspirationId);
+    };
+
+    // Kirim Tanggapan Baru
+    const handleAddComment = (aspirationId: number, e: React.FormEvent) => {
+        e.preventDefault();
+        const text = (commentInputs[aspirationId] || '').trim();
+        if (!text) return;
+
+        const newComment: CommentItem = {
+            id: Date.now(),
+            authorName: user.name,
+            authorNim: userNim,
+            content: text,
+            createdAt: 'Baru saja',
+        };
+
+        setAspirations((prev) =>
+            prev.map((item) => {
+                if (item.id === aspirationId) {
+                    return {
+                        ...item,
+                        comments: [...item.comments, newComment],
+                    };
+                }
+                return item;
+            }),
+        );
+
+        setCommentInputs((prev) => ({
+            ...prev,
+            [aspirationId]: '',
+        }));
     };
 
     // Submit Aspirasi Baru
@@ -138,7 +241,7 @@ export default function Dashboard() {
             votes: 1,
             hasVoted: true,
             createdAt: 'Baru saja',
-            commentsCount: 0,
+            comments: [],
         };
 
         setAspirations([newAspiration, ...aspirations]);
@@ -190,26 +293,26 @@ export default function Dashboard() {
         switch (status) {
             case 'ksm':
                 return (
-                    <span className="bg-red-50 border border-hima-red-dark text-hima-red-dark px-2 py-0.5 text-[10px] font-black uppercase">
+                    <span className="bg-red-50 border border-hima-red-dark text-hima-red-dark px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
                         Siap Masuk KSM
                     </span>
                 );
             case 'kurasi':
                 return (
-                    <span className="bg-blue-50 border border-hima-blue-dark text-hima-blue-dark px-2 py-0.5 text-[10px] font-black uppercase">
+                    <span className="bg-blue-50 border border-hima-blue-dark text-hima-blue-dark px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
                         Tahap Kurasi
                     </span>
                 );
             case 'tindak_lanjut':
                 return (
-                    <span className="bg-green-50 border border-green-700 text-green-800 px-2 py-0.5 text-[10px] font-black uppercase">
+                    <span className="bg-green-50 border border-green-700 text-green-800 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
                         Ditindaklanjuti
                     </span>
                 );
             case 'baru':
             default:
                 return (
-                    <span className="bg-gray-100 border border-gray-400 text-gray-700 px-2 py-0.5 text-[10px] font-black uppercase">
+                    <span className="bg-gray-100 border border-gray-400 text-gray-700 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider">
                         Aspirasi Baru
                     </span>
                 );
@@ -253,7 +356,7 @@ export default function Dashboard() {
                             <button
                                 type="button"
                                 onClick={() => setActiveNav('feed')}
-                                className="inline-flex items-center gap-1.5 border-2 border-gray-400 bg-white text-gray-700 px-3.5 py-1.5 text-xs font-bold uppercase hover:bg-gray-50"
+                                className="inline-flex items-center gap-1.5 border-2 border-gray-400 bg-white text-gray-700 px-3.5 py-1.5 text-xs font-bold uppercase hover:bg-gray-50 transition-colors"
                             >
                                 ← Kembali ke Feed
                             </button>
@@ -264,11 +367,11 @@ export default function Dashboard() {
         >
             <Head title="Portal Aspirasi Mahasiswa" />
 
-            {/* FULL WIDTH CONTAINER */}
+            {/* FULL WIDTH CONTAINER DENGAN MIKRO-ANIMASI */}
             <div className="w-full space-y-3">
                 {/* Notifikasi Sukses Sederhana */}
                 {showSuccessAlert && (
-                    <div className="w-full bg-green-50 border-2 border-green-700 p-3 shadow-brutal-sm flex items-center justify-between gap-3 text-xs text-green-900 font-semibold">
+                    <div className="w-full bg-green-50 border-2 border-green-700 p-3 shadow-brutal-sm flex items-center justify-between gap-3 text-xs text-green-900 font-semibold anim-feed-item">
                         <div className="flex items-center gap-2">
                             <span className="w-5 h-5 bg-green-700 text-white font-black flex items-center justify-center text-[10px]">
                                 ✓
@@ -287,7 +390,7 @@ export default function Dashboard() {
 
                 {/* 1. TAMPILAN FOKUS: FORM INPUT ASPIRASI (FULL WIDTH) */}
                 {activeNav === 'create' ? (
-                    <div className="w-full bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm">
+                    <div className="w-full bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm anim-feed-item">
                         <div className="border-b border-gray-200 pb-3 mb-5">
                             <h2 className="text-base sm:text-lg font-black text-hima-blue-dark uppercase">
                                 Tulis Masukan & Aspirasi
@@ -309,7 +412,7 @@ export default function Dashboard() {
                                     value={formTitle}
                                     onChange={(e) => setFormTitle(e.target.value)}
                                     placeholder="contoh: Penambahan Lisensi Software IDE & PC Lab 3"
-                                    className="w-full border-2 border-hima-blue-dark bg-white p-2.5 text-xs sm:text-sm font-semibold text-gray-900 placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                                    className="w-full border-2 border-hima-blue-dark bg-white p-2.5 text-xs sm:text-sm font-semibold text-gray-900 placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C] transition-shadow"
                                     autoFocus
                                 />
                             </div>
@@ -343,7 +446,7 @@ export default function Dashboard() {
                                         <button
                                             type="button"
                                             onClick={() => setFormIsAnonymous(!formIsAnonymous)}
-                                            className={`border px-2 py-0.5 text-[10px] font-black uppercase ${
+                                            className={`border px-2 py-0.5 text-[10px] font-black uppercase transition-colors ${
                                                 formIsAnonymous
                                                     ? 'bg-hima-red-dark text-white border-hima-red-dark'
                                                     : 'bg-white text-hima-blue-dark border-hima-blue-dark'
@@ -366,7 +469,7 @@ export default function Dashboard() {
                                     value={formContent}
                                     onChange={(e) => setFormContent(e.target.value)}
                                     placeholder="Jelaskan kendala yang dialami serta rekomendasi solusi yang diharapkan..."
-                                    className="w-full border-2 border-hima-blue-dark bg-white p-2.5 text-xs sm:text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                                    className="w-full border-2 border-hima-blue-dark bg-white p-2.5 text-xs sm:text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-[2px_2px_0px_0px_#1A467C] transition-shadow"
                                 />
                             </div>
 
@@ -375,7 +478,7 @@ export default function Dashboard() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav('feed')}
-                                    className="border-2 border-gray-400 bg-white px-4 py-2 text-xs font-bold uppercase text-gray-700 hover:bg-gray-50"
+                                    className="border-2 border-gray-400 bg-white px-4 py-2 text-xs font-bold uppercase text-gray-700 hover:bg-gray-50 transition-colors"
                                 >
                                     Batal
                                 </button>
@@ -389,10 +492,10 @@ export default function Dashboard() {
                         </form>
                     </div>
                 ) : (
-                    /* 2. TAMPILAN FEED ASPIRASI (BERSIH, TANPA KOTAK VOTE KIRI YANG KAKU) */
+                    /* 2. TAMPILAN FEED ASPIRASI (FULL WIDTH + STAGGERED ENTRANCE ANIMATION) */
                     <div className="w-full space-y-3">
                         {/* Filter & Pencarian Full Width */}
-                        <div className="w-full bg-white border-2 border-hima-blue-dark p-3 sm:p-3.5 shadow-brutal-sm space-y-2.5">
+                        <div className="w-full bg-white border-2 border-hima-blue-dark p-3 sm:p-3.5 shadow-brutal-sm space-y-2.5 anim-feed-item">
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                                 {/* Search Bar */}
                                 <div className="relative flex-1">
@@ -401,7 +504,7 @@ export default function Dashboard() {
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Cari aspirasi mahasiswa..."
-                                        className="w-full px-3 py-1.5 border-2 border-hima-blue-dark text-xs sm:text-sm font-semibold text-gray-900 placeholder-gray-400 focus:outline-none rounded-none shadow-[2px_2px_0px_0px_#1A467C]"
+                                        className="w-full px-3 py-1.5 border-2 border-hima-blue-dark text-xs sm:text-sm font-semibold text-gray-900 placeholder-gray-400 focus:outline-none rounded-none shadow-[2px_2px_0px_0px_#1A467C] transition-shadow"
                                     />
                                 </div>
 
@@ -410,10 +513,10 @@ export default function Dashboard() {
                                     <button
                                         type="button"
                                         onClick={() => setSortBy('trending')}
-                                        className={`border px-2.5 py-1 text-xs font-black uppercase tracking-wider ${
+                                        className={`border px-2.5 py-1 text-xs font-black uppercase tracking-wider transition-all ${
                                             sortBy === 'trending'
-                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark'
-                                                : 'bg-white text-gray-700 border-gray-300'
+                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm'
+                                                : 'bg-white text-gray-700 border-gray-300 hover:border-hima-blue-dark'
                                         }`}
                                     >
                                         🔥 Terbanyak Vote
@@ -421,10 +524,10 @@ export default function Dashboard() {
                                     <button
                                         type="button"
                                         onClick={() => setSortBy('terbaru')}
-                                        className={`border px-2.5 py-1 text-xs font-black uppercase tracking-wider ${
+                                        className={`border px-2.5 py-1 text-xs font-black uppercase tracking-wider transition-all ${
                                             sortBy === 'terbaru'
-                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark'
-                                                : 'bg-white text-gray-700 border-gray-300'
+                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm'
+                                                : 'bg-white text-gray-700 border-gray-300 hover:border-hima-blue-dark'
                                         }`}
                                     >
                                         Terbaru
@@ -439,10 +542,10 @@ export default function Dashboard() {
                                         key={cat}
                                         type="button"
                                         onClick={() => setSelectedCategory(cat)}
-                                        className={`px-2.5 py-0.5 text-[11px] font-bold uppercase whitespace-nowrap border ${
+                                        className={`px-2.5 py-0.5 text-[11px] font-bold uppercase whitespace-nowrap border transition-all ${
                                             selectedCategory === cat
-                                                ? 'bg-hima-red-dark text-white border-hima-red-dark'
-                                                : 'bg-gray-50 text-gray-700 border-gray-300 hover:bg-white'
+                                                ? 'bg-hima-red-dark text-white border-hima-red-dark shadow-brutal-sm'
+                                                : 'bg-gray-50 text-gray-700 border-gray-300 hover:bg-white hover:border-hima-blue-dark'
                                         }`}
                                     >
                                         {cat}
@@ -451,9 +554,9 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        {/* List Aspirasi Cards (Bersih, Rapi & Lapang) */}
+                        {/* List Aspirasi Cards */}
                         {filteredAspirations.length === 0 ? (
-                            <div className="w-full bg-white border-2 border-hima-blue-dark p-8 text-center shadow-brutal-sm">
+                            <div className="w-full bg-white border-2 border-hima-blue-dark p-8 text-center shadow-brutal-sm anim-feed-item">
                                 <p className="text-sm font-black uppercase text-hima-blue-dark">
                                     Belum Ada Aspirasi
                                 </p>
@@ -463,78 +566,187 @@ export default function Dashboard() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveNav('create')}
-                                    className="mt-3 border-2 border-hima-blue-dark bg-hima-blue-dark text-white px-4 py-1.5 text-xs font-black uppercase"
+                                    className="mt-3 btn-brutal border-2 border-hima-blue-dark bg-hima-blue-dark text-white px-4 py-1.5 text-xs font-black uppercase shadow-brutal-sm hover:bg-hima-blue-light"
                                 >
                                     + Tulis Aspirasi
                                 </button>
                             </div>
                         ) : (
-                            filteredAspirations.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="w-full bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-brutal-sm hover:border-hima-blue-light transition-all space-y-2.5"
-                                >
-                                    {/* Baris Status & Kategori Tag */}
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        {getStatusBadge(item.status)}
-                                        <span className="text-[10px] font-bold text-gray-500 uppercase">
-                                            {item.category} • {item.createdAt}
-                                        </span>
-                                    </div>
+                            filteredAspirations.map((item, index) => {
+                                const isCommentsOpen = openCommentId === item.id;
 
-                                    {/* Judul Aspirasi */}
-                                    <h3 className="text-sm sm:text-base font-black text-gray-950 tracking-tight leading-snug">
-                                        {item.title}
-                                    </h3>
+                                return (
+                                    <div
+                                        key={item.id}
+                                        style={{ animationDelay: `${index * 60}ms` }}
+                                        className="w-full bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-sm hover:border-hima-blue-light hover:-translate-y-0.5 transition-all duration-200 anim-feed-item space-y-2.5"
+                                    >
+                                        {/* Baris Status & Kategori Tag */}
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {getStatusBadge(item.status)}
+                                            <span className="text-[10px] font-bold text-gray-500 uppercase">
+                                                {item.category} • {item.createdAt}
+                                            </span>
+                                        </div>
 
-                                    {/* Uraian Aspirasi */}
-                                    <p className="text-xs font-medium text-gray-600 leading-relaxed">
-                                        {item.content}
-                                    </p>
+                                        {/* Judul Aspirasi */}
+                                        <h3 className="text-sm sm:text-base font-black text-gray-950 tracking-tight leading-snug">
+                                            {item.title}
+                                        </h3>
 
-                                    {/* Footer Kartu: Penulis di Kiri, Tombol Vote & Tanggapan di Kanan */}
-                                    <div className="pt-2.5 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
-                                        {/* Info Penulis */}
-                                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
-                                            <div className="w-5 h-5 bg-hima-blue-dark text-white text-[10px] font-black flex items-center justify-center shrink-0 border border-hima-blue-dark">
-                                                {item.authorName.charAt(0)}
+                                        {/* Uraian Aspirasi */}
+                                        <p className="text-xs font-medium text-gray-600 leading-relaxed">
+                                            {item.content}
+                                        </p>
+
+                                        {/* Footer Kartu: Penulis di Kiri, Tombol Vote & Tanggapan di Kanan */}
+                                        <div className="pt-2.5 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                                            {/* Info Penulis */}
+                                            <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
+                                                <div className="w-5 h-5 bg-hima-blue-dark text-white text-[10px] font-black flex items-center justify-center shrink-0 border border-hima-blue-dark">
+                                                    {item.authorName.charAt(0)}
+                                                </div>
+                                                <span>
+                                                    Oleh: <strong className="text-hima-blue-dark">{item.authorName}</strong> ({item.authorNim})
+                                                </span>
                                             </div>
-                                            <span>
-                                                Oleh: <strong className="text-hima-blue-dark">{item.authorName}</strong> ({item.authorNim})
-                                            </span>
+
+                                            {/* Aksi Vote & Tanggapan */}
+                                            <div className="flex items-center gap-2.5">
+                                                {/* Tombol Buka Diskusi Tanggapan */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleComments(item.id)}
+                                                    className={`inline-flex items-center gap-1.5 text-xs font-bold py-1 px-2.5 border-2 transition-all active:translate-x-0.5 active:translate-y-0.5 ${
+                                                        isCommentsOpen
+                                                            ? 'bg-blue-50 text-hima-blue-dark border-hima-blue-dark shadow-sm'
+                                                            : 'bg-white text-gray-700 border-gray-300 hover:border-hima-blue-dark'
+                                                    }`}
+                                                >
+                                                    <span>💬 {item.comments.length} Tanggapan</span>
+                                                    <svg
+                                                        className={`w-3 h-3 transition-transform duration-200 ${
+                                                            isCommentsOpen ? 'rotate-180' : ''
+                                                        }`}
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                                    </svg>
+                                                </button>
+
+                                                {/* Tombol Voting Compact Horizontal */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleToggleVote(item.id)}
+                                                    aria-label={`Dukung aspirasi: ${item.title}`}
+                                                    className={`btn-brutal inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black uppercase tracking-wider border-2 transition-all ${
+                                                        item.hasVoted
+                                                            ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm anim-vote-pop'
+                                                            : 'bg-white text-hima-blue-dark border-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
+                                                    }`}
+                                                >
+                                                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            fillRule="evenodd"
+                                                            d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
+                                                            clipRule="evenodd"
+                                                        />
+                                                    </svg>
+                                                    <span>{item.votes}</span>
+                                                    <span>{item.hasVoted ? 'Didukung' : 'Dukung'}</span>
+                                                </button>
+                                            </div>
                                         </div>
 
-                                        {/* Aksi Vote & Tanggapan */}
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-xs font-bold text-gray-500">
-                                                💬 {item.commentsCount} Tanggapan
-                                            </span>
+                                        {/* SECTION ACCORDION TANGGAPAN / DISKUSI KOMENTAR */}
+                                        {isCommentsOpen && (
+                                            <div className="pt-3 border-t-2 border-hima-blue-dark/20 bg-slate-50/80 p-3 sm:p-4 mt-2 anim-accordion-enter space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <h4 className="text-xs font-black uppercase tracking-wider text-hima-blue-dark flex items-center gap-1.5">
+                                                        <span>Diskusi & Tanggapan</span>
+                                                        <span className="bg-hima-blue-dark text-white px-1.5 py-0.2 text-[10px]">
+                                                            {item.comments.length}
+                                                        </span>
+                                                    </h4>
+                                                    <span className="text-[10px] text-gray-500 font-semibold">
+                                                        HMIF Aspirasi Forum
+                                                    </span>
+                                                </div>
 
-                                            {/* Tombol Voting Compact Horizontal */}
-                                            <button
-                                                type="button"
-                                                onClick={() => handleToggleVote(item.id)}
-                                                aria-label={`Dukung aspirasi: ${item.title}`}
-                                                className={`btn-brutal inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 transition-all ${
-                                                    item.hasVoted
-                                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm'
-                                                        : 'bg-white text-hima-blue-dark border-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
-                                                }`}
-                                            >
-                                                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
-                                                        clipRule="evenodd"
+                                                {/* List Tanggapan */}
+                                                <div className="space-y-2">
+                                                    {item.comments.length === 0 ? (
+                                                        <p className="text-xs text-gray-500 italic py-2">
+                                                            Belum ada tanggapan. Jadilah yang pertama memberikan masukan atau solusi!
+                                                        </p>
+                                                    ) : (
+                                                        item.comments.map((comment) => (
+                                                            <div
+                                                                key={comment.id}
+                                                                className={`p-2.5 border-2 text-xs leading-relaxed ${
+                                                                    comment.isOfficial
+                                                                        ? 'bg-blue-50/80 border-hima-blue-dark shadow-sm'
+                                                                        : 'bg-white border-gray-300'
+                                                                }`}
+                                                            >
+                                                                <div className="flex items-center justify-between mb-1">
+                                                                    <div className="flex items-center gap-1.5">
+                                                                        <span className="font-black text-gray-950">
+                                                                            {comment.authorName}
+                                                                        </span>
+                                                                        {comment.isOfficial ? (
+                                                                            <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-1.5 py-0.2">
+                                                                                {comment.authorRole}
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span className="text-[10px] font-mono font-semibold text-gray-500">
+                                                                                ({comment.authorNim})
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <span className="text-[10px] text-gray-400 font-medium">
+                                                                        {comment.createdAt}
+                                                                    </span>
+                                                                </div>
+                                                                <p className="text-gray-700 font-medium">
+                                                                    {comment.content}
+                                                                </p>
+                                                            </div>
+                                                        ))
+                                                    )}
+                                                </div>
+
+                                                {/* Form Tulis Tanggapan Baru */}
+                                                <form
+                                                    onSubmit={(e) => handleAddComment(item.id, e)}
+                                                    className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        value={commentInputs[item.id] || ''}
+                                                        onChange={(e) =>
+                                                            setCommentInputs({
+                                                                ...commentInputs,
+                                                                [item.id]: e.target.value,
+                                                            })
+                                                        }
+                                                        placeholder="Tulis tanggapan atau solusi Anda..."
+                                                        className="flex-1 border-2 border-hima-blue-dark bg-white px-3 py-1.5 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light shadow-sm"
                                                     />
-                                                </svg>
-                                                <span>{item.votes}</span>
-                                                <span>{item.hasVoted ? 'Didukung' : 'Dukung'}</span>
-                                            </button>
-                                        </div>
+                                                    <button
+                                                        type="submit"
+                                                        className="btn-brutal bg-hima-blue-dark text-white border-2 border-hima-blue-dark px-4 py-1.5 text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-blue-light"
+                                                    >
+                                                        Kirim
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 )}
