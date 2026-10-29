@@ -203,31 +203,31 @@ export default function Welcome({
         <>
             <Head title="Forum HMIF - Suara Mahasiswa Teknik Informatika" />
 
-            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 lg:p-8 xl:p-10 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
+            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-6 lg:p-8 xl:p-10 pb-20 md:pb-8 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
                 {/* Main Wrapper */}
-                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-8 my-2">
+                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-6 sm:space-y-8 my-1 sm:my-2">
                     {/* 1. NAVBAR FORUM */}
-                    <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-4">
-                        <Link href="/" className="flex items-center gap-3 group">
-                            <div className="w-10 h-10 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200">
+                    <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-3 sm:gap-4">
+                        <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+                            <div className="w-9 h-9 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200 shrink-0">
                                 <img
                                     src="/logo/logo.png"
                                     alt="Logo HIMA IF"
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <div>
-                                <span className="font-black text-hima-blue-dark tracking-tight text-base sm:text-xl block leading-none">
+                            <div className="min-w-0">
+                                <span className="font-black text-hima-blue-dark tracking-tight text-sm sm:text-xl block leading-none truncate">
                                     FORUM HMIF
                                 </span>
-                                <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                    Suara Mahasiswa Informatika
+                                <span className="text-[9px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest block mt-0.5 truncate">
+                                    Suara Mahasiswa IF
                                 </span>
                             </div>
                         </Link>
 
-                        {/* Menu Nav Santai */}
-                        <nav className="hidden md:flex items-center gap-8 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
+                        {/* Menu Nav Desktop */}
+                        <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
                             <a
                                 href="#aspirasi"
                                 onClick={(e) => scrollToSection(e, 'aspirasi')}
@@ -263,18 +263,18 @@ export default function Welcome({
                         </nav>
 
                         {/* Right Auth Button */}
-                        <div>
+                        <div className="shrink-0">
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-4 sm:px-6 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs uppercase tracking-wider hover:bg-hima-blue-light"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-3.5 sm:px-6 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-xs uppercase tracking-wider hover:bg-hima-blue-light"
                                 >
-                                    Dashboard Kamu
+                                    Dashboard
                                 </Link>
                             ) : (
                                 <Link
                                     href={route('login')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-5 sm:px-7 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-3.5 sm:px-7 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Gabung Yuk
                                 </Link>
@@ -283,12 +283,12 @@ export default function Welcome({
                     </header>
 
                     {/* 2. HERO SECTION */}
-                    <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-                        <div className="anim-brutal-stamp-left lg:col-span-7 bg-white border-2 border-hima-blue-dark p-6 sm:p-9 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
-                            <div className="space-y-6">
-                                {/* INDIKATOR STATISTIK BERSIH */}
-                                <div className="grid grid-cols-2 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] max-w-sm">
-                                    <div className="p-3 text-center">
+                    <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
+                        <div className="anim-brutal-stamp-left lg:col-span-7 bg-white border-2 border-hima-blue-dark p-4 sm:p-9 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
+                            <div className="space-y-5 sm:space-y-6">
+                                {/* INDIKATOR STATISTIK BERSIH PENUH (FULL WIDTH & SIMETRIS TANPA SISA CELAH) */}
+                                <div className="w-full grid grid-cols-2 sm:grid-cols-3 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C]">
+                                    <div className="p-2.5 sm:p-3 text-center">
                                         <span className="text-2xl sm:text-3xl font-black text-hima-blue-dark block font-mono leading-none">
                                             {countAspirasi}
                                         </span>
@@ -296,7 +296,7 @@ export default function Welcome({
                                             Aspirasi Terkumpul
                                         </span>
                                     </div>
-                                    <div className="p-3 text-center">
+                                    <div className="p-2.5 sm:p-3 text-center">
                                         <span className="text-2xl sm:text-3xl font-black text-hima-red-light block font-mono leading-none">
                                             {countTotalVote}
                                         </span>
@@ -304,32 +304,40 @@ export default function Welcome({
                                             Total Dukungan
                                         </span>
                                     </div>
+                                    <div className="hidden sm:flex flex-col items-center justify-center p-2.5 sm:p-3 text-center bg-blue-100/50">
+                                        <span className="text-2xl sm:text-3xl font-black text-hima-blue-dark block font-mono leading-none">
+                                            KSM
+                                        </span>
+                                        <span className="text-[10px] sm:text-xs font-black text-hima-red-dark uppercase tracking-wider mt-1 block">
+                                            Survei Terbuka
+                                        </span>
+                                    </div>
                                 </div>
 
-                                <div className="space-y-3">
-                                    <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-hima-blue-dark tracking-tight leading-tight">
+                                <div className="space-y-2.5 sm:space-y-3">
+                                    <h1 className="text-2xl sm:text-5xl lg:text-6xl font-black text-hima-blue-dark tracking-tight leading-tight">
                                         Suara Kalian, Solusi Bersama.
                                     </h1>
 
-                                    <p className="text-base sm:text-lg font-medium text-gray-700 leading-relaxed max-w-2xl">
+                                    <p className="text-sm sm:text-lg font-medium text-gray-700 leading-relaxed max-w-2xl">
                                         Ruang terbuka mahasiswa Teknik Informatika untuk menyampaikan aspirasi, usulan fasilitas, dan ide kegiatan secara transparan, mudah, dan bebas ribet.
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="pt-4 flex flex-wrap items-center gap-4">
+                            <div className="pt-3 sm:pt-4 flex flex-wrap items-center gap-3 sm:gap-4">
                                 <a
                                     href="#form-aspirasi"
                                     onClick={(e) => scrollToSection(e, 'form-aspirasi')}
-                                    className="btn-brutal inline-flex items-center justify-center bg-hima-red-light text-white font-black px-7 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="flex-1 sm:flex-initial btn-brutal inline-flex items-center justify-center bg-hima-red-light text-white font-black px-5 sm:px-7 py-3 sm:py-3.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[5px_5px_0px_0px_#1A467C] text-xs sm:text-base uppercase tracking-wider hover:bg-hima-red-dark text-center"
                                 >
                                     Kirim Aspirasi
                                 </a>
                                 <Link
                                     href={route('topik.index')}
-                                    className="btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-6 py-3.5 border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] text-sm sm:text-base uppercase tracking-wider hover:bg-blue-50"
+                                    className="flex-1 sm:flex-initial btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-4 sm:px-6 py-3 sm:py-3.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[5px_5px_0px_0px_#1A467C] text-xs sm:text-base uppercase tracking-wider hover:bg-blue-50 text-center"
                                 >
-                                    Lihat Topik Rame &rarr;
+                                    Topik Rame &rarr;
                                 </Link>
                             </div>
                         </div>
@@ -337,11 +345,11 @@ export default function Welcome({
                         {/* Kanan: Form Aspirasi Langsung Ringkas & Efisien */}
                         <div
                             id="form-aspirasi"
-                            className="anim-brutal-stamp-right lg:col-span-5 bg-white border-2 border-hima-blue-dark p-6 sm:p-7 shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
+                            className="anim-brutal-stamp-right lg:col-span-5 bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
                         >
-                            <form onSubmit={handleQuickSubmit} className="space-y-4">
+                            <form onSubmit={handleQuickSubmit} className="space-y-3.5 sm:space-y-4">
                                 <div className="border-b-2 border-hima-blue-dark pb-2.5 flex items-center justify-between">
-                                    <h2 className="text-base font-black text-hima-blue-dark uppercase tracking-wider">
+                                    <h2 className="text-sm sm:text-base font-black text-hima-blue-dark uppercase tracking-wider">
                                         Kirim Aspirasi Cepat
                                     </h2>
                                     <span className="text-[10px] font-bold bg-hima-blue-light text-white px-2 py-0.5 border border-hima-blue-dark uppercase">
@@ -379,14 +387,14 @@ export default function Welcome({
                                         value={aspirationContent}
                                         onChange={(e) => setAspirationContent(e.target.value)}
                                         placeholder="Tuliskan aspirasi, kebutuhan fasilitas, atau usulan kamu di sini..."
-                                        className="w-full border-2 border-hima-blue-dark p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light resize-none rounded-none shadow-xs"
+                                        className="w-full border-2 border-hima-blue-dark p-2.5 sm:p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light resize-none rounded-none shadow-xs"
                                     />
                                 </div>
 
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
-                                    className="w-full btn-brutal bg-hima-red-light text-white font-black py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="w-full btn-brutal bg-hima-red-light text-white font-black py-2.5 sm:py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Kirim ke Forum
                                 </button>
@@ -398,7 +406,7 @@ export default function Welcome({
                                 )}
                             </form>
 
-                            <p className="text-[11px] text-gray-500 font-medium text-center pt-2">
+                            <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium text-center pt-2">
                                 Setiap suara akan dipelajari dan ditindaklanjuti oleh tim HIMA IF.
                             </p>
                         </div>
@@ -412,7 +420,7 @@ export default function Welcome({
                     >
                         <div className="border-b-2 border-hima-blue-dark pb-2.5 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                             <div>
-                                <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
+                                <h2 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                     Topik Paling Banyak Didukung
                                 </h2>
                                 <p className="text-xs sm:text-sm font-semibold text-gray-600">
@@ -430,7 +438,7 @@ export default function Welcome({
                         </div>
 
                         {/* List Topik */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 items-stretch">
                             {topTopics.map((item, index) => {
                                 const borderTopColor =
                                     index === 0
@@ -442,7 +450,7 @@ export default function Welcome({
                                 return (
                                     <div
                                         key={item.id}
-                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-5 sm:p-6 shadow-[5px_5px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-3.5`}
+                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-4 sm:p-6 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[5px_5px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-3.5`}
                                     >
                                         <div className="space-y-2.5">
                                             {/* Tag Kategori & Waktu */}
@@ -512,7 +520,7 @@ export default function Welcome({
                         className="space-y-4"
                     >
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
-                            <h2 className="text-2xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
+                            <h2 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                 Alur Penyampaian Aspirasi
                             </h2>
                             <p className="text-xs sm:text-sm font-semibold text-gray-600">
@@ -521,11 +529,11 @@ export default function Welcome({
                         </div>
 
                         {/* Kartu Garis Alur Interaktif */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] space-y-6">
+                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[5px_5px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] space-y-5 sm:space-y-6">
                             <div className="relative">
                                 <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 bg-hima-blue-dark -translate-y-1/2 z-0" />
 
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 relative z-10">
                                     {workflowSteps.map((s) => {
                                         const isCurrent = activeStep === s.step;
                                         return (
@@ -533,9 +541,9 @@ export default function Welcome({
                                                 key={s.step}
                                                 type="button"
                                                 onClick={() => setActiveStep(s.step)}
-                                                className={`text-left p-3.5 border-2 border-hima-blue-dark transition-all duration-150 flex items-center justify-between gap-3 ${
+                                                className={`text-left p-3 sm:p-3.5 border-2 border-hima-blue-dark transition-all duration-150 flex items-center justify-between gap-3 ${
                                                     isCurrent
-                                                        ? 'bg-hima-blue-dark text-white shadow-[4px_4px_0px_0px_#1A467C] -translate-y-0.5'
+                                                        ? 'bg-hima-blue-dark text-white shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] -translate-y-0.5'
                                                         : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-[2px_2px_0px_0px_#1A467C]'
                                                 }`}
                                             >
@@ -571,8 +579,8 @@ export default function Welcome({
                             </div>
 
                             {/* Panel Detail Langkah yang Sedang Aktif */}
-                            <div className="bg-blue-50/50 border-2 border-hima-blue-dark p-5 sm:p-6 shadow-[4px_4px_0px_0px_#1A467C] space-y-3">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-hima-blue-dark/20 pb-3">
+                            <div className="bg-blue-50/50 border-2 border-hima-blue-dark p-4 sm:p-6 shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] space-y-3">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 border-b-2 border-hima-blue-dark/20 pb-3">
                                     <div className="flex items-center gap-2">
                                         <span className="px-2.5 py-0.5 border border-hima-blue-dark bg-hima-blue-dark text-white text-[11px] font-black uppercase tracking-wider">
                                             Tahap {currentStepData.number}
@@ -629,7 +637,7 @@ export default function Welcome({
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <h3 className="text-lg sm:text-xl font-black text-hima-blue-dark">
+                                    <h3 className="text-base sm:text-xl font-black text-hima-blue-dark">
                                         {currentStepData.title}
                                     </h3>
                                     <p className="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed max-w-3xl">
@@ -661,6 +669,100 @@ export default function Welcome({
                         </div>
                     </footer>
                 </div>
+
+                {/* ========================================================================= */}
+                {/* 6. MOBILE APP BOTTOM NAVIGATION TOOLBAR                                   */}
+                {/* ========================================================================= */}
+                <nav
+                    aria-label="Mobile app navigation toolbar"
+                    className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-4px_12px_rgba(26,70,124,0.15)] px-1 py-1"
+                >
+                    <div className="flex items-center justify-around gap-1 relative">
+                        {/* 1. Beranda */}
+                        <button
+                            type="button"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                        >
+                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                <svg className="w-5 h-5 text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-tight mt-0.5 text-hima-blue-dark font-black">
+                                Beranda
+                            </span>
+                        </button>
+
+                        {/* 2. Aspirasi */}
+                        <a
+                            href="#aspirasi"
+                            onClick={(e) => scrollToSection(e, 'aspirasi')}
+                            className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                        >
+                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                </svg>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
+                                Aspirasi
+                            </span>
+                        </a>
+
+                        {/* 3. Topik Rame */}
+                        <Link
+                            href={route('topik.index')}
+                            className="group relative flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                        >
+                            <div className="relative p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                                </svg>
+                                <span className="absolute -top-1 -right-1 text-[8px] bg-hima-red-light text-white font-black px-1 leading-none">
+                                    HOT
+                                </span>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-red-dark font-bold">
+                                Topik Rame
+                            </span>
+                        </Link>
+
+                        {/* 4. Survei KSM */}
+                        <Link
+                            href={route('ksm.survey.index')}
+                            className="group relative flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                        >
+                            <div className="relative p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                <span className="absolute -top-1 -right-1 text-[8px] bg-hima-blue-dark text-white font-black px-1 leading-none">
+                                    NEW
+                                </span>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
+                                Survei KSM
+                            </span>
+                        </Link>
+
+                        {/* 5. Akun / Masuk */}
+                        <Link
+                            href={auth.user ? route('dashboard') : route('login')}
+                            className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                        >
+                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
+                                {auth.user ? 'Akun' : 'Masuk'}
+                            </span>
+                        </Link>
+                    </div>
+                </nav>
             </div>
         </>
     );
