@@ -206,6 +206,45 @@ export default function Dashboard() {
                     </div>
                 )}
 
+                {/* BANNER SURVEI KSM: LANGSUNG TERLIHAT & JELAS */}
+                <div className="w-full bg-white border-2 border-hima-blue-dark border-l-6 border-l-hima-red-dark p-3.5 sm:p-4 shadow-sm anim-feed-item flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-1.5 py-0.2">
+                                KSM HMIF
+                            </span>
+                            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                                Kelompok Studi Mahasiswa
+                            </span>
+                        </div>
+                        <h2 className="text-xs sm:text-sm font-black text-gray-950">
+                            Survei Kebutuhan Materi Matkul & Bidang Teknologi
+                        </h2>
+                        <p className="text-[11px] text-gray-600 font-medium">
+                            Isi kuesioner peminatan untuk menentukan jadwal kelas rutin, workshop, dan mentoring KSM.
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+                        <a
+                            href={route('ksm.survey.index')}
+                            className="btn-brutal inline-flex items-center gap-1.5 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3 py-1.5 text-xs font-black uppercase tracking-wider shadow-xs hover:bg-hima-red-light transition-all"
+                        >
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg>
+                            <span>Isi Survei KSM</span>
+                        </a>
+
+                        <a
+                            href={route('admin.ksm.dashboard')}
+                            className="inline-flex items-center gap-1 border border-hima-blue-dark bg-blue-50 text-hima-blue-dark px-2.5 py-1.5 text-xs font-bold uppercase hover:bg-hima-blue-dark hover:text-white transition-colors"
+                        >
+                            <span>Data Admin</span>
+                        </a>
+                    </div>
+                </div>
+
                 {/* 1. TAMPILAN FOKUS: FORM INPUT ASPIRASI SIMPEL & EFISIEN */}
                 {activeNav === 'create' ? (
                     <div className="w-full bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-sm sm:shadow-brutal-sm anim-feed-item">

@@ -441,6 +441,28 @@ export default function Authenticated({
                         />
                     </button>
 
+                    {/* 3. Survei KSM */}
+                    <Link
+                        href={route('ksm.survey.index')}
+                        className="group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70"
+                    >
+                        <div className="p-1 border border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50 transition-all relative">
+                            <svg
+                                className="w-5 h-5 text-gray-500 group-hover:text-hima-red-dark transition-colors"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg>
+                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-hima-red-dark" />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-tight mt-0.5 text-gray-500 group-hover:text-hima-red-dark font-black">
+                            KSM
+                        </span>
+                        <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-hima-red-dark opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+
                     {/* 3. Aspirasi Saya */}
                     <button
                         type="button"
