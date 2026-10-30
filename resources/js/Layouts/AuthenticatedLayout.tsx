@@ -70,25 +70,9 @@ export default function Authenticated({
                 </Link>
 
                 <div className="flex items-center gap-2">
-                    {/* Pintasan Webmail Resmi HMIF untuk Admin di Mobile Toolbar */}
-                    {isAdmin && (
-                        <a
-                            href="https://kisaki.kawaiihost.net:2096"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Buka Webmail Resmi HMIF (Roundcube)"
-                            className="text-[10px] font-black text-hima-blue-dark bg-white border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-slate-900 hover:text-white transition-colors inline-flex items-center gap-1 shadow-brutal-xs"
-                        >
-                            <svg className="w-3 h-3 text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            <span>Webmail</span>
-                        </a>
-                    )}
-
                     <Link
                         href="/"
-                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
+                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
                     >
                         Publik
                     </Link>
@@ -775,7 +759,33 @@ export default function Authenticated({
                         />
                     </button>
 
-                    {/* 4. Akun Saya */}
+                    {/* 4. Webmail HMIF (Khusus Admin di Toolbar Bawah) */}
+                    {isAdmin && (
+                        <a
+                            href="https://kisaki.kawaiihost.net:2096"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Buka Webmail Resmi HMIF (Roundcube)"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70"
+                        >
+                            <div className="p-1 border border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50 transition-all">
+                                <svg
+                                    className="w-5 h-5 text-gray-500 group-hover:text-hima-red-dark transition-colors"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <span className="text-[10px] uppercase tracking-tight mt-0.5 text-gray-500 group-hover:text-hima-red-dark font-bold">
+                                Mail
+                            </span>
+                            <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-hima-red-dark opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </a>
+                    )}
+
+                    {/* 5. Akun Saya */}
                     <Link
                         href={route('profile.edit')}
                         className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
