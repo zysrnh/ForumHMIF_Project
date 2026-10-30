@@ -107,21 +107,27 @@ export default function Authenticated({
                 className={`fixed md:sticky top-0 left-0 h-screen bg-white border-r-2 border-hima-blue-dark z-50 flex flex-col justify-between transition-all duration-200 ease-in-out shadow-brutal md:shadow-none ${
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
                 } ${
-                    isDesktopCollapsed
-                        ? 'md:w-0 md:opacity-0 md:border-r-0 md:overflow-hidden md:pointer-events-none'
-                        : 'w-64 lg:w-72'
+                    isDesktopCollapsed ? 'w-64 md:w-16 lg:w-16' : 'w-64 lg:w-72'
                 }`}
             >
-                <div className="flex flex-col h-full overflow-y-auto">
+                <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden">
                     {/* Brand Header */}
-                    <div className="p-4 sm:p-5 border-b-2 border-hima-blue-dark bg-white flex items-center justify-between">
-                        <Link href="/dashboard" className="flex items-center gap-3">
-                            <ApplicationLogo className="h-11 sm:h-12 w-auto object-contain shrink-0" />
-                            <div>
-                                <h2 className="font-black text-sm sm:text-base text-hima-blue-dark tracking-tight leading-none">
+                    <div className={`border-b-2 border-hima-blue-dark bg-white flex items-center transition-all ${
+                        isDesktopCollapsed ? 'p-3 md:p-2.5 md:justify-center' : 'p-4 sm:p-5 justify-between'
+                    }`}>
+                        <Link
+                            href="/dashboard"
+                            className="flex items-center gap-3"
+                            title="HIMA INFORMATIKA - IDE LPKIA"
+                        >
+                            <ApplicationLogo className={`object-contain shrink-0 transition-all ${
+                                isDesktopCollapsed ? 'h-9 w-auto md:h-9' : 'h-11 sm:h-12 w-auto'
+                            }`} />
+                            <div className={isDesktopCollapsed ? 'md:hidden' : 'block'}>
+                                <h2 className="font-black text-sm sm:text-base text-hima-blue-dark tracking-tight leading-none whitespace-nowrap">
                                     HIMA INFORMATIKA
                                 </h2>
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-hima-red-dark mt-0.5">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-hima-red-dark mt-0.5 whitespace-nowrap">
                                     IDE LPKIA
                                 </p>
                             </div>
@@ -129,6 +135,7 @@ export default function Authenticated({
                         <button
                             onClick={() => setSidebarOpen(false)}
                             className="md:hidden text-gray-700 hover:text-black p-1 border border-gray-300"
+                            aria-label="Tutup menu mobile"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -137,8 +144,15 @@ export default function Authenticated({
                     </div>
 
                     {/* User Info Card Neo-Brutalist */}
-                    <div className="p-3 border-b-2 border-hima-blue-dark bg-blue-50/40">
-                        <div className="bg-white border-2 border-hima-blue-dark p-2.5 shadow-brutal-xs flex items-center gap-2.5">
+                    <div className={`border-b-2 border-hima-blue-dark bg-blue-50/40 transition-all ${
+                        isDesktopCollapsed ? 'p-2 md:p-2 md:flex md:justify-center' : 'p-3'
+                    }`}>
+                        <div
+                            className={`bg-white border-2 border-hima-blue-dark shadow-brutal-xs flex items-center transition-all ${
+                                isDesktopCollapsed ? 'p-1 md:p-1 md:justify-center' : 'p-2.5 gap-2.5'
+                            }`}
+                            title={`${user.name} (${displayNim}) - ${user.role === 'super_admin' ? 'SUPER ADMIN' : isAdmin ? 'ADMIN HIMA' : 'MAHASISWA'}`}
+                        >
                             {user.avatar && !avatarError ? (
                                 <img
                                     src={user.avatar}
@@ -151,7 +165,7 @@ export default function Authenticated({
                                     {user.name.charAt(0).toUpperCase()}
                                 </div>
                             )}
-                            <div className="min-w-0 flex-1">
+                            <div className={`min-w-0 flex-1 ${isDesktopCollapsed ? 'md:hidden' : 'block'}`}>
                                 <p className="text-xs font-black text-hima-blue-dark uppercase truncate" title={user.name}>
                                     {user.name}
                                 </p>
@@ -168,32 +182,40 @@ export default function Authenticated({
                     </div>
 
                     {/* Navigation Menu Desktop & Drawer */}
-                    <nav className="p-3 space-y-1 flex-1 overflow-y-auto text-xs">
+                    <nav className={`space-y-1 flex-1 overflow-y-auto text-xs transition-all ${
+                        isDesktopCollapsed ? 'p-2 md:px-1.5 md:py-2' : 'p-3'
+                    }`}>
                         {/* 1. Semua Aspirasi */}
                         {isProfilePage ? (
                             <Link
                                 href="/dashboard?tab=feed"
-                                className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                                </svg>
-                                <span>Semua Aspirasi</span>
-                            </Link>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('feed')}
-                                className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
-                                    currentNav === 'feed'
-                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
-                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                title="Semua Aspirasi"
+                                className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
                                 }`}
                             >
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                                 </svg>
-                                <span>Semua Aspirasi</span>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Semua Aspirasi</span>
+                            </Link>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={() => handleNavClick('feed')}
+                                title="Semua Aspirasi"
+                                className={`w-full text-left flex items-center font-bold border transition-all ${
+                                    currentNav === 'feed'
+                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                } ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
+                                }`}
+                            >
+                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Semua Aspirasi</span>
                             </button>
                         )}
 
@@ -201,27 +223,33 @@ export default function Authenticated({
                         {isProfilePage ? (
                             <Link
                                 href="/dashboard?tab=create"
-                                className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                                <span>Tulis Aspirasi</span>
-                            </Link>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('create')}
-                                className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
-                                    currentNav === 'create'
-                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
-                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                title="Tulis Aspirasi"
+                                className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
                                 }`}
                             >
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
-                                <span>Tulis Aspirasi</span>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Tulis Aspirasi</span>
+                            </Link>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={() => handleNavClick('create')}
+                                title="Tulis Aspirasi"
+                                className={`w-full text-left flex items-center font-bold border transition-all ${
+                                    currentNav === 'create'
+                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                } ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
+                                }`}
+                            >
+                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Tulis Aspirasi</span>
                             </button>
                         )}
 
@@ -229,27 +257,33 @@ export default function Authenticated({
                         {isProfilePage ? (
                             <Link
                                 href="/dashboard?tab=my"
-                                className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                <span>Aspirasi Saya</span>
-                            </Link>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('my')}
-                                className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
-                                    currentNav === 'my'
-                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
-                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                title="Aspirasi Saya"
+                                className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
                                 }`}
                             >
                                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
-                                <span>Aspirasi Saya</span>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Aspirasi Saya</span>
+                            </Link>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={() => handleNavClick('my')}
+                                title="Aspirasi Saya"
+                                className={`w-full text-left flex items-center font-bold border transition-all ${
+                                    currentNav === 'my'
+                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                } ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
+                                }`}
+                            >
+                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Aspirasi Saya</span>
                             </button>
                         )}
 
@@ -258,15 +292,18 @@ export default function Authenticated({
                             isProfilePage ? (
                                 <Link
                                     href="/dashboard?tab=ksm"
-                                    className="w-full flex items-center justify-between px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                                    title="Rekap Data KSM"
+                                    className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                        isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 justify-between' : 'justify-between px-3 py-2'
+                                    }`}
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                         </svg>
-                                        <span>Rekap Data KSM</span>
+                                        <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Rekap Data KSM</span>
                                     </div>
-                                    <span className="text-[8px] font-black uppercase px-1 py-0.2 bg-blue-50 text-hima-blue-dark border border-blue-200">
+                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 bg-blue-50 text-hima-blue-dark border border-blue-200 ${isDesktopCollapsed ? 'md:hidden' : 'inline'}`}>
                                         ADMIN
                                     </span>
                                 </Link>
@@ -274,19 +311,22 @@ export default function Authenticated({
                                 <button
                                     type="button"
                                     onClick={() => handleNavClick('ksm')}
-                                    className={`w-full text-left flex items-center justify-between px-3 py-2 font-bold border transition-all ${
+                                    title="Rekap Data KSM"
+                                    className={`w-full text-left flex items-center font-bold border transition-all ${
                                         currentNav === 'ksm'
                                             ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
                                             : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    } ${
+                                        isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 justify-between' : 'justify-between px-3 py-2'
                                     }`}
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                         </svg>
-                                        <span>Rekap Data KSM</span>
+                                        <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Rekap Data KSM</span>
                                     </div>
-                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${currentNav === 'ksm' ? 'bg-white text-hima-blue-dark' : 'bg-blue-50 text-hima-blue-dark border border-blue-200'}`}>
+                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${isDesktopCollapsed ? 'md:hidden' : 'inline'} ${currentNav === 'ksm' ? 'bg-white text-hima-blue-dark' : 'bg-blue-50 text-hima-blue-dark border border-blue-200'}`}>
                                         ADMIN
                                     </span>
                                 </button>
@@ -298,15 +338,18 @@ export default function Authenticated({
                             isProfilePage ? (
                                 <Link
                                     href="/dashboard?tab=users"
-                                    className="w-full flex items-center justify-between px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                                    title="Kelola Pengguna"
+                                    className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                        isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 justify-between' : 'justify-between px-3 py-2'
+                                    }`}
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                         </svg>
-                                        <span>Kelola Pengguna</span>
+                                        <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Kelola Pengguna</span>
                                     </div>
-                                    <span className="text-[8px] font-black uppercase px-1 py-0.2 bg-red-50 text-hima-red-dark border border-red-200">
+                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 bg-red-50 text-hima-red-dark border border-red-200 ${isDesktopCollapsed ? 'md:hidden' : 'inline'}`}>
                                         ADMIN
                                     </span>
                                 </Link>
@@ -314,19 +357,22 @@ export default function Authenticated({
                                 <button
                                     type="button"
                                     onClick={() => handleNavClick('users')}
-                                    className={`w-full text-left flex items-center justify-between px-3 py-2 font-bold border transition-all ${
+                                    title="Kelola Pengguna"
+                                    className={`w-full text-left flex items-center font-bold border transition-all ${
                                         currentNav === 'users'
                                             ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
                                             : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    } ${
+                                        isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 justify-between' : 'justify-between px-3 py-2'
                                     }`}
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                         </svg>
-                                        <span>Kelola Pengguna</span>
+                                        <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Kelola Pengguna</span>
                                     </div>
-                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${currentNav === 'users' ? 'bg-white text-hima-blue-dark' : 'bg-red-50 text-hima-red-dark border border-red-200'}`}>
+                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${isDesktopCollapsed ? 'md:hidden' : 'inline'} ${currentNav === 'users' ? 'bg-white text-hima-blue-dark' : 'bg-red-50 text-hima-red-dark border border-red-200'}`}>
                                         ADMIN
                                     </span>
                                 </button>
@@ -337,57 +383,69 @@ export default function Authenticated({
                         {!isAdmin && (
                             <Link
                                 href={route('ksm.survey.index')}
-                                className="w-full flex items-center justify-between px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                                title="Isi Survei KSM"
+                                className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
+                                }`}
                             >
-                                <div className="flex items-center gap-2.5">
-                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                                    </svg>
-                                    <span>Isi Survei KSM</span>
-                                </div>
+                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Isi Survei KSM</span>
                             </Link>
                         )}
 
                         {/* 6. Topik */}
                         <Link
                             href={route('topik.index')}
-                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                            title="Topik Diskusi"
+                            className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all ${
+                                isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
+                            }`}
                         >
                             <svg className="w-4 h-4 shrink-0 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                             </svg>
-                            <span>Topik</span>
+                            <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Topik</span>
                         </Link>
 
                         {/* 7. Akun Profil */}
                         <Link
                             href={route('profile.edit')}
-                            className={`w-full flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
+                            title="Akun Pengguna"
+                            className={`w-full flex items-center font-bold border transition-all ${
                                 isProfilePage
                                     ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
                                     : 'border-slate-200 text-slate-700 bg-white hover:bg-slate-50'
+                            } ${
+                                isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
                             }`}
                         >
                             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <span>Akun Pengguna</span>
+                            <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Akun Pengguna</span>
                         </Link>
                     </nav>
 
                     {/* Bottom Logout Button */}
-                    <div className="p-3 border-t border-slate-200 bg-white">
+                    <div className={`border-t border-slate-200 bg-white transition-all ${
+                        isDesktopCollapsed ? 'p-2 md:p-1.5' : 'p-3'
+                    }`}>
                         <Link
                             href={route('logout')}
                             method="post"
                             as="button"
-                            className="w-full flex items-center justify-center gap-2 border border-red-200 bg-red-50 text-red-700 py-2 px-3 text-xs font-bold uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all"
+                            title="Keluar dari Akun"
+                            className={`w-full flex items-center justify-center border border-red-200 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all ${
+                                isDesktopCollapsed ? 'py-2 px-1 md:gap-0' : 'py-2 px-3 gap-2'
+                            }`}
                         >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
-                            <span>Keluar</span>
+                            <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Keluar</span>
                         </Link>
                     </div>
                 </div>
