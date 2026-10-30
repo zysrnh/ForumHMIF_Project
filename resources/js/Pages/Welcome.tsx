@@ -360,31 +360,31 @@ export default function Welcome({
                                     <h2 className="text-sm sm:text-base font-black text-hima-blue-dark uppercase tracking-wider">
                                         Kirim Aspirasi Cepat
                                     </h2>
-                                    <span className="text-[10px] font-bold bg-hima-blue-light text-white px-2 py-0.5 border border-hima-blue-dark uppercase">
-                                        Langsung Masuk
-                                    </span>
                                 </div>
 
-                                {/* Category Chips dari APP_CATEGORIES */}
+                                {/* Dropdown Kategori dari APP_CATEGORIES */}
                                 <div className="space-y-1.5">
-                                    <label className="text-[11px] font-bold text-gray-600 block uppercase">
+                                    <label htmlFor="aspiration-category-select" className="text-[11px] font-bold text-gray-700 block uppercase">
                                         Pilih Kategori:
                                     </label>
-                                    <div className="flex flex-wrap gap-1.5">
-                                        {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
-                                            <button
-                                                key={cat}
-                                                type="button"
-                                                onClick={() => setAspirationCategory(cat)}
-                                                className={`text-xs font-bold px-2.5 py-1 border-2 border-hima-blue-dark transition-all duration-150 ${
-                                                    aspirationCategory === cat
-                                                        ? 'bg-hima-blue-dark text-white shadow-xs'
-                                                        : 'bg-white text-hima-blue-dark hover:bg-gray-100'
-                                                }`}
-                                            >
-                                                {cat}
-                                            </button>
-                                        ))}
+                                    <div className="relative">
+                                        <select
+                                            id="aspiration-category-select"
+                                            value={aspirationCategory}
+                                            onChange={(e) => setAspirationCategory(e.target.value)}
+                                            className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs cursor-pointer appearance-none pr-8"
+                                        >
+                                            {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
+                                                <option key={cat} value={cat}>
+                                                    {cat}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-hima-blue-dark">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
 
