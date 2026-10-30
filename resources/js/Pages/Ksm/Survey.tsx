@@ -152,46 +152,49 @@ export default function Survey({ user }: Props) {
                             </div>
                         </Link>
 
-                        <div className="flex items-center gap-1.5 shrink-0">
+                        <div className="flex items-center gap-2 shrink-0">
                             {['admin', 'super_admin'].includes(user?.role || '') && (
                                 <Link
                                     href={route('admin.ksm.dashboard')}
-                                    className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border border-hima-blue-dark px-2 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
+                                    className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border-2 border-hima-blue-dark px-2.5 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
                                 >
                                     Admin
                                 </Link>
                             )}
                             <Link
                                 href={user ? route('dashboard') : '/'}
-                                className="text-[10px] sm:text-[11px] font-bold uppercase text-gray-700 border border-gray-400 px-2 py-1 bg-white hover:bg-gray-100 transition-colors"
+                                className="btn-brutal inline-flex items-center gap-1.5 bg-white text-hima-blue-dark hover:bg-slate-900 hover:text-white px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
                             >
-                                ← Kembali
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                <span>Kembali</span>
                             </Link>
                         </div>
                     </div>
                 </header>
 
-                {/* 2. MAIN CONTAINER - PAS SELEBAR LAYAR HP TANPA CELAH SAMPING */}
-                <main className="w-full max-w-3xl mx-auto px-2.5 sm:px-6 py-3.5 sm:py-5 pb-24 md:pb-8 space-y-3.5 flex-1">
+                {/* 2. MAIN CONTAINER - BERJARAK & LEGA (ADA NAFAS) */}
+                <main className="w-full max-w-3xl mx-auto px-3.5 sm:px-6 py-6 sm:py-8 pb-28 md:pb-12 space-y-6 sm:space-y-7 flex-1">
                     {/* Notifikasi Berhasil */}
                     {(wasSuccessful || successFlash) && (
-                        <div className="bg-green-50 border-2 border-green-700 p-3 sm:p-4 shadow-sm text-green-950 space-y-1.5 anim-feed-item">
+                        <div className="bg-green-50 border-2 border-green-700 p-4 sm:p-5 shadow-brutal-xs text-green-950 space-y-2 anim-feed-item">
                             <div className="flex items-center gap-2 font-black text-xs sm:text-sm">
-                                <span className="w-4 h-4 bg-green-700 text-white flex items-center justify-center text-[10px] shrink-0">
+                                <span className="w-5 h-5 bg-green-700 text-white flex items-center justify-center text-xs shrink-0 font-mono">
                                     ✓
                                 </span>
                                 <span>Jawaban Survei KSM Berhasil Dikirim!</span>
                             </div>
-                            <p className="text-[11px] sm:text-xs text-green-800 leading-relaxed">
+                            <p className="text-xs text-green-800 leading-relaxed">
                                 Terima kasih atas partisipasimu. Masukanmu akan menjadi dasar kurikulum dan jadwal kegiatan Kelompok Studi Mahasiswa HIMA IF.
                             </p>
                         </div>
                     )}
 
                     {/* Banner Intro Survei */}
-                    <div className="bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-4 sm:p-6 shadow-sm space-y-2.5">
+                    <div className="bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-1.5 py-0.5 tracking-wider">
+                            <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-2 py-0.5 tracking-wider">
                                 Formulir Peminatan
                             </span>
                             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
@@ -203,20 +206,20 @@ export default function Survey({ user }: Props) {
                             Survei Kebutuhan & Minat Kelompok Studi Mahasiswa (KSM)
                         </h1>
 
-                        <p className="text-xs font-medium text-gray-600 leading-relaxed">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600 leading-relaxed">
                             Formulir ini memetakan materi mata kuliah dan bidang teknologi yang paling kamu butuhkan, serta menyesuaikan waktu dan format mentoring agar efektif.
                         </p>
 
-                        <div className="text-[11px] font-bold text-hima-red-dark border-t border-gray-100 pt-2 flex items-center gap-1.5">
+                        <div className="text-[11px] font-bold text-hima-red-dark border-t border-gray-100 pt-2.5 flex items-center gap-1.5">
                             <span className="w-1.5 h-1.5 bg-hima-red-dark inline-block shrink-0" />
                             <span>Tanda bintang (*) menandakan pertanyaan wajib diisi.</span>
                         </div>
                     </div>
 
                     {/* FORM PERTANYAAN */}
-                    <form onSubmit={handleSubmit} className="space-y-3.5">
+                    <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
                         {/* IDENTITAS PENGISI */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-100 pb-2">
                                 Identitas Responden
                             </h2>
@@ -267,7 +270,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 1: MATKUL SEMESTER 3 */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <div className="space-y-0.5">
                                 <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                     Dari mata kuliah semester 3, materi mana yang paling ingin kamu pelajari lebih awal? <span className="text-hima-red-dark">*</span>
@@ -344,7 +347,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 2: BIDANG TEKNOLOGI (MAKSIMAL 3) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -429,7 +432,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 3: BENTUK KEGIATAN (MAKSIMAL 2) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -484,7 +487,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 4: METODE BELAJAR EFEKTIF */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Menurutmu, metode belajar yang paling efektif seperti apa? <span className="text-hima-red-dark">*</span>
                             </label>
@@ -519,7 +522,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 5: TINGKAT KETERTARIKAN (SKALA 1 - 4) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Seberapa tertarik kamu untuk kegiatan KSM? <span className="text-hima-red-dark">*</span>
                             </label>
@@ -559,7 +562,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 6: HARI YANG MEMUNGKINKAN (MAKSIMAL 2) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -614,7 +617,7 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 7: WAKTU PELAKSANAAN */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-3">
+                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Waktu pelaksanaan yang paling anda inginkan adalah <span className="text-hima-red-dark">*</span>
                             </label>

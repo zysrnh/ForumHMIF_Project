@@ -284,7 +284,7 @@ export default function Welcome({
                                     href={route('login')}
                                     className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-3.5 sm:px-7 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
-                                    Gabung Yuk
+                                    Masuk
                                 </Link>
                             )}
                         </div>

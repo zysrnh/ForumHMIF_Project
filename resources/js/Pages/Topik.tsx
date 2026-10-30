@@ -148,19 +148,16 @@ export default function Topik({
                                     href={route('login')}
                                     className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-5 sm:px-7 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
-                                    Gabung Yuk
+                                    Masuk
                                 </Link>
                             )}
                         </div>
                     </header>
 
                     {/* 2. HEADER BANNER */}
-                    <section className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-[8px_8px_0px_0px_#1A467C] space-y-5">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 border-b-2 border-hima-blue-dark pb-5">
+                    <section className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm space-y-5">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 border-b-2 border-slate-100 pb-5">
                             <div className="space-y-1.5 max-w-2xl">
-                                <div className="inline-block bg-hima-blue-dark text-white text-[10px] font-black uppercase px-2.5 py-1 tracking-wider border border-hima-blue-dark shadow-brutal-sm">
-                                    Portal Aspirasi Publik
-                                </div>
                                 <h1 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight leading-tight">
                                     Eksplorasi Aspirasi Mahasiswa
                                 </h1>
@@ -170,7 +167,7 @@ export default function Topik({
                             </div>
 
                             {/* Summary Metrics Sederhana */}
-                            <div className="w-full md:w-auto grid grid-cols-2 md:flex border-2 border-hima-blue-dark bg-blue-50/50 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] shrink-0">
+                            <div className="w-full md:w-auto grid grid-cols-2 md:flex border-2 border-hima-blue-dark bg-blue-50/50 divide-x-2 divide-hima-blue-dark shadow-brutal-xs shrink-0">
                                 <div className="p-2.5 sm:p-3 text-center sm:min-w-[110px]">
                                     <span className="text-xl sm:text-2xl font-black text-hima-blue-dark block font-mono">
                                         {stats.total}
@@ -198,82 +195,67 @@ export default function Topik({
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Cari aspirasi mahasiswa..."
-                                    className="w-full border-2 border-hima-blue-dark p-2.5 sm:p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-brutal-sm"
+                                    className="w-full border-2 border-hima-blue-dark p-2.5 sm:p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light rounded-none shadow-brutal-xs"
                                 />
                             </div>
 
-                            <div className="flex items-center gap-1 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm shrink-0 self-end sm:self-auto">
-                                <button
-                                    type="button"
-                                    onClick={() => setSortBy('votes')}
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
-                                        sortBy === 'votes'
-                                            ? 'bg-hima-blue-dark text-white'
-                                            : 'bg-white text-gray-700 hover:bg-gray-100'
-                                    }`}
-                                >
-                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                                    </svg>
-                                    <span>Top Vote</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setSortBy('latest')}
-                                    className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
-                                        sortBy === 'latest'
-                                            ? 'bg-hima-blue-dark text-white'
-                                            : 'bg-white text-gray-700 hover:bg-gray-100'
-                                    }`}
-                                >
-                                    Terbaru
-                                </button>
-                            </div>
-                        </div>
+                            {/* Dropdown Kategori & Sort Buttons */}
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                                <div className="relative w-full sm:w-56">
+                                    <select
+                                        id="topic-category-select"
+                                        value={activeFilter}
+                                        onChange={(e) => setActiveFilter(e.target.value)}
+                                        className="w-full border-2 border-hima-blue-dark bg-white p-2.5 text-xs font-bold text-black focus:outline-none focus:border-hima-blue-light rounded-none shadow-brutal-xs cursor-pointer appearance-none pr-8"
+                                    >
+                                        <option value="Semua">Semua Kategori ({stats.total})</option>
+                                        <option value="Lagi Rame">Top Vote Terbanyak</option>
+                                        {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
+                                            <option key={cat} value={cat}>
+                                                {cat}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-hima-blue-dark">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </div>
+                                </div>
 
-                        {/* Category Filter Pills */}
-                        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                            <button
-                                type="button"
-                                onClick={() => setActiveFilter('Semua')}
-                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
-                                    activeFilter === 'Semua'
-                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
-                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
-                                }`}
-                            >
-                                Semua
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setActiveFilter('Lagi Rame')}
-                                className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
-                                    activeFilter === 'Lagi Rame'
-                                        ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
-                                        : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
-                                }`}
-                            >
-                                Top Vote
-                            </button>
-                            {APP_CATEGORIES.filter((c) => c !== 'Semua').map((tab) => (
-                                <button
-                                    key={tab}
-                                    type="button"
-                                    onClick={() => setActiveFilter(tab)}
-                                    className={`text-xs font-bold px-3 py-1.5 border-2 border-hima-blue-dark whitespace-nowrap transition-all ${
-                                        activeFilter === tab
-                                            ? 'bg-hima-red-light text-white shadow-[3px_3px_0px_0px_#1A467C] -translate-y-0.5'
-                                            : 'bg-white text-hima-blue-dark hover:bg-blue-50 shadow-brutal-sm'
-                                    }`}
-                                >
-                                    {tab}
-                                </button>
-                            ))}
+                                <div className="flex items-center gap-1 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-xs shrink-0 self-end sm:self-auto">
+                                    <button
+                                        type="button"
+                                        onClick={() => setSortBy('votes')}
+                                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
+                                            sortBy === 'votes'
+                                                ? 'bg-hima-blue-dark text-white'
+                                                : 'bg-white text-gray-700 hover:bg-gray-100'
+                                        }`}
+                                    >
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                        </svg>
+                                        <span>Top Vote</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSortBy('latest')}
+                                        className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all ${
+                                            sortBy === 'latest'
+                                                ? 'bg-hima-blue-dark text-white'
+                                                : 'bg-white text-gray-700 hover:bg-gray-100'
+                                        }`}
+                                    >
+                                        Terbaru
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </section>
 
                     {/* 3. LIST TOPIK */}
-                    <section className="space-y-3.5">
+                    <section className="space-y-5">
                         <div className="flex items-center justify-between text-xs font-bold text-gray-600 px-1">
                             <span>Menampilkan {filteredItems.length} aspirasi</span>
                             <span className="text-hima-blue-dark font-black">
@@ -398,34 +380,49 @@ export default function Topik({
                                                     </div>
 
                                                     {item.comments && item.comments.length > 0 ? (
-                                                        <div className="space-y-1.5">
+                                                        <div className="space-y-2.5">
                                                             {item.comments.map((c) => (
                                                                 <div
                                                                     key={c.id}
-                                                                    className={`p-2.5 border text-xs leading-relaxed ${
+                                                                    className={`p-3 border text-xs leading-relaxed ${
                                                                         c.isOfficial
-                                                                            ? 'border-hima-blue-dark bg-blue-50/80 shadow-xs'
-                                                                            : 'border-gray-200 bg-white'
+                                                                            ? 'border-hima-blue-dark bg-blue-50/90 shadow-xs'
+                                                                            : 'border-slate-200 bg-white shadow-xs'
                                                                     }`}
                                                                 >
-                                                                    <div className="flex items-center justify-between gap-2 mb-0.5">
-                                                                        <div className="flex items-center gap-1.5">
-                                                                            <span className="font-black text-gray-900">
-                                                                                {c.authorName}
-                                                                            </span>
-                                                                            {c.isOfficial && (
-                                                                                <span className="text-[8px] font-black uppercase bg-hima-blue-dark text-white px-1 py-0.2">
-                                                                                    {c.authorRole || 'PENGURUS HIMA'}
-                                                                                </span>
-                                                                            )}
+                                                                    <div className="flex items-start gap-2.5">
+                                                                        {/* Foto Profil / Avatar Inisial */}
+                                                                        <div
+                                                                            className={`w-7 h-7 shrink-0 flex items-center justify-center font-black text-[10px] border shadow-xs ${
+                                                                                c.isOfficial
+                                                                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark'
+                                                                                    : 'bg-slate-800 text-white border-slate-900'
+                                                                            }`}
+                                                                        >
+                                                                            {getInitials(c.authorName)}
                                                                         </div>
-                                                                        <span className="text-[10px] text-gray-400">
-                                                                            {c.createdAt}
-                                                                        </span>
+
+                                                                        <div className="flex-1 min-w-0">
+                                                                            <div className="flex items-center justify-between gap-2 mb-1">
+                                                                                <div className="flex items-center gap-1.5 flex-wrap">
+                                                                                    <span className="font-black text-slate-900 text-xs">
+                                                                                        {c.authorName}
+                                                                                    </span>
+                                                                                    {c.isOfficial && (
+                                                                                        <span className="text-[8px] font-black uppercase bg-hima-blue-dark text-white px-1.5 py-0.5 tracking-wider">
+                                                                                            {c.authorRole || 'PENGURUS HIMA'}
+                                                                                        </span>
+                                                                                    )}
+                                                                                </div>
+                                                                                <span className="text-[10px] text-slate-400 font-mono">
+                                                                                    {c.createdAt}
+                                                                                </span>
+                                                                            </div>
+                                                                            <p className="text-slate-700 text-xs leading-relaxed">
+                                                                                {c.content}
+                                                                            </p>
+                                                                        </div>
                                                                     </div>
-                                                                    <p className="text-gray-700">
-                                                                        {c.content}
-                                                                    </p>
                                                                 </div>
                                                             ))}
                                                         </div>
