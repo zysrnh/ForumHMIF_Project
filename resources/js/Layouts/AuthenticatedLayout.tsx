@@ -379,6 +379,29 @@ export default function Authenticated({
                             )
                         )}
 
+                        {/* Webmail HMIF (HANYA MUNCUL JIKA USER ADMIN/SUPER ADMIN) */}
+                        {isAdmin && (
+                            <a
+                                href="https://kisaki.kawaiihost.net:2096"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Buka Webmail Resmi HMIF (Roundcube)"
+                                className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-900 hover:text-white transition-all group ${
+                                    isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 justify-between' : 'justify-between px-3 py-2'
+                                }`}
+                            >
+                                <div className="flex items-center gap-2.5">
+                                    <svg className="w-4 h-4 shrink-0 text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Webmail HMIF</span>
+                                </div>
+                                <span className={`text-[8px] font-black uppercase px-1 py-0.2 bg-blue-50 text-hima-blue-dark border border-blue-200 group-hover:bg-white group-hover:text-slate-900 ${isDesktopCollapsed ? 'md:hidden' : 'inline'}`}>
+                                    ↗
+                                </span>
+                            </a>
+                        )}
+
                         {/* 5. Isi Survei KSM (UNTUK MAHASISWA) */}
                         {!isAdmin && (
                             <Link

@@ -437,25 +437,6 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     </div>
 
                     <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
-                        {/* Pintasan Buka Webmail Resmi HMIF untuk Admin */}
-                        {isAdmin && (
-                            <a
-                                href="https://kisaki.kawaiihost.net:2096"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title="Buka Webmail Resmi HMIF (Roundcube)"
-                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-white text-hima-blue-dark hover:bg-slate-900 hover:text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
-                            >
-                                <svg className="w-3.5 h-3.5 text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                                <span>Webmail</span>
-                                <svg className="w-3 h-3 opacity-60 hidden sm:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                            </a>
-                        )}
-
                         {activeNav === 'users' ? (
                             <button
                                 type="button"
