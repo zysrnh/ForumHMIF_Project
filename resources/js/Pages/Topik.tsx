@@ -103,50 +103,64 @@ export default function Topik({
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-6 lg:p-8 pb-20 md:pb-8 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
                 <div className="w-full max-w-7xl z-10 space-y-5 sm:space-y-6 my-1 sm:my-2">
-                    {/* 1. NAVBAR */}
-                    <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-4">
-                        <Link href="/" className="flex items-center gap-3 group">
-                            <div className="w-10 h-10 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200">
+                    {/* 1. NAVBAR FORUM (SERAGAM DENGAN BERANDA) */}
+                    <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-3 sm:gap-4">
+                        <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+                            <div className="w-9 h-9 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200 shrink-0">
                                 <img
                                     src="/logo/logo.png"
                                     alt="Logo HIMA IF"
                                     className="w-full h-full object-contain"
                                 />
                             </div>
-                            <div>
-                                <span className="font-black text-hima-blue-dark tracking-tight text-base sm:text-xl block leading-none">
+                            <div className="min-w-0">
+                                <span className="font-black text-hima-blue-dark tracking-tight text-sm sm:text-xl block leading-none truncate">
                                     FORUM HMIF
                                 </span>
-                                <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                <span className="text-[9px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest block mt-0.5 truncate">
                                     Suara Mahasiswa Informatika
                                 </span>
                             </div>
                         </Link>
 
-                        <nav className="hidden md:flex items-center gap-6 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
+                        {/* Menu Nav Desktop Seragam */}
+                        <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
                             <Link href="/" className="hover:text-hima-blue-light transition-colors">
                                 Beranda
+                            </Link>
+                            <Link href="/#aspirasi" className="hover:text-hima-blue-light transition-colors">
+                                Aspirasi
                             </Link>
                             <Link
                                 href={route('topik.index')}
                                 className="text-hima-red-light border-b-2 border-hima-red-light pb-0.5"
                             >
-                                Topik Aspirasi
+                                Topik
+                            </Link>
+                            <Link
+                                href={route('ksm.survey.index')}
+                                className="hover:text-hima-blue-light transition-colors"
+                            >
+                                Survei KSM
+                            </Link>
+                            <Link href="/#cara-kerja" className="hover:text-hima-blue-light transition-colors">
+                                Cara Kerja
                             </Link>
                         </nav>
 
-                        <div>
+                        {/* Right Auth Button */}
+                        <div className="shrink-0">
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-4 sm:px-6 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs uppercase tracking-wider hover:bg-hima-blue-light"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-3.5 sm:px-6 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-xs uppercase tracking-wider hover:bg-hima-blue-light"
                                 >
-                                    Dashboard Kamu
+                                    Dashboard
                                 </Link>
                             ) : (
                                 <Link
                                     href={route('login')}
-                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-5 sm:px-7 py-2.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-red-light text-white font-black px-3.5 sm:px-7 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
                                 >
                                     Masuk
                                 </Link>

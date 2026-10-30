@@ -132,50 +132,93 @@ export default function Survey({ user }: Props) {
         <>
             <Head title="Kuesioner Survei Minat KSM - HIMA IF" />
 
-            <div className="min-h-screen bg-slate-50 text-black flex flex-col selection:bg-hima-red-light selection:text-white">
-                {/* 1. HEADER MENEMPEL PENUH DI ATAS (EDGE-TO-EDGE & STICKY) */}
-                <header className="sticky top-0 z-40 bg-white border-b-2 border-hima-blue-dark px-3 py-2 sm:px-6 sm:py-3 shadow-sm w-full">
-                    <div className="max-w-3xl mx-auto flex items-center justify-between gap-2">
-                        <Link href="/" className="flex items-center gap-2 min-w-0">
-                            <img
-                                src="/logo/logo.png"
-                                alt="Logo HIMA IF"
-                                className="w-7 h-7 sm:w-8 sm:h-8 object-contain shrink-0"
-                            />
+            <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-6 lg:p-8 pb-20 md:pb-8 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
+                <div className="w-full max-w-7xl z-10 space-y-6 sm:space-y-8 my-1 sm:my-2">
+                    {/* 1. NAVBAR FORUM (SERAGAM 100% DENGAN BERANDA & TOPIK) */}
+                    <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-3 sm:gap-4">
+                        <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+                            <div className="w-9 h-9 sm:w-11 sm:h-11 border-2 border-hima-blue-dark bg-white p-1 shadow-brutal-sm group-hover:rotate-[-4deg] transition-transform duration-200 shrink-0">
+                                <img
+                                    src="/logo/logo.png"
+                                    alt="Logo HIMA IF"
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
                             <div className="min-w-0">
-                                <span className="font-black text-hima-blue-dark text-xs sm:text-sm block leading-none truncate">
-                                    SURVEI KSM HMIF
+                                <span className="font-black text-hima-blue-dark tracking-tight text-sm sm:text-xl block leading-none truncate">
+                                    FORUM HMIF
                                 </span>
-                                <span className="text-[9px] font-bold text-hima-red-dark uppercase tracking-wider block mt-0.5 truncate">
-                                    Kelompok Studi Mahasiswa
+                                <span className="text-[9px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest block mt-0.5 truncate">
+                                    Suara Mahasiswa Informatika
                                 </span>
                             </div>
                         </Link>
 
-                        <div className="flex items-center gap-2 shrink-0">
+                        {/* Menu Nav Desktop Seragam */}
+                        <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-bold uppercase tracking-wider text-hima-blue-dark">
+                            <Link href="/" className="hover:text-hima-blue-light transition-colors">
+                                Beranda
+                            </Link>
+                            <Link href="/#aspirasi" className="hover:text-hima-blue-light transition-colors">
+                                Aspirasi
+                            </Link>
+                            <Link
+                                href={route('topik.index')}
+                                className="hover:text-hima-blue-light transition-colors"
+                            >
+                                Topik
+                            </Link>
+                            <Link
+                                href={route('ksm.survey.index')}
+                                className="text-hima-red-light border-b-2 border-hima-red-light pb-0.5"
+                            >
+                                Survei KSM
+                            </Link>
+                            <Link href="/#cara-kerja" className="hover:text-hima-blue-light transition-colors">
+                                Cara Kerja
+                            </Link>
+                        </nav>
+
+                        {/* Right Auth Button & Tombol Kembali */}
+                        <div className="shrink-0 flex items-center gap-2 sm:gap-3">
+                            <Link
+                                href="/"
+                                title="Kembali ke Beranda"
+                                className="btn-brutal inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white hover:bg-slate-100 text-hima-blue-dark border-2 border-hima-blue-dark shadow-brutal-xs hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
+                            >
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </Link>
                             {['admin', 'super_admin'].includes(user?.role || '') && (
                                 <Link
                                     href={route('admin.ksm.dashboard')}
-                                    className="text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border-2 border-hima-blue-dark px-2.5 py-1 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
+                                    className="hidden sm:inline-flex text-[10px] sm:text-[11px] font-black uppercase text-hima-blue-dark border-2 border-hima-blue-dark px-2.5 py-1.5 bg-blue-50 hover:bg-hima-blue-dark hover:text-white transition-colors"
                                 >
-                                    Admin
+                                    Admin KSM
                                 </Link>
                             )}
-                            <Link
-                                href={user ? route('dashboard') : '/'}
-                                className="btn-brutal inline-flex items-center gap-1.5 bg-white text-hima-blue-dark hover:bg-slate-900 hover:text-white px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
-                            >
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-                                </svg>
-                                <span>Kembali</span>
-                            </Link>
+                            {user ? (
+                                <Link
+                                    href={route('dashboard')}
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-3.5 sm:px-6 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-xs uppercase tracking-wider hover:bg-hima-blue-light"
+                                >
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <Link
+                                    href={route('login')}
+                                    className="btn-brutal inline-flex items-center gap-1.5 bg-hima-blue-dark text-white font-bold px-3.5 sm:px-6 py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] text-[11px] sm:text-xs uppercase tracking-wider hover:bg-hima-blue-light"
+                                >
+                                    Masuk
+                                </Link>
+                            )}
                         </div>
-                    </div>
-                </header>
+                    </header>
+
 
                 {/* 2. MAIN CONTAINER - BERJARAK & LEGA (ADA NAFAS) */}
-                <main className="w-full max-w-3xl mx-auto px-3.5 sm:px-6 py-6 sm:py-8 pb-28 md:pb-12 space-y-6 sm:space-y-7 flex-1">
+                <main className="w-full max-w-3xl mx-auto px-3.5 sm:px-6 py-4 sm:py-6 pb-28 md:pb-12 space-y-6 sm:space-y-7 flex-1">
                     {/* Notifikasi Berhasil */}
                     {(wasSuccessful || successFlash) && (
                         <div className="bg-green-50 border-2 border-green-700 p-4 sm:p-5 shadow-brutal-xs text-green-950 space-y-2 anim-feed-item">
@@ -192,7 +235,10 @@ export default function Survey({ user }: Props) {
                     )}
 
                     {/* Banner Intro Survei */}
-                    <div className="bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-3">
+                    <div
+                        className="anim-survey-card bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-5 sm:p-7 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] space-y-3"
+                        style={{ animationDelay: '0.05s' }}
+                    >
                         <div className="flex items-center gap-2 flex-wrap">
                             <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-2 py-0.5 tracking-wider">
                                 Formulir Peminatan
@@ -219,7 +265,10 @@ export default function Survey({ user }: Props) {
                     {/* FORM PERTANYAAN */}
                     <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
                         {/* IDENTITAS PENGISI */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.1s' }}
+                        >
                             <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-100 pb-2">
                                 Identitas Responden
                             </h2>
@@ -270,7 +319,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 1: MATKUL SEMESTER 3 */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.15s' }}
+                        >
                             <div className="space-y-0.5">
                                 <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                     Dari mata kuliah semester 3, materi mana yang paling ingin kamu pelajari lebih awal? <span className="text-hima-red-dark">*</span>
@@ -284,9 +336,9 @@ export default function Survey({ user }: Props) {
                                 {matkulSemester3Options.map((opt) => (
                                     <label
                                         key={opt}
-                                        className={`flex items-center gap-3 p-3 border-2 cursor-pointer transition-all ${
+                                        className={`flex items-center gap-3 p-3 border-2 cursor-pointer active:scale-[0.985] hover:border-hima-blue-dark transition-all duration-150 ${
                                             data.semester_course === opt
-                                                ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
+                                                ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark shadow-brutal-xs'
                                                 : 'border-gray-200 hover:border-gray-400 bg-white'
                                         }`}
                                     >
@@ -307,9 +359,9 @@ export default function Survey({ user }: Props) {
 
                                 {/* Opsi Yang Lain */}
                                 <label
-                                    className={`flex flex-col sm:flex-row sm:items-center gap-2 p-3 border-2 cursor-pointer transition-all ${
+                                    className={`flex flex-col sm:flex-row sm:items-center gap-2 p-3 border-2 cursor-pointer active:scale-[0.985] hover:border-hima-blue-dark transition-all duration-150 ${
                                         data.semester_course && !matkulSemester3Options.includes(data.semester_course)
-                                            ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
+                                            ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark shadow-brutal-xs'
                                             : 'border-gray-200 hover:border-gray-400 bg-white'
                                     }`}
                                 >
@@ -347,7 +399,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 2: BIDANG TEKNOLOGI (MAKSIMAL 3) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.2s' }}
+                        >
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -374,12 +429,12 @@ export default function Survey({ user }: Props) {
                                     return (
                                         <label
                                             key={field}
-                                            className={`flex items-center gap-2.5 p-3 border-2 transition-all ${
+                                            className={`flex items-center gap-2.5 p-3 border-2 active:scale-[0.985] transition-all duration-150 ${
                                                 isSelected
-                                                    ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
+                                                    ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark shadow-brutal-xs'
                                                     : isDisabled
                                                     ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-                                                    : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer'
+                                                    : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer hover:border-hima-blue-dark'
                                             }`}
                                         >
                                             <input
@@ -432,7 +487,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 3: BENTUK KEGIATAN (MAKSIMAL 2) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.25s' }}
+                        >
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -459,12 +517,12 @@ export default function Survey({ user }: Props) {
                                     return (
                                         <label
                                             key={act}
-                                            className={`flex items-center gap-2.5 p-3 border-2 transition-all ${
+                                            className={`flex items-center gap-2.5 p-3 border-2 active:scale-[0.985] transition-all duration-150 ${
                                                 isSelected
-                                                    ? 'bg-red-50 border-hima-red-dark font-black text-hima-red-dark'
+                                                    ? 'bg-red-50 border-hima-red-dark font-black text-hima-red-dark shadow-brutal-xs'
                                                     : isDisabled
                                                     ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-                                                    : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer'
+                                                    : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer hover:border-hima-red-dark'
                                             }`}
                                         >
                                             <input
@@ -487,7 +545,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 4: METODE BELAJAR EFEKTIF */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.3s' }}
+                        >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Menurutmu, metode belajar yang paling efektif seperti apa? <span className="text-hima-red-dark">*</span>
                             </label>
@@ -496,9 +557,9 @@ export default function Survey({ user }: Props) {
                                 {metodeBelajarOptions.map((m) => (
                                     <label
                                         key={m}
-                                        className={`flex items-center gap-3 p-3 border-2 cursor-pointer transition-all ${
+                                        className={`flex items-center gap-3 p-3 border-2 cursor-pointer active:scale-[0.985] hover:border-hima-blue-dark transition-all duration-150 ${
                                             data.learning_method === m
-                                                ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
+                                                ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark shadow-brutal-xs'
                                                 : 'border-gray-200 hover:border-gray-400 bg-white'
                                         }`}
                                     >
@@ -522,7 +583,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 5: TINGKAT KETERTARIKAN (SKALA 1 - 4) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.35s' }}
+                        >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Seberapa tertarik kamu untuk kegiatan KSM? <span className="text-hima-red-dark">*</span>
                             </label>
@@ -539,9 +603,9 @@ export default function Survey({ user }: Props) {
                                             key={scale}
                                             type="button"
                                             onClick={() => setData('interest_scale', scale)}
-                                            className={`py-3 px-1 border-2 font-black text-center transition-all ${
+                                            className={`py-3 px-1 border-2 font-black text-center active:scale-95 transition-all ${
                                                 data.interest_scale === scale
-                                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-xs'
                                                     : 'bg-white text-gray-800 border-gray-300 hover:border-hima-blue-dark'
                                             }`}
                                         >
@@ -562,7 +626,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 6: HARI YANG MEMUNGKINKAN (MAKSIMAL 2) */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.4s' }}
+                        >
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
                                     <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -589,12 +656,12 @@ export default function Survey({ user }: Props) {
                                     return (
                                         <label
                                             key={day}
-                                            className={`flex items-center gap-2 p-3 border-2 transition-all ${
+                                            className={`flex items-center gap-2 p-3 border-2 active:scale-[0.985] transition-all duration-150 ${
                                                 isSelected
-                                                    ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark'
+                                                    ? 'bg-blue-50 border-hima-blue-dark font-black text-hima-blue-dark shadow-brutal-xs'
                                                     : isDisabled
                                                     ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-                                                    : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer'
+                                                    : 'border-gray-200 hover:border-gray-400 bg-white cursor-pointer hover:border-hima-blue-dark'
                                             }`}
                                         >
                                             <input
@@ -617,7 +684,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 7: WAKTU PELAKSANAAN */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
+                            style={{ animationDelay: '0.45s' }}
+                        >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Waktu pelaksanaan yang paling anda inginkan adalah <span className="text-hima-red-dark">*</span>
                             </label>
@@ -626,10 +696,10 @@ export default function Survey({ user }: Props) {
                                 {waktuOptions.map((time) => (
                                     <label
                                         key={time}
-                                        className={`flex items-center justify-center p-3 border-2 cursor-pointer transition-all ${
+                                        className={`flex items-center justify-center p-3 border-2 cursor-pointer active:scale-95 transition-all duration-150 ${
                                             data.preferred_time === time
-                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark font-black'
-                                                : 'border-gray-200 hover:border-gray-400 bg-white font-bold'
+                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark font-black shadow-brutal-xs'
+                                                : 'border-gray-200 hover:border-gray-400 bg-white font-bold hover:border-hima-blue-dark'
                                         }`}
                                     >
                                         <input
@@ -652,7 +722,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* PERTANYAAN 8: SARAN / IDE LAIN */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-2.5">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-2.5"
+                            style={{ animationDelay: '0.5s' }}
+                        >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Apakah kamu memiliki saran atau ide lain untuk kegiatan KSM?
                             </label>
@@ -670,7 +743,10 @@ export default function Survey({ user }: Props) {
                         </div>
 
                         {/* TOMBOL SUBMIT RESPONSIF & MUDAH DIJANGKAU */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                        <div
+                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-brutal-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5"
+                            style={{ animationDelay: '0.55s' }}
+                        >
                             <button
                                 type="button"
                                 onClick={() => reset()}
@@ -682,18 +758,20 @@ export default function Survey({ user }: Props) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="btn-brutal bg-hima-red-dark text-white border-2 border-hima-blue-dark py-3 px-6 text-xs sm:text-sm font-black uppercase tracking-wider shadow-sm hover:bg-hima-red-light transition-all disabled:opacity-50 order-1 sm:order-2 text-center"
+                                className="btn-brutal bg-hima-red-dark text-white border-2 border-hima-blue-dark py-3 px-6 text-xs sm:text-sm font-black uppercase tracking-wider shadow-[3px_3px_0px_0px_#1A467C] hover:bg-hima-red-light transition-all disabled:opacity-50 order-1 sm:order-2 text-center active:translate-x-0.5 active:translate-y-0.5"
                             >
                                 {processing ? 'Mengirim...' : 'Kirim Jawaban Survei'}
                             </button>
                         </div>
                     </form>
-
-                    {/* Footer Sederhana */}
-                    <div className="text-center py-3 text-[11px] font-semibold text-gray-500">
-                        Kelompok Studi Mahasiswa (KSM) &bull; HIMA IF Institut LPKIA
-                    </div>
                 </main>
+
+                {/* Footer Seragam 100% */}
+                <footer className="w-full text-center py-6 border-t-2 border-hima-blue-dark bg-white font-black text-xs text-gray-600 uppercase tracking-wider">
+                    &copy; 2026 HIMA INFORMATIKA &bull; IDE LPKIA
+                </footer>
+            </div>
+
 
                 {/* ========================================================================= */}
                 {/* 3. MOBILE APP BOTTOM NAVIGATION TOOLBAR                                   */}

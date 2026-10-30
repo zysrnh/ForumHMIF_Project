@@ -235,7 +235,7 @@ export default function Welcome({
                                     FORUM HMIF
                                 </span>
                                 <span className="text-[9px] sm:text-xs font-bold text-gray-500 uppercase tracking-widest block mt-0.5 truncate">
-                                    Suara Mahasiswa IF
+                                    Suara Mahasiswa Informatika
                                 </span>
                             </div>
                         </Link>
