@@ -3,6 +3,7 @@
 use App\Http\Controllers\KsmSurveyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,12 +29,23 @@ Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])->name('ksm.sur
 
 // Rute Khusus Admin HIMA IF (Wajib Login & Memiliki Role Admin)
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/ksm-survey', [KsmSurveyController::class, 'adminDashboard'])->name('admin.ksm.dashboard');
+    Route::get('/admin/ksm-survey', function () {
+        return redirect()->route('dashboard', ['tab' => 'ksm']);
+    })->name('admin.ksm.dashboard');
     Route::get('/admin/ksm-survey/export', [KsmSurveyController::class, 'exportCsv'])->name('admin.ksm.export');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+Route::get('/dashboard', function (Request $request) {
+    $user = $request->user();
+    $ksmData = null;
+
+    if ($user && $user->isAdmin()) {
+        $ksmData = KsmSurveyController::getDashboardData($request->input('search'));
+    }
+
+    return Inertia::render('Dashboard', [
+        'ksmData' => $ksmData,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

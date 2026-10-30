@@ -56,12 +56,12 @@ class KsmSurveyController extends Controller
     }
 
     /**
-     * Tampilkan Dashboard Admin untuk melihat rekapitulasi data survei KSM.
+     * Ambil data statistik dan survei KSM untuk dashboard pengurus/admin.
+     *
+     * @return array<string, mixed>
      */
-    public function adminDashboard(Request $request): InertiaResponse
+    public static function getDashboardData(?string $search = null): array
     {
-        $search = $request->input('search');
-
         $surveysQuery = KsmSurvey::latest();
 
         if ($search) {
@@ -125,7 +125,7 @@ class KsmSurveyController extends Controller
         $topDay = ! empty($dayDistribution) ? array_key_first($dayDistribution) : '-';
         $topTime = $timeDistribution->isNotEmpty() ? $timeDistribution->keys()->first() : '-';
 
-        return Inertia::render('Admin/KsmDashboard', [
+        return [
             'surveys' => $surveysQuery->paginate(15)->withQueryString(),
             'stats' => [
                 'total' => $totalRespondents,
@@ -142,7 +142,17 @@ class KsmSurveyController extends Controller
             'filters' => [
                 'search' => $search,
             ],
-        ]);
+        ];
+    }
+
+    /**
+     * Tampilkan Dashboard Admin untuk melihat rekapitulasi data survei KSM.
+     */
+    public function adminDashboard(Request $request): InertiaResponse
+    {
+        $data = self::getDashboardData($request->input('search'));
+
+        return Inertia::render('Admin/KsmDashboard', $data);
     }
 
     /**
