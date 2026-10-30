@@ -45,10 +45,10 @@ export default function Authenticated({
                     <ApplicationLogo className="h-7 w-auto" />
                     <div>
                         <span className="font-black text-hima-blue-dark text-xs tracking-tight block leading-tight">
-                            PORTAL ASPIRASI
+                            HIMA INFORMATIKA
                         </span>
                         <span className="text-[9px] font-bold text-hima-red-dark uppercase tracking-wider block">
-                            HIMA INFORMATIKA
+                            IDE LPKIA
                         </span>
                     </div>
                 </Link>
@@ -99,10 +99,10 @@ export default function Authenticated({
                             <ApplicationLogo className="h-8 sm:h-9 w-auto" />
                             <div>
                                 <h2 className="font-black text-sm sm:text-base text-hima-blue-dark tracking-tight leading-none">
-                                    HMIF ASPIRASI
+                                    HIMA INFORMATIKA
                                 </h2>
                                 <p className="text-[10px] font-bold uppercase tracking-wider text-hima-red-dark mt-0.5">
-                                    Institut LPKIA
+                                    IDE LPKIA
                                 </p>
                             </div>
                         </Link>
