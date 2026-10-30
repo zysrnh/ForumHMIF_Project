@@ -16,7 +16,23 @@ export default function Authenticated({
 }: AuthenticatedLayoutProps) {
     const user = usePage().props.auth.user;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isDesktopCollapsed, setIsDesktopCollapsed] = useState<boolean>(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('hmif_sidebar_collapsed') === 'true';
+        }
+        return false;
+    });
     const [avatarError, setAvatarError] = useState(false);
+
+    const toggleDesktopSidebar = () => {
+        setIsDesktopCollapsed((prev) => {
+            const next = !prev;
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('hmif_sidebar_collapsed', String(next));
+            }
+            return next;
+        });
+    };
 
     // Format NIM dari database atau dari format fellow email
     const displayNim =
@@ -42,7 +58,7 @@ export default function Authenticated({
             {/* Mobile Topbar (App-Like Header) */}
             <div className="md:hidden bg-white border-b-2 border-hima-blue-dark px-4 py-2.5 flex items-center justify-between shadow-brutal-sm sticky top-0 z-40">
                 <Link href="/dashboard" className="flex items-center gap-2.5">
-                    <ApplicationLogo className="h-7 w-auto" />
+                    <ApplicationLogo className="h-8 w-auto" />
                     <div>
                         <span className="font-black text-hima-blue-dark text-xs tracking-tight block leading-tight">
                             HIMA INFORMATIKA
@@ -88,15 +104,19 @@ export default function Authenticated({
 
             {/* Sidebar (Desktop Fixed & Mobile Slide-in Drawer) */}
             <aside
-                className={`fixed md:sticky top-0 left-0 h-screen w-64 lg:w-72 bg-white border-r-2 border-hima-blue-dark z-50 flex flex-col justify-between transition-transform duration-200 ease-in-out shadow-brutal md:shadow-none ${
+                className={`fixed md:sticky top-0 left-0 h-screen bg-white border-r-2 border-hima-blue-dark z-50 flex flex-col justify-between transition-all duration-200 ease-in-out shadow-brutal md:shadow-none ${
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+                } ${
+                    isDesktopCollapsed
+                        ? 'md:w-0 md:opacity-0 md:border-r-0 md:overflow-hidden md:pointer-events-none'
+                        : 'w-64 lg:w-72'
                 }`}
             >
                 <div className="flex flex-col h-full overflow-y-auto">
                     {/* Brand Header */}
                     <div className="p-4 sm:p-5 border-b-2 border-hima-blue-dark bg-white flex items-center justify-between">
                         <Link href="/dashboard" className="flex items-center gap-3">
-                            <ApplicationLogo className="h-8 sm:h-9 w-auto" />
+                            <ApplicationLogo className="h-11 sm:h-12 w-auto object-contain shrink-0" />
                             <div>
                                 <h2 className="font-black text-sm sm:text-base text-hima-blue-dark tracking-tight leading-none">
                                     HIMA INFORMATIKA
@@ -116,28 +136,33 @@ export default function Authenticated({
                         </button>
                     </div>
 
-                    {/* User Info Card */}
-                    <div className="p-3.5 border-b border-slate-200 bg-slate-50">
-                        <div className="flex items-center gap-2.5">
+                    {/* User Info Card Neo-Brutalist */}
+                    <div className="p-3 border-b-2 border-hima-blue-dark bg-blue-50/40">
+                        <div className="bg-white border-2 border-hima-blue-dark p-2.5 shadow-brutal-xs flex items-center gap-2.5">
                             {user.avatar && !avatarError ? (
                                 <img
                                     src={user.avatar}
                                     alt={user.name}
                                     onError={() => setAvatarError(true)}
-                                    className="w-10 h-10 border border-slate-300 object-cover shrink-0"
+                                    className="w-10 h-10 border-2 border-hima-blue-dark object-cover shrink-0 bg-white shadow-xs"
                                 />
                             ) : (
-                                <div className="w-10 h-10 border border-slate-300 bg-hima-blue-dark text-white font-black text-sm flex items-center justify-center shrink-0">
+                                <div className="w-10 h-10 border-2 border-hima-blue-dark bg-hima-blue-dark text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
                                     {user.name.charAt(0).toUpperCase()}
                                 </div>
                             )}
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs font-bold text-slate-900 uppercase truncate" title={user.name}>
+                                <p className="text-xs font-black text-hima-blue-dark uppercase truncate" title={user.name}>
                                     {user.name}
                                 </p>
-                                <p className="text-[11px] font-mono text-slate-500 truncate">
+                                <p className="text-[10px] font-mono font-bold text-slate-600 truncate mt-0.5">
                                     NIM: {displayNim}
                                 </p>
+                                <div className="mt-1 flex items-center gap-1.5">
+                                    <span className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 border border-hima-blue-dark bg-blue-50 text-hima-blue-dark">
+                                        {user.role === 'super_admin' ? 'SUPER ADMIN' : isAdmin ? 'ADMIN HIMA' : 'MAHASISWA'}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -370,10 +395,44 @@ export default function Authenticated({
 
             {/* Main Content Area */}
             <div className="flex-1 min-w-0 flex flex-col min-h-screen">
-                {header && (
-                    <header className="bg-white border-b-2 border-hima-blue-dark px-3 py-2.5 sm:px-6 sm:py-3 shadow-brutal-sm">
-                        {header}
+                {header ? (
+                    <header className="bg-white border-b-2 border-hima-blue-dark px-3 py-2.5 sm:px-6 sm:py-3 shadow-brutal-sm flex items-center gap-3">
+                        <button
+                            onClick={toggleDesktopSidebar}
+                            type="button"
+                            aria-label={isDesktopCollapsed ? "Buka Sidebar" : "Tutup Sidebar"}
+                            title={isDesktopCollapsed ? "Buka Sidebar" : "Tutup Sidebar"}
+                            className="hidden md:inline-flex items-center justify-center p-2 border-2 border-hima-blue-dark bg-white shadow-brutal-xs hover:bg-blue-50 active:translate-x-0.5 active:translate-y-0.5 transition-all text-hima-blue-dark shrink-0"
+                        >
+                            {isDesktopCollapsed ? (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            ) : (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                </svg>
+                            )}
+                        </button>
+                        <div className="flex-1 min-w-0">
+                            {header}
+                        </div>
                     </header>
+                ) : (
+                    <div className="hidden md:flex items-center px-6 py-2 bg-white border-b-2 border-hima-blue-dark">
+                        <button
+                            onClick={toggleDesktopSidebar}
+                            type="button"
+                            aria-label={isDesktopCollapsed ? "Buka Sidebar" : "Tutup Sidebar"}
+                            title={isDesktopCollapsed ? "Buka Sidebar" : "Tutup Sidebar"}
+                            className="inline-flex items-center gap-2 px-2.5 py-1.5 border-2 border-hima-blue-dark bg-white shadow-brutal-xs hover:bg-blue-50 text-xs font-bold text-hima-blue-dark uppercase"
+                        >
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <span>{isDesktopCollapsed ? "Buka Menu" : "Tutup Menu"}</span>
+                        </button>
+                    </div>
                 )}
 
                 {/* Padding bottom di mobile (pb-24) agar konten terbaca lega tanpa tertutup toolbar */}
