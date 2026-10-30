@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Akun Super Admin HIMA IF
+        // 1. Akun Utama Super Admin
         User::updateOrCreate(
             ['email' => '250414010@fellow.lpkia.ac.id'],
             [
@@ -25,14 +25,26 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Akun Mahasiswa Tambahan untuk Testing
+        // 2. Akun Dummy Admin 1
         User::updateOrCreate(
-            ['email' => '250414011@fellow.lpkia.ac.id'],
+            ['email' => 'admin1@fellow.lpkia.ac.id'],
             [
-                'name' => 'Siti Rahma',
-                'nim' => '250414011',
+                'name' => 'Admin Dummy 1',
+                'nim' => '250414001',
                 'password' => Hash::make('password'),
-                'role' => 'mahasiswa',
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // 3. Akun Dummy Admin 2
+        User::updateOrCreate(
+            ['email' => 'admin2@fellow.lpkia.ac.id'],
+            [
+                'name' => 'Admin Dummy 2',
+                'nim' => '250414002',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
                 'email_verified_at' => now(),
             ]
         );
