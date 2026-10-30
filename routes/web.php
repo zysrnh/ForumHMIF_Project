@@ -27,24 +27,34 @@ Route::get('/topik', function () {
 Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
 Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])->name('ksm.survey.store');
 
+use App\Http\Controllers\AdminUserController;
+
 // Rute Khusus Admin HIMA IF (Wajib Login & Memiliki Role Admin)
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/ksm-survey', function () {
         return redirect()->route('dashboard', ['tab' => 'ksm']);
     })->name('admin.ksm.dashboard');
     Route::get('/admin/ksm-survey/export', [KsmSurveyController::class, 'exportCsv'])->name('admin.ksm.export');
+
+    // Manajemen Pengguna & Admin Baru
+    Route::post('/admin/users', [AdminUserController::class, 'store'])->name('admin.users.store');
+    Route::patch('/admin/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 Route::get('/dashboard', function (Request $request) {
     $user = $request->user();
     $ksmData = null;
+    $usersData = null;
 
     if ($user && $user->isAdmin()) {
-        $ksmData = KsmSurveyController::getDashboardData($request->input('search'));
+        $ksmData = KsmSurveyController::getDashboardData($request->input('search_ksm') ?: $request->input('search'));
+        $usersData = AdminUserController::getUsersData($request->input('search_user') ?: $request->input('search'));
     }
 
     return Inertia::render('Dashboard', [
         'ksmData' => $ksmData,
+        'usersData' => $usersData,
         'currentTab' => $request->query('tab', 'feed'),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');

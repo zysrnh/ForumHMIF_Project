@@ -58,31 +58,61 @@ interface KsmData {
     };
 }
 
+interface UserItem {
+    id: number;
+    name: string;
+    email: string;
+    nim?: string;
+    role?: string;
+    created_at?: string;
+}
+
+interface UsersData {
+    users: {
+        data: UserItem[];
+        links: PaginationLink[];
+        total: number;
+        current_page: number;
+        last_page: number;
+    };
+    stats: {
+        total: number;
+        super_admin: number;
+        admin: number;
+        mahasiswa: number;
+    };
+}
+
 interface DashboardProps {
     ksmData?: KsmData | null;
+    usersData?: UsersData | null;
     currentTab?: string;
 }
 
-export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
+export default function Dashboard({ ksmData, usersData, currentTab }: DashboardProps) {
     const user = usePage().props.auth.user;
     const userNim = user.nim || (user.email.includes('@') ? user.email.split('@')[0] : '250414010');
     const isAdmin = ['admin', 'super_admin', 'superadmin'].includes(user.role || '');
+    const isSuperAdmin = user.role === 'super_admin' || user.role === 'superadmin';
 
     // Inisialisasi Tab Aktif berdasarkan props server atau URL query
-    const initialNav = useMemo<'feed' | 'create' | 'my' | 'ksm'>(() => {
+    const initialNav = useMemo<'feed' | 'create' | 'my' | 'ksm' | 'users'>(() => {
         const tab = currentTab || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tab') : null);
         if (tab === 'ksm' && isAdmin) return 'ksm';
+        if (tab === 'users' && isAdmin) return 'users';
         if (tab === 'create') return 'create';
         if (tab === 'my') return 'my';
         return 'feed';
     }, [currentTab, isAdmin]);
 
-    const [activeNav, setActiveNav] = useState<'feed' | 'create' | 'my' | 'ksm'>(initialNav);
+    const [activeNav, setActiveNav] = useState<'feed' | 'create' | 'my' | 'ksm' | 'users'>(initialNav);
 
     // Sinkronisasi Tab jika query berubah
     useEffect(() => {
         if (currentTab === 'ksm' && isAdmin) {
             setActiveNav('ksm');
+        } else if (currentTab === 'users' && isAdmin) {
+            setActiveNav('users');
         } else if (currentTab === 'create') {
             setActiveNav('create');
         } else if (currentTab === 'my') {
@@ -93,11 +123,98 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
     }, [currentTab, isAdmin]);
 
     // Fungsi ganti tab dan perbarui URL query tanpa refresh
-    const handleSelectTab = (nav: 'feed' | 'create' | 'my' | 'ksm') => {
+    const handleSelectTab = (nav: 'feed' | 'create' | 'my' | 'ksm' | 'users') => {
         setActiveNav(nav);
         if (typeof window !== 'undefined') {
             const url = nav === 'feed' ? window.location.pathname : `${window.location.pathname}?tab=${nav}`;
             window.history.replaceState(null, '', url);
+        }
+    };
+
+    // State Manajemen Pengguna & Admin
+    const [userSearch, setUserSearch] = useState<string>('');
+    const [isCreateAdminModalOpen, setIsCreateAdminModalOpen] = useState<boolean>(false);
+    const [newAdminName, setNewAdminName] = useState<string>('');
+    const [newAdminNim, setNewAdminNim] = useState<string>('');
+    const [newAdminEmail, setNewAdminEmail] = useState<string>('');
+    const [newAdminPassword, setNewAdminPassword] = useState<string>('');
+    const [newAdminRole, setNewAdminRole] = useState<string>('admin');
+    const [isSubmittingAdmin, setIsSubmittingAdmin] = useState<boolean>(false);
+    const [adminError, setAdminError] = useState<string | null>(null);
+    const [adminSuccess, setAdminSuccess] = useState<string | null>(null);
+
+    const handleUserSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get(
+            route('dashboard'),
+            { tab: 'users', search_user: userSearch },
+            { preserveState: true, replace: true }
+        );
+    };
+
+    const handleCreateAdmin = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmittingAdmin(true);
+        setAdminError(null);
+        router.post(
+            route('admin.users.store'),
+            {
+                name: newAdminName,
+                nim: newAdminNim,
+                email: newAdminEmail,
+                password: newAdminPassword,
+                role: newAdminRole,
+            },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setIsCreateAdminModalOpen(false);
+                    setNewAdminName('');
+                    setNewAdminNim('');
+                    setNewAdminEmail('');
+                    setNewAdminPassword('');
+                    setNewAdminRole('admin');
+                    setIsSubmittingAdmin(false);
+                    setAdminSuccess('Akun admin/pengguna baru berhasil dibuat!');
+                    setTimeout(() => setAdminSuccess(null), 3500);
+                },
+                onError: (err) => {
+                    setIsSubmittingAdmin(false);
+                    setAdminError(Object.values(err)[0] as string);
+                },
+            }
+        );
+    };
+
+    const handleUpdateUserRole = (userId: number, targetRole: string) => {
+        router.patch(
+            route('admin.users.updateRole', userId),
+            { role: targetRole },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setAdminSuccess('Role pengguna berhasil diperbarui!');
+                    setTimeout(() => setAdminSuccess(null), 3500);
+                },
+                onError: (err) => {
+                    alert(Object.values(err)[0] as string);
+                },
+            }
+        );
+    };
+
+    const handleDeleteUser = (userId: number, userName: string) => {
+        if (confirm(`Yakin ingin menghapus akun ${userName}?`)) {
+            router.delete(route('admin.users.destroy', userId), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setAdminSuccess(`Akun ${userName} berhasil dihapus.`);
+                    setTimeout(() => setAdminSuccess(null), 3500);
+                },
+                onError: (err) => {
+                    alert(Object.values(err)[0] as string);
+                },
+            });
         }
     };
 
@@ -278,19 +395,34 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
     return (
         <AuthenticatedLayout
             activeNav={activeNav}
-            onSelectNav={(nav) => handleSelectTab(nav as 'feed' | 'create' | 'my' | 'ksm')}
+            onSelectNav={(nav) => handleSelectTab(nav as 'feed' | 'create' | 'my' | 'ksm' | 'users')}
             header={
                 <div className="flex items-center justify-between gap-3">
                     <div>
-                        <h1 className="text-base sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
-                            {activeNav === 'create'
-                                ? 'Tulis Aspirasi Mahasiswa'
-                                : activeNav === 'my'
-                                ? 'Aspirasi Saya'
-                                : activeNav === 'ksm'
-                                ? 'Rekapitulasi Data Survei KSM'
-                                : 'Forum Aspirasi Mahasiswa'}
-                        </h1>
+                        <div className="flex items-center gap-2.5 flex-wrap">
+                            <h1 className="text-base sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
+                                {activeNav === 'create'
+                                    ? 'Tulis Aspirasi Mahasiswa'
+                                    : activeNav === 'my'
+                                    ? 'Aspirasi Saya'
+                                    : activeNav === 'ksm'
+                                    ? 'Rekapitulasi Data Survei KSM'
+                                    : activeNav === 'users'
+                                    ? 'Manajemen Pengguna & Admin'
+                                    : 'Forum Aspirasi Mahasiswa'}
+                            </h1>
+                            {isSuperAdmin ? (
+                                <span className="inline-flex items-center gap-1 bg-red-50 border border-red-300 px-2 py-0.5 text-[10px] font-black text-red-700 tracking-wide uppercase">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                                    SUPER ADMIN
+                                </span>
+                            ) : isAdmin ? (
+                                <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-300 px-2 py-0.5 text-[10px] font-black text-blue-700 tracking-wide uppercase">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+                                    ADMIN HIMA
+                                </span>
+                            ) : null}
+                        </div>
                         <p className="hidden sm:block text-xs text-slate-500 font-medium mt-0.5">
                             {activeNav === 'create'
                                 ? 'Sampaikan ide, masukan fasilitas, atau kendala perkuliahan secara langsung.'
@@ -298,12 +430,25 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                 ? 'Daftar seluruh aspirasi yang pernah kamu sampaikan ke forum mahasiswa.'
                                 : activeNav === 'ksm'
                                 ? 'Data survei peminatan teknologi, kebutuhan materi, dan jadwal belajar mahasiswa HIMA IF.'
+                                : activeNav === 'users'
+                                ? 'Daftar pengguna terdaftar dan pembuatan akun admin pengurus HIMA IF.'
                                 : 'Suarakan masukan dan dukung aspirasi rekan mahasiswa Teknik Informatika.'}
                         </p>
                     </div>
 
                     <div className="flex items-center gap-2">
-                        {activeNav === 'ksm' ? (
+                        {activeNav === 'users' ? (
+                            <button
+                                type="button"
+                                onClick={() => setIsCreateAdminModalOpen(true)}
+                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-red-light transition-all"
+                            >
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>+ Buat Admin Baru</span>
+                            </button>
+                        ) : activeNav === 'ksm' ? (
                             <a
                                 href={route('admin.ksm.export')}
                                 className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
@@ -379,26 +524,49 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
 
                     {/* TAB KHUSUS ADMIN (DISEMBUNYIKAN UNTUK MAHASISWA) */}
                     {isAdmin && (
-                        <button
-                            type="button"
-                            onClick={() => handleSelectTab('ksm')}
-                            className={`px-4 py-2 font-black uppercase tracking-wide border-2 transition-all shrink-0 flex items-center gap-2 ${
-                                activeNav === 'ksm'
-                                    ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                                    : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
-                            }`}
-                        >
-                            <span>Rekap Data KSM</span>
-                            <span
-                                className={`text-[9px] font-black uppercase px-1.5 py-0.2 ${
+                        <>
+                            <button
+                                type="button"
+                                onClick={() => handleSelectTab('ksm')}
+                                className={`px-4 py-2 font-black uppercase tracking-wide border-2 transition-all shrink-0 flex items-center gap-2 ${
                                     activeNav === 'ksm'
-                                        ? 'bg-red-600 text-white'
-                                        : 'bg-red-50 text-red-700 border border-red-200'
+                                        ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                                        : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
                                 }`}
                             >
-                                ADMIN
-                            </span>
-                        </button>
+                                <span>Rekap Data KSM</span>
+                                <span
+                                    className={`text-[9px] font-black uppercase px-1.5 py-0.2 ${
+                                        activeNav === 'ksm'
+                                            ? 'bg-red-600 text-white'
+                                            : 'bg-red-50 text-red-700 border border-red-200'
+                                    }`}
+                                >
+                                    ADMIN
+                                </span>
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => handleSelectTab('users')}
+                                className={`px-4 py-2 font-black uppercase tracking-wide border-2 transition-all shrink-0 flex items-center gap-2 ${
+                                    activeNav === 'users'
+                                        ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                                        : 'bg-white text-slate-800 border-slate-300 hover:bg-slate-50'
+                                }`}
+                            >
+                                <span>Kelola Pengguna</span>
+                                <span
+                                    className={`text-[9px] font-black uppercase px-1.5 py-0.2 ${
+                                        activeNav === 'users'
+                                            ? 'bg-red-600 text-white'
+                                            : 'bg-red-50 text-red-700 border border-red-200'
+                                    }`}
+                                >
+                                    ADMIN
+                                </span>
+                            </button>
+                        </>
                     )}
                 </div>
 
@@ -873,6 +1041,433 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                             Tutup
                                         </button>
                                     </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                ) : activeNav === 'users' && isAdmin && usersData ? (
+                    /* ========================================================================= */
+                    /* 1.5 PANEL KELOLA PENGGUNA & ADMIN HIMA                                    */
+                    /* ========================================================================= */
+                    <div className="space-y-6 anim-feed-item">
+                        {adminSuccess && (
+                            <div className="bg-emerald-600 text-white px-4 py-3 text-xs font-bold border-2 border-slate-900 shadow-brutal-sm flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>{adminSuccess}</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setAdminSuccess(null)}
+                                    className="font-mono font-black text-white hover:opacity-80 text-sm px-1"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Statistik Ringkas Pengguna */}
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                            <div className="bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-xs flex flex-col justify-between">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                    Total Pengguna
+                                </span>
+                                <div className="mt-2 flex items-baseline justify-between">
+                                    <span className="text-2xl sm:text-3xl font-black text-hima-blue-dark">
+                                        {usersData.stats.total}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Akun</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-xs flex flex-col justify-between">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-red-600">
+                                    Super Admin
+                                </span>
+                                <div className="mt-2 flex items-baseline justify-between">
+                                    <span className="text-2xl sm:text-3xl font-black text-red-600">
+                                        {usersData.stats.super_admin}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-red-400 uppercase">Akses Penuh</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-xs flex flex-col justify-between">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-hima-blue-light">
+                                    Admin HIMA
+                                </span>
+                                <div className="mt-2 flex items-baseline justify-between">
+                                    <span className="text-2xl sm:text-3xl font-black text-hima-blue-dark">
+                                        {usersData.stats.admin}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-blue-400 uppercase">Pengurus</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-white border-2 border-hima-blue-dark p-4 shadow-brutal-xs flex flex-col justify-between">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                    Mahasiswa
+                                </span>
+                                <div className="mt-2 flex items-baseline justify-between">
+                                    <span className="text-2xl sm:text-3xl font-black text-slate-700">
+                                        {usersData.stats.mahasiswa}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase">Mahasiswa</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Tabel Data & Pencarian */}
+                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-brutal-xs space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-slate-100 pb-4">
+                                <div>
+                                    <h3 className="text-sm font-black text-hima-blue-dark uppercase tracking-tight">
+                                        Daftar Akun Terdaftar
+                                    </h3>
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                        Kelola hak akses pengurus HIMA dan data akun mahasiswa Teknik Informatika.
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    <form onSubmit={handleUserSearch} className="flex items-center gap-1.5 w-full sm:w-auto">
+                                        <input
+                                            type="text"
+                                            value={userSearch}
+                                            onChange={(e) => setUserSearch(e.target.value)}
+                                            placeholder="Cari nama, NIM, email..."
+                                            className="px-3 py-1.5 border-2 border-slate-300 text-xs focus:border-hima-blue-dark focus:ring-0 outline-hidden w-full sm:w-64"
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="px-3 py-1.5 bg-slate-900 text-white font-bold text-xs uppercase hover:bg-slate-800 transition-colors shrink-0"
+                                        >
+                                            Cari
+                                        </button>
+                                        {userSearch && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setUserSearch('');
+                                                    router.get(route('dashboard'), { tab: 'users' }, { preserveState: true, replace: true });
+                                                }}
+                                                className="px-2.5 py-1.5 border border-slate-300 text-slate-500 hover:text-slate-800 text-xs font-bold shrink-0"
+                                                title="Reset pencarian"
+                                            >
+                                                ✕
+                                            </button>
+                                        )}
+                                    </form>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsCreateAdminModalOpen(true)}
+                                        className="sm:hidden px-3 py-1.5 bg-hima-red-dark text-white font-black text-xs uppercase shrink-0"
+                                    >
+                                        + Admin
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Tampilan Mobile: Kartu Pengguna */}
+                            <div className="block sm:hidden space-y-3">
+                                {usersData.users.data.length === 0 ? (
+                                    <div className="p-8 text-center text-slate-400 text-xs italic">
+                                        Tidak ada akun pengguna yang ditemukan.
+                                    </div>
+                                ) : (
+                                    usersData.users.data.map((item) => (
+                                        <div key={item.id} className="border-2 border-slate-200 p-3 space-y-2 bg-slate-50/50">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div>
+                                                    <span className="font-black text-xs text-slate-900 block">{item.name}</span>
+                                                    <span className="font-mono text-[11px] text-slate-500">{item.nim || '-'}</span>
+                                                </div>
+                                                <span
+                                                    className={`px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+                                                        item.role === 'super_admin' || item.role === 'superadmin'
+                                                            ? 'bg-red-600 text-white'
+                                                            : item.role === 'admin'
+                                                            ? 'bg-hima-blue-dark text-white'
+                                                            : 'bg-slate-200 text-slate-700'
+                                                    }`}
+                                                >
+                                                    {item.role === 'super_admin' || item.role === 'superadmin'
+                                                        ? 'Super Admin'
+                                                        : item.role === 'admin'
+                                                        ? 'Admin HIMA'
+                                                        : 'Mahasiswa'}
+                                                </span>
+                                            </div>
+                                            <div className="text-[11px] text-slate-600 break-all">{item.email}</div>
+                                            <div className="pt-2 border-t border-slate-200 flex items-center justify-between gap-2">
+                                                <div className="flex items-center gap-1.5">
+                                                    <label className="text-[10px] font-bold text-slate-500">Role:</label>
+                                                    <select
+                                                        value={item.role || 'mahasiswa'}
+                                                        disabled={item.id === user.id || (!isSuperAdmin && item.role === 'super_admin')}
+                                                        onChange={(e) => handleUpdateUserRole(item.id, e.target.value)}
+                                                        className="text-[11px] font-semibold border border-slate-300 py-0.5 px-2 bg-white disabled:opacity-50"
+                                                    >
+                                                        <option value="mahasiswa">Mahasiswa</option>
+                                                        <option value="admin">Admin HIMA</option>
+                                                        {isSuperAdmin && <option value="super_admin">Super Admin</option>}
+                                                    </select>
+                                                </div>
+                                                {item.id !== user.id && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDeleteUser(item.id, item.name)}
+                                                        className="text-red-600 hover:text-red-800 text-[11px] font-black uppercase underline"
+                                                    >
+                                                        Hapus
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+
+                            {/* Tampilan Desktop: Tabel Lengkap */}
+                            <div className="hidden sm:block overflow-x-auto">
+                                <table className="w-full text-left text-xs border-collapse">
+                                    <thead>
+                                        <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                                            <th className="p-3">No</th>
+                                            <th className="p-3">Nama & NIM</th>
+                                            <th className="p-3">Email Kampus</th>
+                                            <th className="p-3">Role Saat Ini</th>
+                                            <th className="p-3">Bergabung</th>
+                                            <th className="p-3 text-right">Aksi & Ubah Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100 text-slate-700">
+                                        {usersData.users.data.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={6} className="p-8 text-center text-slate-400 italic">
+                                                    Tidak ada data akun yang sesuai pencarian.
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            usersData.users.data.map((item, idx) => (
+                                                <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
+                                                    <td className="p-3 font-mono text-slate-400">
+                                                        {(usersData.users.current_page - 1) * 15 + idx + 1}
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <div className="font-bold text-slate-900">{item.name}</div>
+                                                        <div className="font-mono text-[11px] text-slate-500">{item.nim || '-'}</div>
+                                                    </td>
+                                                    <td className="p-3 font-mono text-[11px] text-slate-600">
+                                                        {item.email}
+                                                    </td>
+                                                    <td className="p-3">
+                                                        <span
+                                                            className={`inline-block px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+                                                                item.role === 'super_admin' || item.role === 'superadmin'
+                                                                    ? 'bg-red-600 text-white'
+                                                                    : item.role === 'admin'
+                                                                    ? 'bg-hima-blue-dark text-white'
+                                                                    : 'bg-slate-100 text-slate-600 border border-slate-200'
+                                                            }`}
+                                                        >
+                                                            {item.role === 'super_admin' || item.role === 'superadmin'
+                                                                ? 'Super Admin'
+                                                                : item.role === 'admin'
+                                                                ? 'Admin HIMA'
+                                                                : 'Mahasiswa'}
+                                                        </span>
+                                                        {item.id === user.id && (
+                                                            <span className="ml-1.5 text-[10px] text-emerald-600 font-bold">(Akun Kamu)</span>
+                                                        )}
+                                                    </td>
+                                                    <td className="p-3 text-slate-500 font-mono text-[11px]">
+                                                        {item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}
+                                                    </td>
+                                                    <td className="p-3 text-right">
+                                                        <div className="inline-flex items-center gap-2">
+                                                            <select
+                                                                value={item.role || 'mahasiswa'}
+                                                                disabled={item.id === user.id || (!isSuperAdmin && (item.role === 'super_admin' || item.role === 'superadmin'))}
+                                                                onChange={(e) => handleUpdateUserRole(item.id, e.target.value)}
+                                                                className="text-xs font-semibold border border-slate-300 py-1 px-2 bg-white hover:border-slate-400 disabled:opacity-50 disabled:bg-slate-100 cursor-pointer"
+                                                            >
+                                                                <option value="mahasiswa">Mahasiswa</option>
+                                                                <option value="admin">Admin HIMA</option>
+                                                                {isSuperAdmin && <option value="super_admin">Super Admin</option>}
+                                                            </select>
+
+                                                            {item.id !== user.id && (
+                                                                <button
+                                                                    type="button"
+                                                                    disabled={!isSuperAdmin && (item.role === 'super_admin' || item.role === 'superadmin')}
+                                                                    onClick={() => handleDeleteUser(item.id, item.name)}
+                                                                    className="border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-2 py-1 text-xs font-bold uppercase transition-colors disabled:opacity-30 disabled:pointer-events-none"
+                                                                    title="Hapus Akun"
+                                                                >
+                                                                    Hapus
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Pagination Links */}
+                            {usersData.users.links && usersData.users.links.length > 3 && (
+                                <div className="flex items-center justify-end gap-1 pt-3 border-t border-slate-100">
+                                    {usersData.users.links.map((link, i) => (
+                                        <Link
+                                            key={i}
+                                            href={link.url || '#'}
+                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                            className={`px-3 py-1 text-xs border font-medium transition-all ${
+                                                link.active
+                                                    ? 'bg-slate-900 text-white border-slate-900'
+                                                    : link.url
+                                                    ? 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                                    : 'bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Modal Pop-up Buat Admin Baru */}
+                        {isCreateAdminModalOpen && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs anim-feed-item">
+                                <div className="bg-white border-3 border-hima-blue-dark shadow-brutal-lg max-w-md w-full p-6 space-y-4">
+                                    <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3">
+                                        <div>
+                                            <h3 className="text-sm font-black text-hima-blue-dark uppercase tracking-tight">
+                                                + Buat Akun Pengurus / Admin Baru
+                                            </h3>
+                                            <p className="text-[11px] text-slate-500 mt-0.5">
+                                                Daftarkan akun pengurus HIMA IF dengan hak akses administratif.
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setIsCreateAdminModalOpen(false);
+                                                setAdminError(null);
+                                            }}
+                                            className="font-mono font-black text-slate-400 hover:text-slate-900 text-base"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+
+                                    {adminError && (
+                                        <div className="bg-red-50 text-red-700 border border-red-200 p-2.5 text-xs font-semibold">
+                                            {adminError}
+                                        </div>
+                                    )}
+
+                                    <form onSubmit={handleCreateAdmin} className="space-y-3.5">
+                                        <div>
+                                            <label className="block text-[11px] font-black uppercase text-slate-700 tracking-wider mb-1">
+                                                Nama Lengkap <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                required
+                                                value={newAdminName}
+                                                onChange={(e) => setNewAdminName(e.target.value)}
+                                                placeholder="Contoh: Muhammad Farhan"
+                                                className="w-full px-3 py-2 border-2 border-slate-300 text-xs focus:border-hima-blue-dark focus:ring-0 outline-hidden"
+                                            />
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div>
+                                                <label className="block text-[11px] font-black uppercase text-slate-700 tracking-wider mb-1">
+                                                    NIM <span className="text-red-500">*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={newAdminNim}
+                                                    onChange={(e) => setNewAdminNim(e.target.value)}
+                                                    placeholder="250414010"
+                                                    className="w-full px-3 py-2 border-2 border-slate-300 text-xs focus:border-hima-blue-dark focus:ring-0 outline-hidden font-mono"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[11px] font-black uppercase text-slate-700 tracking-wider mb-1">
+                                                    Role Akses <span className="text-red-500">*</span>
+                                                </label>
+                                                <select
+                                                    value={newAdminRole}
+                                                    onChange={(e) => setNewAdminRole(e.target.value)}
+                                                    className="w-full px-3 py-2 border-2 border-slate-300 text-xs focus:border-hima-blue-dark focus:ring-0 outline-hidden font-bold"
+                                                >
+                                                    <option value="admin">Admin HIMA</option>
+                                                    {isSuperAdmin && <option value="super_admin">Super Admin</option>}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-[11px] font-black uppercase text-slate-700 tracking-wider mb-1">
+                                                Email Kampus / Akun <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="email"
+                                                required
+                                                value={newAdminEmail}
+                                                onChange={(e) => setNewAdminEmail(e.target.value)}
+                                                placeholder="admin.himatif@lpkia.ac.id"
+                                                className="w-full px-3 py-2 border-2 border-slate-300 text-xs focus:border-hima-blue-dark focus:ring-0 outline-hidden"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-[11px] font-black uppercase text-slate-700 tracking-wider mb-1">
+                                                Password Sementara <span className="text-red-500">*</span>
+                                            </label>
+                                            <input
+                                                type="password"
+                                                required
+                                                minLength={8}
+                                                value={newAdminPassword}
+                                                onChange={(e) => setNewAdminPassword(e.target.value)}
+                                                placeholder="Minimal 8 karakter"
+                                                className="w-full px-3 py-2 border-2 border-slate-300 text-xs focus:border-hima-blue-dark focus:ring-0 outline-hidden"
+                                            />
+                                            <p className="text-[10px] text-slate-400 mt-1">
+                                                Admin baru dapat mengganti password nanti di profil masing-masing.
+                                            </p>
+                                        </div>
+
+                                        <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setIsCreateAdminModalOpen(false);
+                                                    setAdminError(null);
+                                                }}
+                                                className="px-4 py-2 border border-slate-300 text-slate-700 font-bold text-xs uppercase hover:bg-slate-100 transition-colors"
+                                            >
+                                                Batal
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmittingAdmin}
+                                                className="px-5 py-2 bg-hima-blue-dark hover:bg-hima-blue-light text-white font-black text-xs uppercase tracking-wider transition-colors disabled:opacity-50"
+                                            >
+                                                {isSubmittingAdmin ? 'Menyimpan...' : 'Simpan Akun'}
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         )}

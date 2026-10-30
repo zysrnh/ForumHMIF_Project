@@ -138,24 +138,6 @@ export default function Authenticated({
                                 <p className="text-[11px] font-mono text-slate-500 truncate">
                                     NIM: {displayNim}
                                 </p>
-                                <div className="mt-0.5">
-                                    {isSuperAdmin ? (
-                                        <span className="inline-flex items-center gap-1 bg-red-50 border border-red-200 px-1.5 py-0.2 text-[9px] font-black text-red-700 tracking-wide uppercase">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-                                            SUPER ADMIN
-                                        </span>
-                                    ) : isAdmin ? (
-                                        <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 px-1.5 py-0.2 text-[9px] font-black text-blue-700 tracking-wide uppercase">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-                                            ADMIN HIMA
-                                        </span>
-                                    ) : (
-                                        <span className="inline-flex items-center gap-1 text-[9px] font-medium text-emerald-700">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                            Mahasiswa Aktif
-                                        </span>
-                                    )}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -280,6 +262,46 @@ export default function Authenticated({
                                         <span>Rekap Data KSM</span>
                                     </div>
                                     <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${currentNav === 'ksm' ? 'bg-white text-hima-blue-dark' : 'bg-blue-50 text-hima-blue-dark border border-blue-200'}`}>
+                                        ADMIN
+                                    </span>
+                                </button>
+                            )
+                        )}
+
+                        {/* 5. Kelola Pengguna (HANYA MUNCUL JIKA USER ADMIN/SUPER ADMIN) */}
+                        {isAdmin && (
+                            isProfilePage ? (
+                                <Link
+                                    href="/dashboard?tab=users"
+                                    className="w-full flex items-center justify-between px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        <span>Kelola Pengguna</span>
+                                    </div>
+                                    <span className="text-[8px] font-black uppercase px-1 py-0.2 bg-red-50 text-hima-red-dark border border-red-200">
+                                        ADMIN
+                                    </span>
+                                </Link>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={() => handleNavClick('users')}
+                                    className={`w-full text-left flex items-center justify-between px-3 py-2 font-bold border transition-all ${
+                                        currentNav === 'users'
+                                            ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                        <span>Kelola Pengguna</span>
+                                    </div>
+                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${currentNav === 'users' ? 'bg-white text-hima-blue-dark' : 'bg-red-50 text-hima-red-dark border border-red-200'}`}>
                                         ADMIN
                                     </span>
                                 </button>
