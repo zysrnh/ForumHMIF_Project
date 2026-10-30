@@ -220,7 +220,7 @@ export default function Survey({ user }: Props) {
                             <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-100 pb-2">
                                 Identitas Responden
                             </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                            <div className="space-y-3">
                                 <div>
                                     <label className="block text-xs font-black uppercase text-gray-800 mb-1">
                                         Nama Lengkap *
@@ -259,7 +259,7 @@ export default function Survey({ user }: Props) {
                                         type="text"
                                         value={data.respondent_class}
                                         onChange={(e) => setData('respondent_class', e.target.value)}
-                                        placeholder="Contoh: IF 23-A / IF 24-Pagi"
+                                        placeholder="Contoh: 2IF01"
                                         className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
                                     />
                                 </div>

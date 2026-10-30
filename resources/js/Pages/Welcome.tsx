@@ -423,7 +423,7 @@ export default function Welcome({
                                                 type="text"
                                                 value={aspirationAuthorClass}
                                                 onChange={(e) => setAspirationAuthorClass(e.target.value)}
-                                                placeholder="Contoh: IF 23-A"
+                                                placeholder="Contoh: 2IF01"
                                                 className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
                                             />
                                         </div>
