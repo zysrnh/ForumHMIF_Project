@@ -772,7 +772,31 @@ export default function Authenticated({
                         />
                     </button>
 
-                    {/* 4. Akun Saya */}
+                    {/* 4. Webmail HMIF (HANYA MUNCUL JIKA USER ADMIN/SUPER ADMIN) */}
+                    {isAdmin && (
+                        <button
+                            type="button"
+                            onClick={() => setShowWebmailModal(true)}
+                            className="group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70"
+                        >
+                            <div className="p-1 border border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50 transition-all">
+                                <svg
+                                    className="w-5 h-5 text-gray-500 group-hover:text-hima-red-dark transition-colors"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <span className="text-[10px] uppercase tracking-tight mt-0.5 text-gray-500 group-hover:text-hima-red-dark font-bold">
+                                Webmail
+                            </span>
+                            <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-hima-red-dark opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </button>
+                    )}
+
+                    {/* 5. Akun Saya */}
                     <Link
                         href={route('profile.edit')}
                         className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
