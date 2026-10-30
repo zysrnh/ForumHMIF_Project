@@ -384,7 +384,7 @@ export default function Authenticated({
                 {/* Dashboard Simple Footer */}
                 <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 pb-24 md:pb-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
                     <p className="font-medium text-center sm:text-left">
-                        Portal Aspirasi Mahasiswa HIMA IF • Institut LPKIA
+                        HIMA INFORMATIKA • IDE LPKIA
                     </p>
                     <div className="flex items-center gap-2 font-bold uppercase text-[10px] text-hima-blue-dark">
                         <span>Pemberdayaan Suara Mahasiswa</span>

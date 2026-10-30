@@ -480,7 +480,7 @@ export default function Topik({
                         </div>
 
                         <div className="text-xs font-bold text-hima-blue-dark uppercase tracking-wider">
-                            &copy; 2026 HIMA IF &bull; Institut LPKIA
+                            &copy; 2026 HIMA INFORMATIKA &bull; IDE LPKIA
                         </div>
                     </footer>
                 </div>
