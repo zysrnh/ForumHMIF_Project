@@ -640,21 +640,33 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                     </p>
                                 </div>
 
-                                <form onSubmit={handleKsmSearch} className="flex gap-1 w-full sm:w-72">
-                                    <input
-                                        type="text"
-                                        value={ksmSearch}
-                                        onChange={(e) => setKsmSearch(e.target.value)}
-                                        placeholder="Cari nama, NIM, kelas..."
-                                        className="flex-1 px-3 py-1.5 text-xs border border-slate-300 focus:outline-none focus:border-slate-800"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase transition-colors shrink-0"
+                                <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+                                    <a
+                                        href={route('admin.ksm.export')}
+                                        className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors shadow-xs shrink-0"
                                     >
-                                        Cari
-                                    </button>
-                                </form>
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                        <span>Export .xls</span>
+                                    </a>
+
+                                    <form onSubmit={handleKsmSearch} className="flex gap-1 flex-1 sm:w-72">
+                                        <input
+                                            type="text"
+                                            value={ksmSearch}
+                                            onChange={(e) => setKsmSearch(e.target.value)}
+                                            placeholder="Cari nama, NIM, kelas..."
+                                            className="flex-1 min-w-0 px-3 py-1.5 text-xs border border-slate-300 focus:outline-none focus:border-slate-800"
+                                        />
+                                        <button
+                                            type="submit"
+                                            className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase transition-colors shrink-0"
+                                        >
+                                            Cari
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
 
                             {/* Tampilan Mobile: Kartu Responden Bersih & Lega */}
@@ -1049,7 +1061,18 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                     </p>
                                 </div>
 
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsCreateAdminModalOpen(true)}
+                                        className="inline-flex btn-brutal items-center gap-1 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3 py-1.5 text-xs font-black uppercase tracking-wider shadow-brutal-xs hover:bg-hima-red-light transition-all shrink-0"
+                                    >
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        <span>+ Admin Baru</span>
+                                    </button>
+
                                     <form onSubmit={handleUserSearch} className="flex items-center gap-1.5 w-full sm:w-auto">
                                         <input
                                             type="text"
