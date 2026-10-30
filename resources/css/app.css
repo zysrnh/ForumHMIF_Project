@@ -253,3 +253,54 @@ html {
 .anim-polaroid-badge {
     animation: polaroidDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s both;
 }
+
+/* Bi-directional Scroll Reveal (Masuk & Keluar saat scroll ke atas maupun bawah) */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.scroll-reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Scroll reveal varian slide horizontal halus jika dibutuhkan */
+.scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-35px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal-left.is-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(35px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal-right.is-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* PWA Pop-up Entrance */
+@keyframes pwaPopupSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(100%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.anim-pwa-popup {
+    animation: pwaPopupSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+

@@ -60,8 +60,17 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        // Kirim email sambutan ke pendaftar dan notifikasi ke admin info@hmif-lpkia.my.id
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\UserRegisteredWelcomeMail($user));
+            \Illuminate\Support\Facades\Mail::to('info@hmif-lpkia.my.id')->send(new \App\Mail\AdminNewUserRegisteredMail($user));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Gagal mengirim email pendaftaran: ' . $e->getMessage());
+        }
+
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
     }
 }
+

@@ -37,4 +37,13 @@ class User extends Authenticatable
     {
         return in_array($this->role, ['admin', 'super_admin', 'superadmin']);
     }
+
+    /**
+     * Kirim notifikasi reset password dengan template kustom berlogo HIMA IF.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new \App\Notifications\CustomResetPasswordNotification($token));
+    }
 }
+

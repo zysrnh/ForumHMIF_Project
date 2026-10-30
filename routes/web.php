@@ -26,11 +26,17 @@ Route::middleware(['throttle:global'])->group(function () {
         ]);
     })->name('topik.index');
 
+    // Rute Notifikasi Email Aspirasi ke Admin & Mahasiswa
+    Route::post('/aspirasi/notify', [\App\Http\Controllers\AspirationNotificationController::class, 'notify'])
+        ->middleware('throttle:forms')
+        ->name('aspirasi.notify');
+
     // Rute Survei Peminatan KSM untuk Mahasiswa (Dilindungi rate limit form submission)
     Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
     Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])
         ->middleware('throttle:forms')
         ->name('ksm.survey.store');
+
 
     // Rute Khusus Admin HIMA IF (Wajib Login & Memiliki Role Admin)
     Route::middleware(['auth', 'admin'])->group(function () {

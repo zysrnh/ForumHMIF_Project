@@ -50,10 +50,23 @@ class KsmSurveyController extends Controller
 
         $validated['user_id'] = Auth::id();
 
-        KsmSurvey::create($validated);
+        $survey = KsmSurvey::create($validated);
+
+        // Kirim email notifikasi ke admin dan tanda terima ke responden
+        try {
+            \Illuminate\Support\Facades\Mail::to('info@hmif-lpkia.my.id')->send(new \App\Mail\AdminKsmSurveyNotificationMail($survey));
+
+            $recipientEmail = Auth::user()?->email;
+            if ($recipientEmail) {
+                \Illuminate\Support\Facades\Mail::to($recipientEmail)->send(new \App\Mail\KsmSurveyConfirmationMail($survey));
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Gagal mengirim email survei KSM: ' . $e->getMessage());
+        }
 
         return redirect()->route('ksm.survey.index')->with('success', 'Terima kasih! Respon survei KSM Anda berhasil disimpan.');
     }
+
 
     /**
      * Ambil data statistik dan survei KSM untuk dashboard pengurus/admin.

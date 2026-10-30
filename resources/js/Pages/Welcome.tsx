@@ -1,6 +1,9 @@
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
+import ScrollProgress from '@/Components/ScrollProgress';
+import PwaInstallPrompt from '@/Components/PwaInstallPrompt';
+import { useBiDirectionalScrollReveal } from '@/hooks/useBiDirectionalScrollReveal';
 import {
     APP_CATEGORIES,
     AspirationItem,
@@ -10,6 +13,7 @@ import {
     subscribeAspirations,
     toggleVoteSharedAspiration,
 } from '@/data/aspirations';
+
 
 // Hook deteksi scroll mekanikal
 function useScrollReveal(threshold = 0.12) {
@@ -110,9 +114,13 @@ export default function Welcome({
     // State Interaktif Alur Garis Stepper Cara Kerja Forum
     const [activeStep, setActiveStep] = useState<number>(1);
 
+    // Hook Universal Scroll Reveal Bi-directional (masuk & keluar saat scroll naik / turun)
+    useBiDirectionalScrollReveal();
+
     // Observer untuk scroll reveal sections
     const topicsSection = useScrollReveal();
     const caraKerjaSection = useScrollReveal();
+
 
     // Animated Counters (Langsung berjalan sesuai data aktual)
     const countAspirasi = useCountUp(stats.total, 1200);
@@ -201,10 +209,31 @@ export default function Welcome({
             status: 'baru',
         });
 
+        // Kirim email notifikasi ke admin info@hmif-lpkia.my.id dan ke mahasiswa jika ada email
+        try {
+            fetch(route('aspirasi.notify'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
+                },
+                body: JSON.stringify({
+                    title,
+                    content: aspirationContent,
+                    category: aspirationCategory,
+                    authorName: currentAuthor,
+                    authorNim: currentNim,
+                    authorClass: currentClass,
+                    authorEmail: auth.user?.email,
+                }),
+            }).catch(() => {});
+        } catch (_) {}
+
         setAspirationContent('');
         if (!auth.user) {
             setAspirationAuthorName('');
             setAspirationAuthorNim('');
+
             setAspirationAuthorClass('');
         }
         setAspirationSuccess(true);
@@ -217,7 +246,14 @@ export default function Welcome({
         <>
             <Head title="Forum HMIF - Suara Mahasiswa Teknik Informatika" />
 
+            {/* Indikator Garis Scroll Progress Bar */}
+            <ScrollProgress />
+
+            {/* Banner Pop-up Instalasi PWA ke Desktop / Layar HP */}
+            <PwaInstallPrompt />
+
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-6 lg:p-8 xl:p-10 pb-20 md:pb-8 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
+
                 {/* Main Wrapper */}
                 <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-6 sm:space-y-8 my-1 sm:my-2">
                     {/* 1. NAVBAR FORUM */}
@@ -466,8 +502,9 @@ export default function Welcome({
                     <section
                         id="aspirasi"
                         ref={topicsSection.ref}
-                        className="space-y-5 pt-2 sm:pt-4"
+                        className="space-y-5 pt-2 sm:pt-4 scroll-reveal"
                     >
+
                         <div className="border-b-2 border-slate-300 pb-3 sm:pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                             <div>
                                 <h2 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
@@ -574,8 +611,9 @@ export default function Welcome({
                     <section
                         id="cara-kerja"
                         ref={caraKerjaSection.ref}
-                        className="space-y-4"
+                        className="space-y-4 scroll-reveal"
                     >
+
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
                             <h2 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                 Alur Penyampaian Aspirasi
