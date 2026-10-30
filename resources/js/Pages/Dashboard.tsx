@@ -9,7 +9,7 @@ import {
     toggleVoteSharedAspiration,
 } from '@/data/aspirations';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface SurveyItem {
     id: number;
@@ -104,8 +104,30 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
     // Data State Aspirasi Tersinkronisasi
     const [aspirations, setAspirations] = useState<AspirationItem[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
+    const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
+    const categoryDropdownRef = useRef<HTMLDivElement>(null);
     const [sortBy, setSortBy] = useState<'trending' | 'terbaru'>('trending');
     const [searchQuery, setSearchQuery] = useState<string>('');
+
+    // Listener klik di luar untuk menutup dropdown kategori
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                categoryDropdownRef.current &&
+                !categoryDropdownRef.current.contains(event.target as Node)
+            ) {
+                setIsCategoryOpen(false);
+            }
+        };
+
+        if (isCategoryOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isCategoryOpen]);
 
     // State Accordion Tanggapan Aspirasi
     const [openCommentId, setOpenCommentId] = useState<number | null>(null);
@@ -963,20 +985,111 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                         {/* KOLOM KIRI (70%): SEARCH, FILTER & LIST KARTU ASPIRASI */}
                         <div className="lg:col-span-8 space-y-4">
-                            {/* Kotak Filter & Pencarian yang Rapi & Lega */}
-                            <div className="w-full bg-white border-2 border-slate-200 p-4 sm:p-5 shadow-xs space-y-3.5 anim-feed-item">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                                    <div className="relative flex-1">
-                                        <input
-                                            type="text"
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            placeholder="Cari aspirasi mahasiswa berdasarkan kata kunci..."
-                                            className="w-full px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 border-2 border-slate-300 focus:outline-none focus:border-hima-blue-dark rounded-none bg-slate-50/50"
-                                        />
+                            {/* Kotak Filter & Pencarian yang Rapi, Ringkas & Bebas Overflow */}
+                            <div className="w-full bg-white border-2 border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-3 anim-feed-item">
+                                {/* Baris 1: Pencarian Full Width */}
+                                <div className="relative w-full">
+                                    <input
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="Cari aspirasi mahasiswa berdasarkan kata kunci..."
+                                        className="w-full px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 border-2 border-slate-300 focus:outline-none focus:border-hima-blue-dark rounded-none bg-slate-50/50"
+                                    />
+                                </div>
+
+                                {/* Baris 2: Dropdown Kategori Interaktif & Pilihan Sortir */}
+                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                                    {/* Dropdown Kategori Interaktif */}
+                                    <div ref={categoryDropdownRef} className="relative flex-1 sm:max-w-xs">
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                                            className={`w-full flex items-center justify-between gap-2 border-2 px-3 py-2 text-xs font-bold transition-all shadow-xs ${
+                                                isCategoryOpen
+                                                    ? 'border-hima-blue-dark bg-blue-50/40 text-hima-blue-dark'
+                                                    : 'border-slate-300 bg-white hover:border-slate-800 text-slate-800'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-2 truncate text-left">
+                                                <span className="text-slate-400 text-[10px] sm:text-[11px] font-black uppercase shrink-0">
+                                                    Kategori:
+                                                </span>
+                                                <span
+                                                    className={`truncate font-black ${
+                                                        selectedCategory !== 'Semua'
+                                                            ? 'text-hima-red-dark'
+                                                            : 'text-slate-900'
+                                                    }`}
+                                                >
+                                                    {selectedCategory}
+                                                </span>
+                                            </div>
+
+                                            <div className="flex items-center gap-1.5 shrink-0">
+                                                {selectedCategory !== 'Semua' && (
+                                                    <span
+                                                        role="button"
+                                                        title="Reset ke Semua Kategori"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedCategory('Semua');
+                                                        }}
+                                                        className="text-[9px] bg-slate-200 hover:bg-hima-red-dark hover:text-white text-slate-700 px-1 py-0.2 font-black uppercase transition-colors"
+                                                    >
+                                                        ✕
+                                                    </span>
+                                                )}
+                                                <svg
+                                                    className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-150 ${
+                                                        isCategoryOpen ? 'rotate-180 text-hima-blue-dark' : ''
+                                                    }`}
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </div>
+                                        </button>
+
+                                        {/* Menu Popover Dropdown Kategori */}
+                                        {isCategoryOpen && (
+                                            <div className="absolute left-0 right-0 sm:right-auto sm:w-80 mt-1 bg-white border-2 border-slate-900 shadow-lg z-30 py-1 anim-fade-in max-h-64 overflow-y-auto">
+                                                <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-black uppercase tracking-wider text-slate-400">
+                                                    Pilih Kategori Aspirasi
+                                                </div>
+                                                {APP_CATEGORIES.map((cat) => {
+                                                    const isSelected = selectedCategory === cat;
+                                                    return (
+                                                        <button
+                                                            key={cat}
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setSelectedCategory(cat);
+                                                                setIsCategoryOpen(false);
+                                                            }}
+                                                            className={`w-full text-left px-3.5 py-2 text-xs font-bold flex items-center justify-between transition-colors ${
+                                                                isSelected
+                                                                    ? 'bg-hima-red-dark text-white'
+                                                                    : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                                                            }`}
+                                                        >
+                                                            <span>{cat}</span>
+                                                            {isSelected && (
+                                                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                                                </svg>
+                                                            )}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className="grid grid-cols-2 sm:flex items-center gap-1.5 shrink-0 w-full sm:w-auto">
+                                    {/* Tombol Sortir Top Vote & Terbaru */}
+                                    <div className="grid grid-cols-2 sm:flex items-center gap-1.5 shrink-0">
                                         <button
                                             type="button"
                                             onClick={() => setSortBy('trending')}
@@ -1003,24 +1116,6 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                             Terbaru
                                         </button>
                                     </div>
-                                </div>
-
-                                {/* Kategori Chips Berjarak Rapi */}
-                                <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs scrollbar-none">
-                                    {APP_CATEGORIES.map((cat) => (
-                                        <button
-                                            key={cat}
-                                            type="button"
-                                            onClick={() => setSelectedCategory(cat)}
-                                            className={`px-3 py-1.5 text-xs font-bold uppercase whitespace-nowrap border-2 transition-all ${
-                                                selectedCategory === cat
-                                                    ? 'bg-hima-red-dark text-white border-hima-red-dark shadow-xs'
-                                                    : 'bg-white text-slate-600 border-slate-300 hover:border-slate-800 hover:text-black'
-                                            }`}
-                                        >
-                                            {cat}
-                                        </button>
-                                    ))}
                                 </div>
                             </div>
 
