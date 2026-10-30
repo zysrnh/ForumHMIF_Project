@@ -17,8 +17,22 @@ class KsmSurveyController extends Controller
      */
     public function create(): InertiaResponse
     {
+        $user = Auth::user();
+        $existingSurvey = null;
+
+        if ($user) {
+            $existingSurvey = KsmSurvey::where('user_id', $user->id)
+                ->when($user->nim, function ($query, $nim) {
+                    $query->orWhere('respondent_nim', $nim);
+                })
+                ->latest()
+                ->first();
+        }
+
         return Inertia::render('Ksm/Survey', [
-            'user' => Auth::user(),
+            'user' => $user,
+            'hasFilled' => $existingSurvey !== null,
+            'existingSurvey' => $existingSurvey,
         ]);
     }
 

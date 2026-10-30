@@ -493,13 +493,13 @@ export default function Authenticated({
                     </div>
                 )}
 
-                {/* Padding bottom di mobile (pb-24) agar konten terbaca lega tanpa tertutup toolbar */}
-                <main className="flex-1 p-2.5 sm:p-6 pb-24 md:pb-6">
+                {/* Padding bottom di mobile (pb-28) agar konten terbaca lega tanpa tertutup toolbar */}
+                <main className="flex-1 p-2.5 sm:p-6 pb-28 md:pb-6">
                     {children}
                 </main>
 
                 {/* Dashboard Simple Footer */}
-                <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 pb-24 md:pb-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+                <footer className="border-t border-gray-300 bg-white px-4 py-3 sm:px-6 pb-28 md:pb-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
                     <p className="font-medium text-center sm:text-left">
                         HIMA INFORMATIKA • IDE LPKIA
                     </p>
@@ -510,11 +510,11 @@ export default function Authenticated({
             </div>
 
             {/* ========================================================================= */}
-            {/* MOBILE APP BOTTOM NAVIGATION: 4 TOMBOL LEGA, RESPONSIF & TIDAK PADAT        */}
+            {/* MOBILE APP BOTTOM NAVIGATION: LEGA, RESPONSIF & TIDAK TERPOTONG           */}
             {/* ========================================================================= */}
             <nav
                 aria-label="Mobile app navigation toolbar"
-                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-3px_10px_rgba(26,70,124,0.12)] px-2 py-1"
+                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-hima-blue-dark shadow-[0px_-3px_10px_rgba(26,70,124,0.12)] px-1 pt-1.5 pb-2.5"
             >
                 <div className="flex items-center justify-between gap-1 relative">
                     {/* 1. Feed / Semua */}

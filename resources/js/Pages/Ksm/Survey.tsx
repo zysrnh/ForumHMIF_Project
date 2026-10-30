@@ -8,9 +8,21 @@ interface Props {
         nim?: string;
         role?: string;
     } | null;
+    hasFilled?: boolean;
+    existingSurvey?: {
+        id: number;
+        respondent_name: string;
+        respondent_nim?: string;
+        semester_course: string;
+        interested_fields: string[];
+        activity_types: string[];
+        preferred_days: string[];
+        preferred_time: string;
+        created_at: string;
+    } | null;
 }
 
-export default function Survey({ user }: Props) {
+export default function Survey({ user, hasFilled, existingSurvey }: Props) {
     const pageProps = usePage().props as { flash?: { success?: string } };
     const successFlash = pageProps.flash?.success;
 
@@ -261,6 +273,53 @@ export default function Survey({ user }: Props) {
                             <span>Tanda bintang (*) menandakan pertanyaan wajib diisi.</span>
                         </div>
                     </div>
+
+                    {/* Kartu Status: Kamu Sudah Mengisi Survei KSM */}
+                    {hasFilled && existingSurvey && (
+                        <div className="bg-emerald-50 border-2 border-emerald-700 p-4 sm:p-5 shadow-brutal-sm text-emerald-950 space-y-3 anim-feed-item">
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="w-8 h-8 bg-emerald-700 text-white font-black flex items-center justify-center text-base border-2 border-emerald-900 shadow-xs shrink-0">
+                                        ✓
+                                    </div>
+                                    <div>
+                                        <h3 className="font-black text-sm sm:text-base text-emerald-900 uppercase tracking-tight">
+                                            Kamu Sudah Mengisi Kuesioner KSM Ini
+                                        </h3>
+                                        <p className="text-[11px] text-emerald-800 font-medium">
+                                            Responmu telah tercatat oleh pengurus HIMA IF.
+                                        </p>
+                                    </div>
+                                </div>
+                                <span className="inline-block bg-emerald-200 border border-emerald-800 text-emerald-900 text-[9px] font-black uppercase px-2 py-0.5 tracking-wider shrink-0">
+                                    SUDAH DIISI
+                                </span>
+                            </div>
+
+                            <div className="bg-white border-2 border-emerald-700 p-3 text-xs space-y-1.5 text-slate-800 shadow-xs font-mono">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-1 gap-1">
+                                    <span className="text-slate-500 font-bold uppercase text-[10px]">Mata Kuliah Pilihan:</span>
+                                    <span className="font-black text-emerald-900">{existingSurvey.semester_course}</span>
+                                </div>
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-1 gap-1">
+                                    <span className="text-slate-500 font-bold uppercase text-[10px]">Minat Bidang:</span>
+                                    <span className="font-bold text-slate-900">
+                                        {Array.isArray(existingSurvey.interested_fields) ? existingSurvey.interested_fields.join(', ') : existingSurvey.interested_fields}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                    <span className="text-slate-500 font-bold uppercase text-[10px]">Jadwal Belajar:</span>
+                                    <span className="font-bold text-slate-900">
+                                        {Array.isArray(existingSurvey.preferred_days) ? existingSurvey.preferred_days.join(', ') : existingSurvey.preferred_days} ({existingSurvey.preferred_time})
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p className="text-[11px] text-emerald-800 italic">
+                                * Kamu tetap dapat mengirim ulang formulir di bawah ini jika ingin memperbarui pilihan peminatan atau jadwalmu.
+                            </p>
+                        </div>
+                    )}
 
                     {/* FORM PERTANYAAN */}
                     <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">

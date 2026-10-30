@@ -397,10 +397,10 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
             activeNav={activeNav}
             onSelectNav={(nav) => handleSelectTab(nav as 'feed' | 'create' | 'my' | 'ksm' | 'users')}
             header={
-                <div className="flex items-center justify-between gap-3">
-                    <div>
-                        <div className="flex items-center gap-2.5 flex-wrap">
-                            <h1 className="text-base sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                    <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <h1 className="text-sm sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
                                 {activeNav === 'create'
                                     ? 'Tulis Aspirasi Mahasiswa'
                                     : activeNav === 'my'
@@ -412,12 +412,12 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                     : 'Forum Aspirasi Mahasiswa'}
                             </h1>
                             {isSuperAdmin ? (
-                                <span className="inline-flex items-center gap-1 bg-red-50 border border-red-300 px-2 py-0.5 text-[10px] font-black text-red-700 tracking-wide uppercase">
+                                <span className="inline-flex items-center gap-1 bg-red-50 border border-red-300 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-red-700 tracking-wide uppercase">
                                     <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
                                     SUPER ADMIN
                                 </span>
                             ) : isAdmin ? (
-                                <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-300 px-2 py-0.5 text-[10px] font-black text-blue-700 tracking-wide uppercase">
+                                <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-300 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-blue-700 tracking-wide uppercase">
                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
                                     ADMIN HIMA
                                 </span>
@@ -436,7 +436,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
                         {/* Pintasan Buka Webmail Resmi HMIF untuk Admin */}
                         {isAdmin && (
                             <a
@@ -444,14 +444,13 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Buka Webmail Resmi HMIF (Roundcube)"
-                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-white text-hima-blue-dark hover:bg-slate-900 hover:text-white px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-black uppercase tracking-wider shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
+                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-white text-hima-blue-dark hover:bg-slate-900 hover:text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
                             >
                                 <svg className="w-3.5 h-3.5 text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
-                                <span className="hidden sm:inline">Webmail HMIF</span>
-                                <span className="sm:hidden">Webmail</span>
-                                <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <span>Webmail</span>
+                                <svg className="w-3 h-3 opacity-60 hidden sm:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>
@@ -461,23 +460,22 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                             <button
                                 type="button"
                                 onClick={() => setIsCreateAdminModalOpen(true)}
-                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-red-light transition-all"
+                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-red-light transition-all"
                             >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
                                 </svg>
-                                <span>+ Buat Admin Baru</span>
+                                <span>+ Admin Baru</span>
                             </button>
                         ) : activeNav === 'ksm' ? (
                             <a
                                 href={route('admin.ksm.export')}
-                                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
                             >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                <span className="hidden sm:inline">Export Excel (.xls)</span>
-                                <span className="sm:hidden">Export .xls</span>
+                                <span>Export .xls</span>
                             </a>
                         ) : activeNav !== 'create' ? (
                             <button
@@ -494,7 +492,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                             <button
                                 type="button"
                                 onClick={() => handleSelectTab('feed')}
-                                className="inline-flex items-center gap-1.5 border-2 border-slate-300 bg-white text-slate-700 px-3 py-1.5 text-xs font-bold uppercase hover:bg-slate-50 transition-colors shadow-xs"
+                                className="inline-flex items-center gap-1.5 border-2 border-slate-300 bg-white text-slate-700 px-2.5 py-1.5 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase hover:bg-slate-50 transition-colors shadow-xs"
                             >
                                 ← Kembali
                             </button>
