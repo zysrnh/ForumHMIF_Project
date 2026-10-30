@@ -289,7 +289,7 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                <span>Export CSV</span>
+                                <span>Export Excel (.xls)</span>
                             </a>
                         ) : activeNav !== 'create' ? (
                             <button

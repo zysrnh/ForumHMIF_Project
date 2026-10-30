@@ -156,58 +156,162 @@ class KsmSurveyController extends Controller
     }
 
     /**
-     * Export data respon survei ke CSV untuk admin pengurus.
+     * Export data respon survei ke format Excel (.xls) dengan styling bersih & rapi.
+     */
+    public function exportExcel(): Response
+    {
+        $surveys = KsmSurvey::orderBy('id', 'desc')->get();
+        $generatedAt = now()->format('d/m/Y H:i').' WIB';
+
+        ob_start();
+        ?>
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <!--[if gte mso 9]>
+            <xml>
+                <x:ExcelWorkbook>
+                    <x:ExcelWorksheets>
+                        <x:ExcelWorksheet>
+                            <x:Name>Rekap Responden KSM</x:Name>
+                            <x:WorksheetOptions>
+                                <x:DisplayGridlines/>
+                            </x:WorksheetOptions>
+                        </x:ExcelWorksheet>
+                    </x:ExcelWorksheets>
+                </x:ExcelWorkbook>
+            </xml>
+            <![endif]-->
+            <style>
+                body {
+                    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+                    font-size: 11pt;
+                    color: #1e293b;
+                }
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                .title-header {
+                    font-size: 14pt;
+                    font-weight: bold;
+                    color: #1A467C;
+                    text-align: left;
+                }
+                .subtitle-header {
+                    font-size: 10pt;
+                    color: #64748b;
+                    text-align: left;
+                }
+                th {
+                    background-color: #1A467C;
+                    color: #ffffff;
+                    font-weight: bold;
+                    font-size: 10.5pt;
+                    text-align: left;
+                    padding: 10px 12px;
+                    border: 1px solid #0f2e54;
+                    vertical-align: middle;
+                }
+                td {
+                    padding: 8px 12px;
+                    border: 1px solid #cbd5e1;
+                    font-size: 10pt;
+                    vertical-align: top;
+                }
+                .zebra {
+                    background-color: #f8fafc;
+                }
+                .text-center {
+                    text-align: center;
+                }
+                .text-right {
+                    text-align: right;
+                }
+                .text-string {
+                    mso-number-format: "\@";
+                }
+                .font-bold {
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+        <body>
+            <table>
+                <tr>
+                    <td colspan="13" class="title-header" style="border: none; padding-bottom: 2px;">
+                        REKAPITULASI SURVEI PEMINATAN KSM - HIMA INFORMATIKA
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="13" class="subtitle-header" style="border: none; padding-bottom: 15px;">
+                        Institut LPKIA Bandung &bull; Waktu Unduh: <?= htmlspecialchars($generatedAt, ENT_QUOTES, 'UTF-8') ?> &bull; Total Responden: <?= count($surveys) ?> Mahasiswa
+                    </td>
+                </tr>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;" class="text-center">No</th>
+                        <th style="width: 200px;">Nama Responden</th>
+                        <th style="width: 130px;" class="text-center">NIM</th>
+                        <th style="width: 100px;" class="text-center">Kelas</th>
+                        <th style="width: 180px;">Matkul Semester 3</th>
+                        <th style="width: 250px;">Bidang Minat</th>
+                        <th style="width: 220px;">Bentuk Kegiatan</th>
+                        <th style="width: 180px;">Metode Belajar</th>
+                        <th style="width: 110px;" class="text-center">Skala Minat</th>
+                        <th style="width: 150px;">Hari Pilihan</th>
+                        <th style="width: 120px;">Waktu Pilihan</th>
+                        <th style="width: 280px;">Saran / Ide</th>
+                        <th style="width: 140px;" class="text-center">Tanggal Isi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($surveys->isEmpty()) { ?>
+                        <tr>
+                            <td colspan="13" class="text-center" style="padding: 20px; color: #94a3b8; font-style: italic;">
+                                Belum ada data respon survei yang masuk.
+                            </td>
+                        </tr>
+                    <?php } else { ?>
+                        <?php foreach ($surveys as $idx => $item) { ?>
+                            <?php $isZebra = ($idx % 2 === 1) ? ' zebra' : ''; ?>
+                            <tr class="<?= $isZebra ?>">
+                                <td class="text-center"><?= $idx + 1 ?></td>
+                                <td class="font-bold"><?= htmlspecialchars($item->respondent_name, ENT_QUOTES, 'UTF-8') ?></td>
+                                <td class="text-center text-string"><?= htmlspecialchars($item->respondent_nim ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td class="text-center"><?= htmlspecialchars($item->respondent_class ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($item->semester_course, ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars(is_array($item->interested_fields) ? implode(', ', $item->interested_fields) : '', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars(is_array($item->activity_types) ? implode(', ', $item->activity_types) : '', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($item->learning_method, ENT_QUOTES, 'UTF-8') ?></td>
+                                <td class="text-center font-bold">Skala <?= (int) $item->interest_scale ?> / 4</td>
+                                <td><?= htmlspecialchars(is_array($item->preferred_days) ? implode(', ', $item->preferred_days) : '', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($item->preferred_time, ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($item->feedback ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td class="text-center"><?= $item->created_at->format('d/m/Y H:i') ?></td>
+                            </tr>
+                        <?php } ?>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </body>
+        </html>
+        <?php
+        $content = ob_get_clean();
+        $filename = 'rekap_survei_ksm_'.date('Ymd_His').'.xls';
+
+        return response($content, 200, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Cache-Control' => 'max-age=0',
+        ]);
+    }
+
+    /**
+     * Alias untuk backward compatibility export CSV.
      */
     public function exportCsv(): Response
     {
-        $surveys = KsmSurvey::orderBy('id', 'desc')->get();
-
-        $csvHeader = [
-            'ID',
-            'Nama Responden',
-            'NIM',
-            'Kelas',
-            'Matkul Semester 3',
-            'Bidang Minat',
-            'Bentuk Kegiatan',
-            'Metode Belajar',
-            'Skala Minat (1-4)',
-            'Hari Pilihan',
-            'Waktu Pilihan',
-            'Saran Ide',
-            'Tanggal Isi',
-        ];
-
-        $handle = fopen('php://temp', 'r+');
-        fputcsv($handle, $csvHeader);
-
-        foreach ($surveys as $item) {
-            fputcsv($handle, [
-                $item->id,
-                $item->respondent_name,
-                $item->respondent_nim ?? '-',
-                $item->respondent_class ?? '-',
-                $item->semester_course,
-                is_array($item->interested_fields) ? implode(', ', $item->interested_fields) : '',
-                is_array($item->activity_types) ? implode(', ', $item->activity_types) : '',
-                $item->learning_method,
-                $item->interest_scale,
-                is_array($item->preferred_days) ? implode(', ', $item->preferred_days) : '',
-                $item->preferred_time,
-                $item->feedback ?? '',
-                $item->created_at->format('d/m/Y H:i'),
-            ]);
-        }
-
-        rewind($handle);
-        $csvContent = stream_get_contents($handle);
-        fclose($handle);
-
-        $filename = 'rekap_survei_ksm_'.date('Ymd_His').'.csv';
-
-        return response($csvContent, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
-        ]);
+        return $this->exportExcel();
     }
 }
