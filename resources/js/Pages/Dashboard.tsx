@@ -397,10 +397,10 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
             activeNav={activeNav}
             onSelectNav={(nav) => handleSelectTab(nav as 'feed' | 'create' | 'my' | 'ksm' | 'users')}
             header={
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
-                    <div className="min-w-0">
+                <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <h1 className="text-sm sm:text-xl font-black text-hima-blue-dark uppercase tracking-tight">
+                            <h1 className="text-sm sm:text-lg lg:text-xl font-black text-hima-blue-dark uppercase tracking-tight truncate">
                                 {activeNav === 'create'
                                     ? 'Tulis Aspirasi Mahasiswa'
                                     : activeNav === 'my'
@@ -412,18 +412,18 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                     : 'Forum Aspirasi Mahasiswa'}
                             </h1>
                             {isSuperAdmin ? (
-                                <span className="inline-flex items-center gap-1 bg-red-50 border border-red-300 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-red-700 tracking-wide uppercase">
+                                <span className="inline-flex items-center gap-1 bg-red-50 border border-red-300 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-red-700 tracking-wide uppercase shrink-0">
                                     <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
                                     SUPER ADMIN
                                 </span>
                             ) : isAdmin ? (
-                                <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-300 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-blue-700 tracking-wide uppercase">
+                                <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-300 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black text-blue-700 tracking-wide uppercase shrink-0">
                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
                                     ADMIN HIMA
                                 </span>
                             ) : null}
                         </div>
-                        <p className="hidden sm:block text-xs text-slate-500 font-medium mt-0.5">
+                        <p className="hidden md:block text-xs text-slate-500 font-medium mt-0.5 truncate">
                             {activeNav === 'create'
                                 ? 'Sampaikan ide, masukan fasilitas, atau kendala perkuliahan secara langsung.'
                                 : activeNav === 'my'
@@ -436,12 +436,12 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap sm:flex-nowrap">
+                    <div className="flex items-center gap-2 shrink-0">
                         {activeNav === 'users' ? (
                             <button
                                 type="button"
                                 onClick={() => setIsCreateAdminModalOpen(true)}
-                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-red-light transition-all"
+                                className="inline-flex btn-brutal items-center gap-1 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-xs hover:bg-hima-red-light transition-all"
                             >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
@@ -451,7 +451,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                         ) : activeNav === 'ksm' ? (
                             <a
                                 href={route('admin.ksm.export')}
-                                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                                className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
                             >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

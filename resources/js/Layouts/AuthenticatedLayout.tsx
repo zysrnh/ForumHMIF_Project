@@ -16,6 +16,7 @@ export default function Authenticated({
 }: AuthenticatedLayoutProps) {
     const user = usePage().props.auth.user;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [showWebmailModal, setShowWebmailModal] = useState(false);
     const [isDesktopCollapsed, setIsDesktopCollapsed] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
             return localStorage.getItem('hmif_sidebar_collapsed') === 'true';
@@ -366,12 +367,11 @@ export default function Authenticated({
 
                         {/* Webmail HMIF (HANYA MUNCUL JIKA USER ADMIN/SUPER ADMIN) */}
                         {isAdmin && (
-                            <a
-                                href="https://kisaki.kawaiihost.net:2096"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <button
+                                type="button"
+                                onClick={() => setShowWebmailModal(true)}
                                 title="Buka Webmail Resmi HMIF (Roundcube)"
-                                className={`w-full flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-900 hover:text-white transition-all group ${
+                                className={`w-full text-left flex items-center font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-900 hover:text-white transition-all group ${
                                     isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 justify-between' : 'justify-between px-3 py-2'
                                 }`}
                             >
@@ -384,7 +384,7 @@ export default function Authenticated({
                                 <span className={`text-[8px] font-black uppercase px-1 py-0.2 bg-blue-50 text-hima-blue-dark border border-blue-200 group-hover:bg-white group-hover:text-slate-900 ${isDesktopCollapsed ? 'md:hidden' : 'inline'}`}>
                                     ↗
                                 </span>
-                            </a>
+                            </button>
                         )}
 
                         {/* 5. Isi Survei KSM (UNTUK MAHASISWA) */}
@@ -759,33 +759,7 @@ export default function Authenticated({
                         />
                     </button>
 
-                    {/* 4. Webmail HMIF (Khusus Admin di Toolbar Bawah) */}
-                    {isAdmin && (
-                        <a
-                            href="https://kisaki.kawaiihost.net:2096"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Buka Webmail Resmi HMIF (Roundcube)"
-                            className="group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70"
-                        >
-                            <div className="p-1 border border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50 transition-all">
-                                <svg
-                                    className="w-5 h-5 text-gray-500 group-hover:text-hima-red-dark transition-colors"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <span className="text-[10px] uppercase tracking-tight mt-0.5 text-gray-500 group-hover:text-hima-red-dark font-bold">
-                                Mail
-                            </span>
-                            <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-hima-red-dark opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </a>
-                    )}
-
-                    {/* 5. Akun Saya */}
+                    {/* 4. Akun Saya */}
                     <Link
                         href={route('profile.edit')}
                         className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
@@ -830,6 +804,61 @@ export default function Authenticated({
                     </Link>
                 </div>
             </nav>
+
+            {/* Modal Konfirmasi Buka Webmail Resmi HMIF */}
+            {showWebmailModal && (
+                <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                    <div className="w-full max-w-md bg-white border-4 border-hima-blue-dark shadow-brutal p-5 sm:p-6 space-y-4 anim-feed-item">
+                        <div className="flex items-center gap-2.5 border-b-2 border-hima-blue-dark pb-3">
+                            <div className="w-8 h-8 bg-hima-red-dark text-white flex items-center justify-center font-black shrink-0">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="font-black text-sm sm:text-base text-hima-blue-dark uppercase tracking-tight">
+                                    Buka Webmail Resmi HMIF?
+                                </h3>
+                                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                                    Akses Portal Roundcube Pengurus
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="text-xs text-slate-700 space-y-2 leading-relaxed">
+                            <p>
+                                Anda akan dialihkan ke server webmail resmi HIMA IF pada tab baru:
+                            </p>
+                            <div className="p-2.5 bg-blue-50 border-2 border-hima-blue-dark font-mono text-[11px] text-hima-blue-dark break-all font-bold">
+                                https://kisaki.kawaiihost.net:2096
+                            </div>
+                            <p className="text-[11px] text-slate-500">
+                                Gunakan akun email resmi pengurus (contoh: <span className="font-bold">info@hmif-lpkia.my.id</span>) untuk masuk ke kotak surat.
+                            </p>
+                        </div>
+
+                        <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                            <button
+                                type="button"
+                                onClick={() => setShowWebmailModal(false)}
+                                className="px-3.5 py-2 border-2 border-slate-300 text-slate-700 bg-white hover:bg-slate-100 text-xs font-bold uppercase tracking-wider transition-colors"
+                            >
+                                Batal
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    window.open('https://kisaki.kawaiihost.net:2096', '_blank');
+                                    setShowWebmailModal(false);
+                                }}
+                                className="px-4 py-2 border-2 border-hima-blue-dark bg-hima-blue-dark text-white hover:bg-hima-blue-light text-xs font-black uppercase tracking-wider shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
+                            >
+                                Buka Webmail ↗
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
