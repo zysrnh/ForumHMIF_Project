@@ -10,25 +10,26 @@ export default function Guest({ children, maxWidth = 'max-w-md' }: GuestLayoutPr
     return (
         <div className="bg-blueprint flex min-h-screen flex-col items-center justify-center py-4 sm:py-6 px-4 pb-24 md:pb-6 selection:bg-hima-blue-light selection:text-white relative overflow-x-hidden">
             {/* Ambient Floating Accents */}
-            <div className="hidden md:block absolute top-6 left-6 w-10 h-10 bg-hima-blue-light/20 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
-            <div className="hidden md:block absolute bottom-6 right-6 w-12 h-12 bg-hima-red-light/20 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />
+            <div className="hidden md:block absolute top-10 left-10 w-11 h-11 bg-hima-blue-light/30 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
+            <div className="hidden md:block absolute bottom-12 right-12 w-13 h-13 bg-hima-red-light/30 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />
+            <div className="hidden lg:block absolute top-1/3 right-16 w-8 h-8 bg-amber-300/40 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" style={{ animationDelay: '1.5s' }} />
 
             <div className={`w-full ${maxWidth} z-10 space-y-3`}>
-                {/* Polaroid Logo Badge (Compact) */}
-                <div className="flex justify-center">
-                    <Link href="/" className="relative group">
+                {/* Polaroid Logo Badge (Compact with spring entrance & interactive hover) */}
+                <div className="flex justify-center anim-polaroid-badge">
+                    <Link href="/" className="relative group block cursor-pointer">
                         <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-12 h-4 tape-badge border border-gray-400 z-10" />
-                        <div className="bg-white border-2 border-hima-blue-dark p-1.5 shadow-brutal rotate-[-1.5deg] hover:rotate-0 transition-transform duration-300">
+                        <div className="bg-white border-2 border-hima-blue-dark p-2 shadow-brutal rotate-[-1.5deg] group-hover:rotate-0 group-hover:scale-105 group-hover:shadow-brutal-lg transition-all duration-300">
                             <ApplicationLogo className="h-11 w-11 mx-auto object-contain" />
-                            <p className="text-[8px] font-black font-mono text-center text-hima-blue-dark mt-0.5 uppercase tracking-wider">
+                            <p className="text-[8px] font-black font-mono text-center text-hima-blue-dark mt-1 uppercase tracking-wider">
                                 #HIMA_IF
                             </p>
                         </div>
                     </Link>
                 </div>
 
-                {/* Main Card */}
-                <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-6 shadow-brutal-lg">
+                {/* Main Card with Brutal Stamp Entrance Animation */}
+                <div className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-lg anim-auth-card">
                     {children}
                 </div>
             </div>
