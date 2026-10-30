@@ -16,14 +16,20 @@ export default function Authenticated({
 }: AuthenticatedLayoutProps) {
     const user = usePage().props.auth.user;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [avatarError, setAvatarError] = useState(false);
 
     // Format NIM dari database atau dari format fellow email
     const displayNim =
         user.nim || (user.email.includes('@') ? user.email.split('@')[0] : 'MAHASISWA');
 
+    // Hak akses role
+    const isAdmin = ['admin', 'super_admin', 'superadmin'].includes(user.role || '');
+    const isSuperAdmin = user.role === 'super_admin';
+
     // Menentukan nav aktif berdasarkan url jika tidak di-pass manual
     const isProfilePage = route().current('profile.edit');
-    const currentNav = isProfilePage ? 'profile' : activeNav || 'feed';
+    const isKsmAdminPage = route().current('admin.ksm.dashboard');
+    const currentNav = isProfilePage ? 'profile' : isKsmAdminPage ? 'ksm_admin' : activeNav || 'feed';
 
     const handleNavClick = (navId: string) => {
         if (onSelectNav) {
@@ -111,183 +117,245 @@ export default function Authenticated({
                         </button>
                     </div>
 
-                    {/* Mahasiswa Info Card */}
-                    <div className="p-3.5 sm:p-4 border-b-2 border-hima-blue-dark bg-slate-50">
+                    {/* User Info Card */}
+                    <div className="p-3.5 border-b border-slate-200 bg-slate-50">
                         <div className="flex items-center gap-2.5">
-                            {user.avatar ? (
+                            {user.avatar && !avatarError ? (
                                 <img
                                     src={user.avatar}
                                     alt={user.name}
-                                    className="w-10 h-10 border-2 border-hima-blue-dark object-cover shadow-brutal-sm"
+                                    onError={() => setAvatarError(true)}
+                                    className="w-10 h-10 border border-slate-300 object-cover shrink-0"
                                 />
                             ) : (
-                                <div className="w-10 h-10 border-2 border-hima-blue-dark bg-hima-blue-dark text-white font-black text-sm flex items-center justify-center shadow-brutal-sm shrink-0">
+                                <div className="w-10 h-10 border border-slate-300 bg-hima-blue-dark text-white font-black text-sm flex items-center justify-center shrink-0">
                                     {user.name.charAt(0).toUpperCase()}
                                 </div>
                             )}
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs font-black text-hima-blue-dark uppercase truncate" title={user.name}>
+                                <p className="text-xs font-bold text-slate-900 uppercase truncate" title={user.name}>
                                     {user.name}
                                 </p>
-                                <p className="text-[11px] font-mono font-bold text-gray-600 truncate">
+                                <p className="text-[11px] font-mono text-slate-500 truncate">
                                     NIM: {displayNim}
                                 </p>
-                                <div className="mt-0.5 flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                    <span className="text-[9px] font-bold text-green-700 uppercase">
-                                        Mahasiswa Aktif
-                                    </span>
+                                <div className="mt-0.5">
+                                    {isSuperAdmin ? (
+                                        <span className="inline-flex items-center gap-1 bg-red-50 border border-red-200 px-1.5 py-0.2 text-[9px] font-black text-red-700 tracking-wide uppercase">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+                                            SUPER ADMIN
+                                        </span>
+                                    ) : isAdmin ? (
+                                        <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 px-1.5 py-0.2 text-[9px] font-black text-blue-700 tracking-wide uppercase">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+                                            ADMIN HIMA
+                                        </span>
+                                    ) : (
+                                        <span className="inline-flex items-center gap-1 text-[9px] font-medium text-emerald-700">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                            Mahasiswa Aktif
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Navigation Menu Desktop & Drawer */}
-                    <nav className="p-3 sm:p-4 space-y-1.5 flex-1">
-                        <div className="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2 px-1">
-                            Menu Utama
-                        </div>
+                    <nav className="p-3 space-y-1 flex-1 overflow-y-auto text-xs">
+                        {/* JIKA USER ADALAH ADMIN / SUPER ADMIN */}
+                        {isAdmin ? (
+                            <>
+                                <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 mt-1 mb-1.5 px-2">
+                                    Panel Manajemen
+                                </div>
 
-                        {/* 1. Feed Aspirasi */}
-                        {isProfilePage ? (
-                            <Link
-                                href={route('dashboard')}
-                                className="w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 bg-white text-gray-800 border-hima-blue-dark hover:bg-slate-100 transition-all"
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                                </svg>
-                                <span>Semua Aspirasi</span>
-                            </Link>
+                                {/* 1. Dashboard KSM */}
+                                <Link
+                                    href={route('admin.ksm.dashboard')}
+                                    className={`w-full flex items-center justify-between px-3 py-2 font-bold tracking-wide border transition-all ${
+                                        isKsmAdminPage
+                                            ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                        <span>Dashboard KSM</span>
+                                    </div>
+                                    <span className={`text-[8px] font-black uppercase px-1 py-0.2 ${isKsmAdminPage ? 'bg-white text-hima-blue-dark' : 'bg-blue-50 text-hima-blue-dark border border-blue-200'}`}>
+                                        ADMIN
+                                    </span>
+                                </Link>
+
+                                {/* 2. Kelola Forum Aspirasi */}
+                                {isProfilePage || isKsmAdminPage ? (
+                                    <Link
+                                        href={route('dashboard')}
+                                        className="w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border bg-white text-slate-700 border-slate-200 hover:bg-slate-50 transition-all"
+                                    >
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                        </svg>
+                                        <span>Kelola Aspirasi</span>
+                                    </Link>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        onClick={() => handleNavClick('feed')}
+                                        className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
+                                            currentNav === 'feed'
+                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                        }`}
+                                    >
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                        </svg>
+                                        <span>Kelola Aspirasi</span>
+                                    </button>
+                                )}
+
+                                {/* 3. Tulis Aspirasi / Pengumuman */}
+                                {!isProfilePage && !isKsmAdminPage && (
+                                    <button
+                                        type="button"
+                                        onClick={() => handleNavClick('create')}
+                                        className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
+                                            currentNav === 'create'
+                                                ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                        }`}
+                                    >
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        <span>Buat Aspirasi / Rilis</span>
+                                    </button>
+                                )}
+                            </>
                         ) : (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('feed')}
-                                className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
-                                    currentNav === 'feed'
-                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm translate-x-0.5'
-                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-slate-100'
-                                }`}
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                                </svg>
-                                <span>Semua Aspirasi</span>
-                            </button>
+                            /* MENU MAHASISWA REGULER */
+                            <>
+                                <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 mt-1 mb-1.5 px-2">
+                                    Menu Mahasiswa
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => handleNavClick('feed')}
+                                    className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
+                                        currentNav === 'feed'
+                                            ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                    </svg>
+                                    <span>Semua Aspirasi</span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => handleNavClick('create')}
+                                    className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
+                                        currentNav === 'create'
+                                            ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    <span>Tulis Aspirasi</span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => handleNavClick('my')}
+                                    className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
+                                        currentNav === 'my'
+                                            ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    <span>Aspirasi Saya</span>
+                                </button>
+
+                                <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 pt-2 mb-1 px-2">
+                                    KSM HIMA
+                                </div>
+
+                                <Link
+                                    href={route('ksm.survey.index')}
+                                    className="w-full flex items-center justify-between px-3 py-2 font-bold border border-red-200 bg-red-50/50 text-red-800 hover:bg-red-100 transition-all"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                        </svg>
+                                        <span>Isi Survei KSM</span>
+                                    </div>
+                                    <span className="bg-red-700 text-white text-[8px] font-bold px-1 py-0.2">
+                                        ISI
+                                    </span>
+                                </Link>
+                            </>
                         )}
 
-                        {/* 2. Tulis Aspirasi */}
-                        {!isProfilePage ? (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('create')}
-                                className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
-                                    currentNav === 'create'
-                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm translate-x-0.5'
-                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-blue-50'
-                                }`}
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                                <span>Tulis Aspirasi</span>
-                            </button>
-                        ) : null}
-
-                        {/* 3. Aspirasi Saya */}
-                        {!isProfilePage ? (
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick('my')}
-                                className={`w-full text-left flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
-                                    currentNav === 'my'
-                                        ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm translate-x-0.5'
-                                        : 'bg-white text-gray-800 border-hima-blue-dark hover:bg-slate-100'
-                                }`}
-                            >
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                <span>Aspirasi Saya</span>
-                            </button>
-                        ) : null}
-
-                        <div className="pt-3 text-[10px] font-black uppercase tracking-wider text-gray-400 mb-1 px-1">
-                            Lainnya
+                        <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 pt-3 mb-1 px-2">
+                            Layanan Lain
                         </div>
 
                         <Link
+                            href={route('topik.index')}
+                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                        >
+                            <svg className="w-4 h-4 shrink-0 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                            </svg>
+                            <span>Topik Rame Publik</span>
+                        </Link>
+
+                        <Link
+                            href="/"
+                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
+                        >
+                            <svg className="w-4 h-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span>Beranda Utama</span>
+                        </Link>
+
+                        <Link
                             href={route('profile.edit')}
-                            className={`w-full flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 transition-all ${
+                            className={`w-full flex items-center gap-2.5 px-3 py-2 font-bold border transition-all ${
                                 isProfilePage
-                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-brutal-sm translate-x-0.5'
-                                    : 'border-hima-blue-dark text-gray-800 bg-white hover:bg-slate-100'
+                                    ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
+                                    : 'border-slate-200 text-slate-700 bg-white hover:bg-slate-50'
                             }`}
                         >
                             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <span>Akun Saya</span>
-                        </Link>
-
-                        <Link
-                            href={route('topik.index')}
-                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border border-gray-300 text-gray-700 bg-white hover:border-hima-blue-dark hover:bg-gray-50"
-                        >
-                            <svg className="w-4 h-4 shrink-0 text-hima-red-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                            </svg>
-                            <span>Halaman Topik Rame</span>
-                        </Link>
-
-                        <div className="pt-2 text-[10px] font-black uppercase tracking-wider text-hima-red-dark mb-1 px-1">
-                            Kelompok Studi Mahasiswa
-                        </div>
-
-                        <Link
-                            href={route('ksm.survey.index')}
-                            className="w-full flex items-center justify-between px-3 py-2 font-bold text-xs uppercase tracking-wide border-2 border-hima-red-dark bg-red-50/60 text-hima-red-dark hover:bg-hima-red-dark hover:text-white transition-all shadow-xs"
-                        >
-                            <div className="flex items-center gap-2">
-                                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                                </svg>
-                                <span>Survei Minat KSM</span>
-                            </div>
-                            <span className="bg-hima-red-dark text-white text-[8px] font-black uppercase px-1 py-0.2 group-hover:bg-white group-hover:text-hima-red-dark">
-                                ISI
-                            </span>
-                        </Link>
-
-                        <Link
-                            href={route('admin.ksm.dashboard')}
-                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border border-hima-blue-dark bg-blue-50/70 text-hima-blue-dark hover:bg-hima-blue-dark hover:text-white transition-all shadow-xs"
-                        >
-                            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            <span>Dashboard Admin KSM</span>
-                        </Link>
-
-                        <Link
-                            href="/"
-                            className="w-full flex items-center gap-2.5 px-3 py-2 font-bold text-xs uppercase tracking-wide border border-gray-300 text-gray-700 bg-white hover:border-hima-blue-dark hover:bg-gray-50"
-                        >
-                            <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span>Beranda Publik</span>
+                            <span>Akun Pengguna</span>
                         </Link>
                     </nav>
 
                     {/* Bottom Logout Button */}
-                    <div className="p-3 sm:p-4 border-t-2 border-hima-blue-dark bg-white">
+                    <div className="p-3 border-t border-slate-200 bg-white">
                         <Link
                             href={route('logout')}
                             method="post"
                             as="button"
-                            className="w-full flex items-center justify-center gap-2 border-2 border-hima-red-dark bg-red-50 text-hima-red-dark py-2 px-3 text-xs font-black uppercase tracking-wider shadow-brutal-sm hover:bg-hima-red-dark hover:text-white transition-all active:translate-x-0.5 active:translate-y-0.5"
+                            className="w-full flex items-center justify-center gap-2 border border-red-200 bg-red-50 text-red-700 py-2 px-3 text-xs font-bold uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

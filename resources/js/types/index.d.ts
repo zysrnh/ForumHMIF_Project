@@ -6,6 +6,7 @@ export interface User {
     nim?: string;
     avatar?: string;
     google_id?: string;
+    role?: string;
 }
 
 export type PageProps<
