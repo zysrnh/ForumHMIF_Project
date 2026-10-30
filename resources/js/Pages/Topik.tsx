@@ -535,7 +535,7 @@ export default function Topik({
                                 </svg>
                             </div>
                             <span className="text-[9px] uppercase tracking-tight mt-0.5 text-hima-blue-dark font-black">
-                                Topik Rame
+                                Topik
                             </span>
                         </Link>
 

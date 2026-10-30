@@ -253,7 +253,7 @@ export default function Welcome({
                                 href={route('topik.index')}
                                 className="hover:text-hima-red-light transition-colors"
                             >
-                                Topik Rame
+                                Topik
                             </Link>
                             <Link
                                 href={route('ksm.survey.index')}
@@ -345,7 +345,7 @@ export default function Welcome({
                                     href={route('topik.index')}
                                     className="flex-1 sm:flex-initial btn-brutal inline-flex items-center justify-center bg-white text-hima-blue-dark font-bold px-4 sm:px-6 py-3 sm:py-3.5 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[5px_5px_0px_0px_#1A467C] text-xs sm:text-base uppercase tracking-wider hover:bg-blue-50 text-center"
                                 >
-                                    Topik Rame &rarr;
+                                    Topik &rarr;
                                 </Link>
                             </div>
                         </div>
@@ -466,21 +466,21 @@ export default function Welcome({
                     <section
                         id="aspirasi"
                         ref={topicsSection.ref}
-                        className="space-y-4"
+                        className="space-y-5 pt-2 sm:pt-4"
                     >
-                        <div className="border-b-2 border-hima-blue-dark pb-2.5 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                        <div className="border-b-2 border-slate-300 pb-3 sm:pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                             <div>
                                 <h2 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight">
                                     Topik Paling Banyak Didukung
                                 </h2>
-                                <p className="text-xs sm:text-sm font-semibold text-gray-600">
+                                <p className="text-xs sm:text-sm font-semibold text-gray-500">
                                     Aspirasi terkini dengan dukungan vote tertinggi dari rekan mahasiswa.
                                 </p>
                             </div>
                             <div className="flex items-center gap-2 self-start sm:self-auto">
                                 <Link
                                     href={route('topik.index')}
-                                    className="text-[11px] font-black text-white bg-hima-blue-dark px-3 py-1.5 uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-sm hover:bg-hima-blue-light transition-all active:translate-x-0.5 active:translate-y-0.5"
+                                    className="text-[11px] font-black text-white bg-hima-blue-dark px-3.5 py-1.5 uppercase tracking-wider border-2 border-hima-blue-dark shadow-brutal-xs hover:bg-hima-blue-light transition-all active:translate-x-0.5 active:translate-y-0.5"
                                 >
                                     Lihat Semua &rarr;
                                 </Link>
@@ -500,7 +500,7 @@ export default function Welcome({
                                 return (
                                     <div
                                         key={item.id}
-                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-4 sm:p-6 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[5px_5px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-3.5`}
+                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-4 sm:p-5 shadow-brutal-sm flex flex-col justify-between card-brutal-hover space-y-3.5`}
                                     >
                                         <div className="space-y-2.5">
                                             {/* Tag Kategori & Waktu */}
@@ -779,7 +779,7 @@ export default function Welcome({
                                 </svg>
                             </div>
                             <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-red-dark font-bold">
-                                Topik Rame
+                                Topik
                             </span>
                         </Link>
 

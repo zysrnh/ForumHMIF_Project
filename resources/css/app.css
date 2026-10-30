@@ -8,17 +8,13 @@ html {
     scroll-padding-top: 2.5rem;
 }
 
-/* Blueprint Dot Grid Background */
+/* Clean Flat Slate Background */
 .bg-blueprint {
-    background-color: #E8F2FA;
-    background-image: radial-gradient(#1A467C 1.2px, transparent 1.2px);
-    background-size: 24px 24px;
+    background-color: #F8FAFC;
 }
 
 .dot-card {
-    background-color: #F8FBFE;
-    background-image: radial-gradient(#1A467C 1px, transparent 1px);
-    background-size: 16px 16px;
+    background-color: #FFFFFF;
 }
 
 /* Tape effect on polaroid badge */

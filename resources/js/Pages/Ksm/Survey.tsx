@@ -742,7 +742,7 @@ export default function Survey({ user }: Props) {
                                 </svg>
                             </div>
                             <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-red-dark font-bold">
-                                Topik Rame
+                                Topik
                             </span>
                         </Link>
 
