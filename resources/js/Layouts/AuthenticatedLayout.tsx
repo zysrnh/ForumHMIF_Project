@@ -301,7 +301,7 @@ export default function Authenticated({
                             </Link>
                         )}
 
-                        {/* 6. Topik Rame */}
+                        {/* 6. Topik */}
                         <Link
                             href={route('topik.index')}
                             className="w-full flex items-center gap-2.5 px-3 py-2 font-bold border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-all"
@@ -309,7 +309,7 @@ export default function Authenticated({
                             <svg className="w-4 h-4 shrink-0 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                             </svg>
-                            <span>Topik Rame Publik</span>
+                            <span>Topik</span>
                         </Link>
 
                         {/* 7. Akun Profil */}

@@ -20,6 +20,7 @@ class KsmSurveySeeder extends Seeder
             [
                 'respondent_name' => 'Fajar Nugraha',
                 'respondent_nim' => '230414001',
+                'respondent_class' => '2IF01',
                 'semester_course' => 'Web Framework',
                 'interested_fields' => ['Web Development', 'Artificial Intelligence', 'DevOps'],
                 'activity_types' => ['Workshop', 'Project bersama'],
@@ -32,6 +33,7 @@ class KsmSurveySeeder extends Seeder
             [
                 'respondent_name' => 'Dewi Safitri',
                 'respondent_nim' => '240414015',
+                'respondent_class' => '1IF02',
                 'semester_course' => 'Infrastruktur Teknologi Informasi',
                 'interested_fields' => ['Cloud Computing', 'Cyber Security', 'DevOps'],
                 'activity_types' => ['Mentoring', 'Workshop'],
@@ -44,6 +46,7 @@ class KsmSurveySeeder extends Seeder
             [
                 'respondent_name' => 'Rizky Ramadhan',
                 'respondent_nim' => '230414088',
+                'respondent_class' => '2IF03',
                 'semester_course' => 'Jaringan Komputer',
                 'interested_fields' => ['Cyber Security', 'Internet of Things (IoT)'],
                 'activity_types' => ['Kelas rutin', 'Sharing Session'],
@@ -56,6 +59,7 @@ class KsmSurveySeeder extends Seeder
             [
                 'respondent_name' => 'Anisa Rahmawati',
                 'respondent_nim' => '240414042',
+                'respondent_class' => '1IF01',
                 'semester_course' => 'Web Framework',
                 'interested_fields' => ['UI/UX Design', 'Web Development', 'Mobile Development'],
                 'activity_types' => ['Workshop', 'Bedah tugas'],
@@ -68,6 +72,7 @@ class KsmSurveySeeder extends Seeder
             [
                 'respondent_name' => 'Budi Santoso',
                 'respondent_nim' => '220414030',
+                'respondent_class' => '3IF01',
                 'semester_course' => 'Web Framework',
                 'interested_fields' => ['Data Science', 'Artificial Intelligence'],
                 'activity_types' => ['Study Group', 'Project bersama'],
@@ -80,6 +85,7 @@ class KsmSurveySeeder extends Seeder
             [
                 'respondent_name' => 'Muhammad Ilham',
                 'respondent_nim' => '230414077',
+                'respondent_class' => '2IF02',
                 'semester_course' => 'Infrastruktur Teknologi Informasi',
                 'interested_fields' => ['Game Development', 'Mobile Development'],
                 'activity_types' => ['Kelas rutin', 'Mentoring'],

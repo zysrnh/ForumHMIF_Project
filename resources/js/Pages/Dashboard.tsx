@@ -986,7 +986,7 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                         {/* KOLOM KIRI (70%): SEARCH, FILTER & LIST KARTU ASPIRASI */}
                         <div className="lg:col-span-8 space-y-4">
                             {/* Kotak Filter & Pencarian yang Rapi, Ringkas & Bebas Overflow */}
-                            <div className="w-full bg-white border-2 border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-3 anim-feed-item">
+                            <div className="w-full bg-white border-2 border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-3 relative z-30 anim-feed-item">
                                 {/* Baris 1: Pencarian Full Width */}
                                 <div className="relative w-full">
                                     <input
@@ -1055,7 +1055,7 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
 
                                         {/* Menu Popover Dropdown Kategori */}
                                         {isCategoryOpen && (
-                                            <div className="absolute left-0 right-0 sm:right-auto sm:w-80 mt-1 bg-white border-2 border-slate-900 shadow-lg z-30 py-1 anim-fade-in max-h-64 overflow-y-auto">
+                                            <div className="absolute left-0 right-0 sm:right-auto sm:w-80 mt-1 bg-white border-2 border-slate-900 shadow-2xl z-50 py-1 anim-fade-in max-h-64 overflow-y-auto">
                                                 <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-black uppercase tracking-wider text-slate-400">
                                                     Pilih Kategori Aspirasi
                                                 </div>
