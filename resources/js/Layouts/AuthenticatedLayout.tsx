@@ -70,27 +70,28 @@ export default function Authenticated({
                 </Link>
 
                 <div className="flex items-center gap-2">
+                    {/* Pintasan Webmail Resmi HMIF untuk Admin di Mobile Toolbar */}
+                    {isAdmin && (
+                        <a
+                            href="https://kisaki.kawaiihost.net:2096"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Buka Webmail Resmi HMIF (Roundcube)"
+                            className="text-[10px] font-black text-hima-blue-dark bg-white border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-slate-900 hover:text-white transition-colors inline-flex items-center gap-1 shadow-brutal-xs"
+                        >
+                            <svg className="w-3 h-3 text-hima-red-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span>Webmail</span>
+                        </a>
+                    )}
+
                     <Link
                         href="/"
                         className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
                     >
                         Publik
                     </Link>
-
-                    <button
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                        type="button"
-                        aria-label="Toggle menu navigasi"
-                        className="p-1.5 border-2 border-hima-blue-dark bg-white shadow-brutal-sm hover:bg-blue-50 active:translate-x-0.5 active:translate-y-0.5"
-                    >
-                        <svg className="w-4 h-4 text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            {sidebarOpen ? (
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
-                    </button>
                 </div>
             </div>
 
