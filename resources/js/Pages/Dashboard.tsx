@@ -284,12 +284,13 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                         {activeNav === 'ksm' ? (
                             <a
                                 href={route('admin.ksm.export')}
-                                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                                className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
                             >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                <span>Export Excel (.xls)</span>
+                                <span className="hidden sm:inline">Export Excel (.xls)</span>
+                                <span className="sm:hidden">Export .xls</span>
                             </a>
                         ) : activeNav !== 'create' ? (
                             <button
@@ -318,8 +319,8 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
             <Head title="Portal Aspirasi Mahasiswa HIMA IF" />
 
             <div className="w-full space-y-5">
-                {/* TAB NAVIGASI MINIMALIS & LEGA */}
-                <div className="flex items-center gap-2 border-b-2 border-slate-200 pb-3 overflow-x-auto text-xs scrollbar-none">
+                {/* TAB NAVIGASI MINIMALIS & LEGA (HANYA DESKTOP/TABLET, MOBILE MENGGUNAKAN BOTTOM BAR) */}
+                <div className="hidden md:flex items-center gap-2 border-b-2 border-slate-200 pb-3 overflow-x-auto text-xs scrollbar-none">
                     <button
                         type="button"
                         onClick={() => handleSelectTab('feed')}
@@ -531,7 +532,7 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                     </p>
                                 </div>
 
-                                <form onSubmit={handleKsmSearch} className="flex gap-1 sm:w-72">
+                                <form onSubmit={handleKsmSearch} className="flex gap-1 w-full sm:w-72">
                                     <input
                                         type="text"
                                         value={ksmSearch}
@@ -541,14 +542,86 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                     />
                                     <button
                                         type="submit"
-                                        className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase transition-colors"
+                                        className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase transition-colors shrink-0"
                                     >
                                         Cari
                                     </button>
                                 </form>
                             </div>
 
-                            <div className="overflow-x-auto">
+                            {/* Tampilan Mobile: Kartu Responden Bersih & Lega */}
+                            <div className="space-y-3 sm:hidden">
+                                {ksmData.surveys.data.length === 0 ? (
+                                    <div className="p-6 text-center text-slate-400 italic bg-slate-50 border border-slate-200">
+                                        Belum ada data responden yang sesuai.
+                                    </div>
+                                ) : (
+                                    ksmData.surveys.data.map((item, idx) => (
+                                        <div key={item.id} className="border-2 border-slate-200 p-3.5 space-y-2.5 bg-white shadow-xs">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div>
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="font-mono text-[10px] text-slate-400 font-bold">
+                                                            #{(ksmData.surveys.current_page - 1) * 15 + idx + 1}
+                                                        </span>
+                                                        <span className="font-bold text-slate-900 text-xs">
+                                                            {item.respondent_name}
+                                                        </span>
+                                                    </div>
+                                                    <span className="text-[10px] text-slate-500 font-mono block">
+                                                        {item.respondent_nim || 'Tanpa NIM'}
+                                                    </span>
+                                                </div>
+                                                <span className="inline-block bg-slate-100 border border-slate-300 px-2 py-0.5 text-[10px] font-bold text-slate-700 shrink-0">
+                                                    Kelas {item.respondent_class || '-'}
+                                                </span>
+                                            </div>
+
+                                            <div className="text-[11px] text-slate-600 space-y-1 pt-1.5 border-t border-slate-100">
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <span className="text-slate-400 text-[10px] uppercase font-bold shrink-0">Matkul Smt 3:</span>
+                                                    <span className="font-medium text-slate-800 text-right">{item.semester_course}</span>
+                                                </div>
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <span className="text-slate-400 text-[10px] uppercase font-bold shrink-0">Minat Belajar:</span>
+                                                    <span className="font-mono text-[10px] font-bold text-slate-700 bg-slate-50 border border-slate-200 px-1.5 py-0.2">
+                                                        Skala {item.interest_scale}/5
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {item.interested_fields && item.interested_fields.length > 0 && (
+                                                <div className="flex flex-wrap gap-1 pt-1">
+                                                    {item.interested_fields.map((f) => (
+                                                        <span
+                                                            key={f}
+                                                            className="bg-blue-50 text-hima-blue-dark border border-blue-100 text-[9px] font-medium px-1.5 py-0.2"
+                                                        >
+                                                            {f}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-100">
+                                                <span className="text-[10px] text-slate-400">
+                                                    {item.preferred_days?.join(', ') || '-'} • {item.preferred_time}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedSurvey(item)}
+                                                    className="border border-slate-300 bg-white text-slate-800 hover:bg-slate-900 hover:text-white px-3 py-1 text-[11px] font-bold uppercase transition-colors shadow-xs"
+                                                >
+                                                    Detail →
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+
+                            {/* Tampilan Desktop: Tabel 8 Kolom Lengkap */}
+                            <div className="hidden sm:block overflow-x-auto">
                                 <table className="w-full text-left text-xs border-collapse">
                                     <thead>
                                         <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
@@ -903,11 +976,11 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                         />
                                     </div>
 
-                                    <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+                                    <div className="grid grid-cols-2 sm:flex items-center gap-1.5 shrink-0 w-full sm:w-auto">
                                         <button
                                             type="button"
                                             onClick={() => setSortBy('trending')}
-                                            className={`inline-flex items-center gap-1.5 border-2 px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
+                                            className={`inline-flex items-center justify-center gap-1.5 border-2 px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
                                                 sortBy === 'trending'
                                                     ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
                                                     : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
@@ -921,7 +994,7 @@ export default function Dashboard({ ksmData, currentTab }: DashboardProps) {
                                         <button
                                             type="button"
                                             onClick={() => setSortBy('terbaru')}
-                                            className={`border-2 px-3.5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
+                                            className={`border-2 px-3.5 py-2 text-xs font-black uppercase tracking-wider text-center transition-all ${
                                                 sortBy === 'terbaru'
                                                     ? 'bg-hima-blue-dark text-white border-hima-blue-dark shadow-xs'
                                                     : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
