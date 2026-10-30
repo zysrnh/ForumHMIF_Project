@@ -45,6 +45,7 @@ Route::get('/dashboard', function (Request $request) {
 
     return Inertia::render('Dashboard', [
         'ksmData' => $ksmData,
+        'currentTab' => $request->query('tab', 'feed'),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
