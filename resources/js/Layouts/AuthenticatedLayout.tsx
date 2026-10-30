@@ -71,6 +71,19 @@ export default function Authenticated({
                 </Link>
 
                 <div className="flex items-center gap-2">
+                    {isAdmin && (
+                        <button
+                            type="button"
+                            onClick={() => setShowWebmailModal(true)}
+                            className="text-[10px] font-bold text-hima-red-dark bg-red-50 border border-hima-red-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-red-dark hover:text-white transition-colors flex items-center gap-1"
+                            title="Buka Webmail Resmi HMIF"
+                        >
+                            <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span>Webmail</span>
+                        </button>
+                    )}
                     <Link
                         href="/"
                         className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
@@ -462,7 +475,7 @@ export default function Authenticated({
             {/* Main Content Area */}
             <div className="flex-1 min-w-0 flex flex-col min-h-screen">
                 {header ? (
-                    <header className="bg-white border-b-2 border-hima-blue-dark px-3 py-2.5 sm:px-6 sm:py-3 shadow-brutal-sm flex items-center gap-3">
+                    <header className="hidden md:flex bg-white border-b-2 border-hima-blue-dark px-3 py-2.5 sm:px-6 sm:py-3 shadow-brutal-sm items-center gap-3">
                         <button
                             onClick={toggleDesktopSidebar}
                             type="button"
