@@ -47,11 +47,13 @@ Route::middleware(['throttle:global'])->group(function () {
         ->middleware('auth')
         ->name('aspirations.comment.destroy');
 
-    // Rute Survei Peminatan KSM untuk Mahasiswa (Dilindungi rate limit form submission)
-    Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
-    Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])
-        ->middleware('throttle:forms')
-        ->name('ksm.survey.store');
+    // Rute Survei Peminatan KSM untuk Mahasiswa (Wajib Login & Rate Limit)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
+        Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])
+            ->middleware('throttle:forms')
+            ->name('ksm.survey.store');
+    });
 
 
     // Rute Khusus Admin HIMA IF (Wajib Login & Memiliki Role Admin)

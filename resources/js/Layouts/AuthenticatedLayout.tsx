@@ -61,17 +61,6 @@ export default function Authenticated({
             {/* Mobile Topbar (App-Like Header) */}
             <div className="md:hidden bg-white border-b-2 border-hima-blue-dark px-3 py-2 flex items-center justify-between shadow-brutal-sm sticky top-0 z-40">
                 <div className="flex items-center gap-2">
-                    <button
-                        type="button"
-                        onClick={() => setSidebarOpen(true)}
-                        className="p-1.5 border-2 border-hima-blue-dark bg-blue-50 text-hima-blue-dark hover:bg-hima-blue-dark hover:text-white transition-colors"
-                        aria-label="Buka Menu Navigasi"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-
                     <Link href="/dashboard" className="flex items-center gap-2">
                         <ApplicationLogo className="h-7 w-auto" />
                         <div>
@@ -858,6 +847,44 @@ export default function Authenticated({
 
                                     {/* Menu Items */}
                                     <div className="p-1.5 space-y-1">
+                                        {/* Link Kelola Pengguna (Jika Admin / Super Admin) */}
+                                        {isAdmin && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setMobileAccountMenuOpen(false);
+                                                    if (isProfilePage) {
+                                                        window.location.href = '/dashboard?tab=users';
+                                                    } else {
+                                                        handleNavClick('users');
+                                                    }
+                                                }}
+                                                className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors text-left"
+                                            >
+                                                <div className="flex items-center gap-2.5">
+                                                    <svg className="w-4 h-4 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                    </svg>
+                                                    <span>Kelola Pengguna</span>
+                                                </div>
+                                                <span className="text-[8px] font-black uppercase px-1 py-0.2 bg-red-50 text-hima-red-dark border border-red-200">
+                                                    ADMIN
+                                                </span>
+                                            </button>
+                                        )}
+
+                                        {/* Link Topik Diskusi */}
+                                        <Link
+                                            href={route('topik.index')}
+                                            onClick={() => setMobileAccountMenuOpen(false)}
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                                        >
+                                            <svg className="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                            </svg>
+                                            <span>Topik Diskusi</span>
+                                        </Link>
+
                                         <Link
                                             href={route('profile.edit')}
                                             onClick={() => setMobileAccountMenuOpen(false)}
