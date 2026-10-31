@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
@@ -69,6 +70,13 @@ class GoogleAuthController extends Controller
         }
 
         Auth::login($user, true);
+        request()->session()->regenerate();
+
+        // Single Session Protection: Invalidate sesi lama di perangkat lain
+        DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->where('id', '!=', request()->session()->getId())
+            ->delete();
 
         return redirect()->intended(route('dashboard', absolute: false));
     }

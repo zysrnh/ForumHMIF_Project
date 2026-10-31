@@ -862,16 +862,29 @@ export default function Authenticated({
                             </div>
                         </div>
 
-                        <div className="text-xs text-slate-700 space-y-2 leading-relaxed">
+                        <div className="text-xs text-slate-700 space-y-3 leading-relaxed">
                             <p>
                                 Anda akan dialihkan ke server webmail resmi HIMA IF pada tab baru:
                             </p>
                             <div className="p-2.5 bg-blue-50 border-2 border-hima-blue-dark font-mono text-[11px] text-hima-blue-dark break-all font-bold">
                                 https://kisaki.kawaiihost.net:2096
                             </div>
-                            <p className="text-[11px] text-slate-500">
-                                Gunakan akun email resmi pengurus (contoh: <span className="font-bold">info@hmif-lpkia.my.id</span>) untuk masuk ke kotak surat.
-                            </p>
+
+                            <div className="bg-slate-50 border-2 border-slate-300 p-3 space-y-2">
+                                <div className="text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                    Kredensial Login Webmail:
+                                </div>
+                                <div className="flex items-center justify-between gap-2 border-b border-slate-200 pb-1.5">
+                                    <span className="text-[11px] font-semibold text-slate-600">Email:</span>
+                                    <span className="font-mono text-xs font-bold text-slate-900 select-all">info@hmif-lpkia.my.id</span>
+                                </div>
+                                <div className="flex items-center justify-between gap-2">
+                                    <span className="text-[11px] font-semibold text-slate-600">Password:</span>
+                                    <span className="font-mono text-xs font-bold text-red-700 bg-white border border-red-200 px-2 py-0.5 select-all">
+                                        s^2aPA7YsWXsd7n0
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
@@ -890,7 +903,7 @@ export default function Authenticated({
                                 }}
                                 className="px-4 py-2 border-2 border-hima-blue-dark bg-hima-blue-dark text-white hover:bg-hima-blue-light text-xs font-black uppercase tracking-wider shadow-brutal-xs transition-all active:translate-x-0.5 active:translate-y-0.5"
                             >
-                                Buka Webmail ↗
+                                Buka Webmail
                             </button>
                         </div>
                     </div>
