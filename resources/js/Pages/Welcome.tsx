@@ -328,7 +328,7 @@ export default function Welcome({
 
                     {/* 2. HERO SECTION */}
                     <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
-                        <div className="anim-brutal-stamp-left lg:col-span-7 bg-white border-2 border-hima-blue-dark p-4 sm:p-9 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
+                        <div className="scroll-reveal lg:col-span-7 bg-white border-2 border-hima-blue-dark p-4 sm:p-9 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
                             <div className="space-y-5 sm:space-y-6">
                                 {/* INDIKATOR STATISTIK BERSIH PENUH (FULL WIDTH & SIMETRIS TANPA SISA CELAH) */}
                                 <div className="w-full grid grid-cols-2 sm:grid-cols-3 border-2 border-hima-blue-dark bg-blue-50/40 divide-x-2 divide-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C]">
@@ -389,7 +389,7 @@ export default function Welcome({
                         {/* Kanan: Form Aspirasi Langsung Ringkas & Efisien */}
                         <div
                             id="form-aspirasi"
-                            className="anim-brutal-stamp-right lg:col-span-5 bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
+                            className="scroll-reveal stagger-1 lg:col-span-5 bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
                         >
                             <form onSubmit={handleQuickSubmit} className="space-y-3.5 sm:space-y-4">
                                 <div className="border-b-2 border-hima-blue-dark pb-2.5 flex items-center justify-between">
@@ -537,7 +537,7 @@ export default function Welcome({
                                 return (
                                     <div
                                         key={item.id}
-                                        className={`bg-white border-2 border-hima-blue-dark ${borderTopColor} p-4 sm:p-5 shadow-brutal-sm flex flex-col justify-between card-brutal-hover space-y-3.5`}
+                                        className={`scroll-reveal stagger-${(index % 3) + 1} bg-white border-2 border-hima-blue-dark ${borderTopColor} p-4 sm:p-5 shadow-brutal-sm flex flex-col justify-between card-brutal-hover space-y-3.5`}
                                     >
                                         <div className="space-y-2.5">
                                             {/* Tag Kategori & Waktu */}
@@ -624,7 +624,7 @@ export default function Welcome({
                         </div>
 
                         {/* Kartu Garis Alur Interaktif */}
-                        <div className="bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[5px_5px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] space-y-5 sm:space-y-6">
+                        <div className="scroll-reveal bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[5px_5px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] space-y-5 sm:space-y-6">
                             <div className="relative">
                                 <div className="hidden sm:block absolute top-1/2 left-0 right-0 h-1 bg-hima-blue-dark -translate-y-1/2 z-0" />
 
@@ -674,7 +674,7 @@ export default function Welcome({
                             </div>
 
                             {/* Panel Detail Langkah yang Sedang Aktif */}
-                            <div className="bg-blue-50/50 border-2 border-hima-blue-dark p-4 sm:p-6 shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] space-y-3">
+                            <div className="scroll-reveal stagger-1 bg-blue-50/50 border-2 border-hima-blue-dark p-4 sm:p-6 shadow-[3px_3px_0px_0px_#1A467C] sm:shadow-[4px_4px_0px_0px_#1A467C] space-y-3">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 border-b-2 border-hima-blue-dark/20 pb-3">
                                     <div className="flex items-center gap-2">
                                         <span className="px-2.5 py-0.5 border border-hima-blue-dark bg-hima-blue-dark text-white text-[11px] font-black uppercase tracking-wider">
