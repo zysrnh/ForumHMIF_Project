@@ -115,6 +115,15 @@ export default function Welcome({
     const [aspirationContent, setAspirationContent] = useState<string>('');
     const [aspirationSuccess, setAspirationSuccess] = useState<boolean>(false);
 
+    // State Menu Akun Mobile Toolbar Bawah
+    const [mobileAccountMenuOpen, setMobileAccountMenuOpen] = useState<boolean>(false);
+    const [avatarError, setAvatarError] = useState<boolean>(false);
+
+    const displayNim = auth?.user
+        ? ((auth.user as any).nim || (auth.user.email?.includes('@') ? auth.user.email.split('@')[0] : 'MAHASISWA'))
+        : '';
+    const isAdmin = auth?.user ? ['admin', 'super_admin', 'superadmin'].includes((auth.user as any).role || '') : false;
+
     // State Interaktif Alur Garis Stepper Cara Kerja Forum
     const [activeStep, setActiveStep] = useState<number>(1);
 
@@ -865,19 +874,159 @@ export default function Welcome({
                         </Link>
 
                         {/* 5. Akun / Masuk */}
-                        <Link
-                            href={auth.user ? route('dashboard') : route('login')}
-                            className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
-                        >
-                            <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
-                                <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
+                        {auth.user ? (
+                            <div className="relative flex-1">
+                                {mobileAccountMenuOpen && (
+                                    <>
+                                        {/* Backdrop */}
+                                        <div
+                                            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs"
+                                            onClick={() => setMobileAccountMenuOpen(false)}
+                                        />
+
+                                        {/* Floating Dropup Menu melayang tepat di atas tombol Akun */}
+                                        <div className="fixed bottom-16 right-2 sm:right-4 w-60 bg-white border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] z-50 overflow-hidden anim-feed-item">
+                                            {/* Header Info User */}
+                                            <div className="p-3 bg-blue-50/80 border-b-2 border-hima-blue-dark/20">
+                                                <div className="flex items-center gap-2.5 mb-1.5">
+                                                    {(auth.user as any).avatar && !avatarError ? (
+                                                        <img
+                                                            src={(auth.user as any).avatar}
+                                                            alt={auth.user.name}
+                                                            onError={() => setAvatarError(true)}
+                                                            className="w-10 h-10 border-2 border-hima-blue-dark object-cover shrink-0 bg-white shadow-xs"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-10 h-10 border-2 border-hima-blue-dark bg-hima-blue-dark text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
+                                                            {auth.user.name.charAt(0).toUpperCase()}
+                                                        </div>
+                                                    )}
+                                                    <div className="min-w-0">
+                                                        <p className="text-xs font-black text-hima-blue-dark uppercase truncate" title={auth.user.name}>
+                                                            {auth.user.name}
+                                                        </p>
+                                                        <p className="text-[10px] font-mono text-slate-500 font-bold">
+                                                            NIM: {displayNim}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <span className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 bg-hima-blue-dark text-white">
+                                                    {(auth.user as any).role === 'super_admin' ? 'SUPER ADMIN' : isAdmin ? 'ADMIN HIMA' : 'MAHASISWA'}
+                                                </span>
+                                            </div>
+
+                                            {/* Menu Items */}
+                                            <div className="p-1.5 space-y-1">
+                                                <Link
+                                                    href={route('dashboard')}
+                                                    onClick={() => setMobileAccountMenuOpen(false)}
+                                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                                                >
+                                                    <svg className="w-4 h-4 text-hima-blue-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                                    </svg>
+                                                    <span>Dashboard Forum</span>
+                                                </Link>
+
+                                                {isAdmin && (
+                                                    <Link
+                                                        href="/dashboard?tab=users"
+                                                        onClick={() => setMobileAccountMenuOpen(false)}
+                                                        className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors text-left"
+                                                    >
+                                                        <div className="flex items-center gap-2.5">
+                                                            <svg className="w-4 h-4 text-hima-red-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg>
+                                                            <span>Kelola Pengguna</span>
+                                                        </div>
+                                                        <span className="text-[8px] font-black uppercase px-1 py-0.2 bg-red-50 text-hima-red-dark border border-red-200">
+                                                            ADMIN
+                                                        </span>
+                                                    </Link>
+                                                )}
+
+                                                <Link
+                                                    href={route('topik.index')}
+                                                    onClick={() => setMobileAccountMenuOpen(false)}
+                                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                                                >
+                                                    <svg className="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                                    </svg>
+                                                    <span>Topik Diskusi</span>
+                                                </Link>
+
+                                                <Link
+                                                    href={route('profile.edit')}
+                                                    onClick={() => setMobileAccountMenuOpen(false)}
+                                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                                                >
+                                                    <svg className="w-4 h-4 text-hima-blue-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    <span>Profil & Akun</span>
+                                                </Link>
+
+                                                <Link
+                                                    href={route('logout')}
+                                                    method="post"
+                                                    as="button"
+                                                    onClick={() => setMobileAccountMenuOpen(false)}
+                                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-black text-red-600 hover:bg-red-50 transition-colors border-t border-slate-100"
+                                                >
+                                                    <svg className="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                                    </svg>
+                                                    <span className="uppercase tracking-wider">Keluar Akun</span>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileAccountMenuOpen(!mobileAccountMenuOpen)}
+                                    className={`w-full group flex flex-col items-center justify-center py-1 transition-all active:scale-95 ${
+                                        mobileAccountMenuOpen ? 'bg-blue-50/40' : ''
+                                    }`}
+                                >
+                                    <div className="p-0.5 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                        {(auth.user as any).avatar && !avatarError ? (
+                                            <img
+                                                src={(auth.user as any).avatar}
+                                                alt={auth.user.name}
+                                                onError={() => setAvatarError(true)}
+                                                className="w-5 h-5 border border-hima-blue-dark object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-5 h-5 border border-hima-blue-dark bg-hima-blue-dark text-white font-black text-[9px] flex items-center justify-center">
+                                                {auth.user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
+                                        Akun
+                                    </span>
+                                </button>
                             </div>
-                            <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
-                                {auth.user ? 'Akun' : 'Masuk'}
-                            </span>
-                        </Link>
+                        ) : (
+                            <Link
+                                href={route('login')}
+                                className="group flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95"
+                            >
+                                <div className="p-1 border border-transparent group-hover:border-hima-blue-dark group-hover:bg-blue-50 transition-all">
+                                    <svg className="w-5 h-5 text-gray-600 group-hover:text-hima-blue-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <span className="text-[9px] uppercase tracking-tight mt-0.5 text-gray-600 group-hover:text-hima-blue-dark font-bold">
+                                    Masuk
+                                </span>
+                            </Link>
+                        )}
                     </div>
                 </nav>
             </div>
