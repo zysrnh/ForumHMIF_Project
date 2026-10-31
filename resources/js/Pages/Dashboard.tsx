@@ -96,9 +96,6 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
     const isAdmin = ['admin', 'super_admin', 'superadmin'].includes(user.role || '');
     const isSuperAdmin = user.role === 'super_admin' || user.role === 'superadmin';
 
-    // Aktifkan scroll reveal masuk-keluar interaktif
-    useBiDirectionalScrollReveal();
-
     // Inisialisasi Tab Aktif berdasarkan props server atau URL query
     const initialNav = useMemo<'feed' | 'create' | 'my' | 'ksm' | 'users'>(() => {
         const tab = currentTab || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tab') : null);
@@ -110,6 +107,9 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
     }, [currentTab, isAdmin]);
 
     const [activeNav, setActiveNav] = useState<'feed' | 'create' | 'my' | 'ksm' | 'users'>(initialNav);
+
+    // Aktifkan scroll reveal masuk-keluar interaktif dan sinkronkan dengan pergantian tab
+    useBiDirectionalScrollReveal([activeNav]);
 
     // Sinkronisasi Tab jika query berubah
     useEffect(() => {
@@ -515,7 +515,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                 {/* 1. TAMPILAN REKAP DATA KSM (KHUSUS ADMIN)                                 */}
                 {/* ========================================================================= */}
                 {activeNav === 'ksm' && isAdmin && ksmData ? (
-                    <div className="w-full space-y-8 sm:space-y-10 scroll-reveal">
+                    <div className="w-full space-y-8 sm:space-y-10">
                         {/* Metrik Statistik Flat Minimalis */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                             <div className="bg-white border-2 border-slate-200 p-4 space-y-1">
@@ -983,7 +983,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 1.5 PANEL KELOLA PENGGUNA & ADMIN HIMA                                    */
                     /* ========================================================================= */
-                    <div className="space-y-8 sm:space-y-10 scroll-reveal">
+                    <div className="space-y-8 sm:space-y-10">
                         {adminSuccess && (
                             <div className="bg-emerald-600 text-white px-4 py-3 text-xs font-bold border-2 border-slate-900 shadow-brutal-sm flex items-center justify-between">
                                 <div className="flex items-center gap-2">
