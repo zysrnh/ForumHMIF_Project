@@ -1,49 +1,55 @@
 import { useEffect } from 'react';
 
 /**
- * Hook universal untuk scroll reveal 2 arah yang atraktif & responsif.
- * Memastikan konten tidak pernah hilang/blank di layar HP (anti-blank viewport check).
+ * Hook universal scroll reveal bi-directional (masuk & keluar saat scroll ke atas atau bawah).
+ * Menggunakan real-time scroll tracking + initial check agar kartu TIDAK PERNAH tersangkut pudar di layar.
  */
-export function useBiDirectionalScrollReveal(threshold = 0.02) {
+export function useBiDirectionalScrollReveal() {
     useEffect(() => {
-        const elements = document.querySelectorAll<HTMLElement>('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
-        if (!elements.length) return;
+        const updateElements = () => {
+            const elements = document.querySelectorAll<HTMLElement>('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
+            if (!elements.length) return;
 
-        // Inisialisasi cepat: Elemen yang sudah ada di dalam atau dekat viewport langsung diberi animasi aktif
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-        elements.forEach((el) => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < viewportHeight + 150 && rect.bottom > -100) {
-                el.classList.add('is-revealed');
-            }
-        });
+            const vh = window.innerHeight || document.documentElement.clientHeight;
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-revealed');
-                    } else {
-                        // Hanya reset animasi jika kartu sudah benar-benar jauh meninggalkan layar
-                        const rect = entry.target.getBoundingClientRect();
-                        if (rect.top > viewportHeight + 200 || rect.bottom < -200) {
-                            entry.target.classList.remove('is-revealed');
-                        }
-                    }
+            elements.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                // Kartu sedang berada di area tampilan yang terlihat (margin pandang responsif)
+                const inView = rect.top < vh - 30 && rect.bottom > 30;
+
+                if (inView) {
+                    el.classList.add('is-revealed');
+                } else if (rect.top > vh + 80 || rect.bottom < -80) {
+                    // Ketika kartu keluar dari layar saat di-scroll lewat (animasi keluar halus)
+                    el.classList.remove('is-revealed');
+                }
+            });
+        };
+
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateElements();
+                    ticking = false;
                 });
-            },
-            {
-                threshold,
-                rootMargin: '120px 0px 80px 0px',
+                ticking = true;
             }
-        );
+        };
 
-        elements.forEach((el) => observer.observe(el));
+        // Jalankan segera saat mount dan setelah render selesai agar kartu awal langsung muncul jelas
+        updateElements();
+        const t1 = setTimeout(updateElements, 60);
+        const t2 = setTimeout(updateElements, 250);
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
 
         return () => {
-            elements.forEach((el) => observer.unobserve(el));
-            observer.disconnect();
+            clearTimeout(t1);
+            clearTimeout(t2);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
         };
-    }, [threshold]);
+    }, []);
 }
-

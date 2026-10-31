@@ -254,8 +254,8 @@ export default function Welcome({
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-6 lg:p-8 xl:p-10 pb-20 md:pb-8 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
 
-                {/* Main Wrapper */}
-                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-6 sm:space-y-8 my-1 sm:my-2">
+                {/* Main Wrapper dengan jarak vertikal lega antar section agar animasi scroll reveal terasa mengalir */}
+                <div className="w-full max-w-7xl 2xl:max-w-[1440px] z-10 space-y-12 sm:space-y-16 lg:space-y-24 my-2 sm:my-4">
                     {/* 1. NAVBAR FORUM */}
                     <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-3 sm:gap-4">
                         <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
@@ -327,7 +327,7 @@ export default function Welcome({
                     </header>
 
                     {/* 2. HERO SECTION */}
-                    <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-stretch">
+                    <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-stretch">
                         <div className="scroll-reveal lg:col-span-7 bg-white border-2 border-hima-blue-dark p-4 sm:p-9 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover space-y-6">
                             <div className="space-y-5 sm:space-y-6">
                                 {/* INDIKATOR STATISTIK BERSIH PENUH (FULL WIDTH & SIMETRIS TANPA SISA CELAH) */}
@@ -502,7 +502,7 @@ export default function Welcome({
                     <section
                         id="aspirasi"
                         ref={topicsSection.ref}
-                        className="space-y-5 pt-2 sm:pt-4 scroll-reveal"
+                        className="space-y-6 pt-4 sm:pt-8"
                     >
 
                         <div className="border-b-2 border-slate-300 pb-3 sm:pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
@@ -525,7 +525,7 @@ export default function Welcome({
                         </div>
 
                         {/* List Topik */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 items-stretch">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-6 items-stretch">
                             {topTopics.map((item, index) => {
                                 const borderTopColor =
                                     index === 0
@@ -611,7 +611,7 @@ export default function Welcome({
                     <section
                         id="cara-kerja"
                         ref={caraKerjaSection.ref}
-                        className="space-y-4 scroll-reveal"
+                        className="space-y-6 pt-4 sm:pt-8"
                     >
 
                         <div className="border-b-2 border-hima-blue-dark pb-2.5">
