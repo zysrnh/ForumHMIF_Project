@@ -488,7 +488,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
         >
             <Head title="Portal Aspirasi Mahasiswa HIMA IF" />
 
-            <div className="w-full space-y-5">
+            <div className="w-full space-y-8 sm:space-y-12">
                 {/* Notifikasi Sukses Sederhana */}
 
 
@@ -515,7 +515,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                 {/* 1. TAMPILAN REKAP DATA KSM (KHUSUS ADMIN)                                 */}
                 {/* ========================================================================= */}
                 {activeNav === 'ksm' && isAdmin && ksmData ? (
-                    <div className="w-full space-y-5 anim-feed-item">
+                    <div className="w-full space-y-8 sm:space-y-10 scroll-reveal">
                         {/* Metrik Statistik Flat Minimalis */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                             <div className="bg-white border-2 border-slate-200 p-4 space-y-1">
@@ -983,7 +983,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 1.5 PANEL KELOLA PENGGUNA & ADMIN HIMA                                    */
                     /* ========================================================================= */
-                    <div className="space-y-6 anim-feed-item">
+                    <div className="space-y-8 sm:space-y-10 scroll-reveal">
                         {adminSuccess && (
                             <div className="bg-emerald-600 text-white px-4 py-3 text-xs font-bold border-2 border-slate-900 shadow-brutal-sm flex items-center justify-between">
                                 <div className="flex items-center gap-2">
@@ -1421,7 +1421,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 2. FORM TULIS ASPIRASI BARU (TERPUSAT, LEGA, RAPI)                        */
                     /* ========================================================================= */
-                    <div className="max-w-3xl mx-auto w-full bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-sm anim-feed-item space-y-6">
+                    <div className="scroll-reveal max-w-3xl mx-auto w-full bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-sm space-y-6">
                         <div className="border-b-2 border-slate-100 pb-4">
                             <h2 className="text-base sm:text-lg font-black text-hima-blue-dark uppercase tracking-tight">
                                 Formulir Penyampaian Aspirasi
@@ -1522,11 +1522,11 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 3. TAMPILAN FEED ASPIRASI (2 KOLOM PROPORSIONAL, BERNAPAS & TIDAK SEMPIT)   */
                     /* ========================================================================= */
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                         {/* KOLOM KIRI (70%): SEARCH, FILTER & LIST KARTU ASPIRASI */}
-                        <div className="lg:col-span-8 space-y-6 sm:space-y-7">
+                        <div className="lg:col-span-8 space-y-10 sm:space-y-14">
                             {/* Kotak Filter & Pencarian yang Rapi, Ringkas & Bebas Overflow */}
-                            <div className="w-full bg-white border-2 border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-3 relative z-30 anim-feed-item">
+                            <div className="scroll-reveal w-full bg-white border-2 border-slate-200 p-4 sm:p-6 shadow-xs space-y-3.5 relative z-30">
                                 {/* Baris 1: Pencarian Full Width */}
                                 <div className="relative w-full">
                                     <input
@@ -1845,9 +1845,9 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                         </div>
 
                         {/* KOLOM KANAN (30%): WIDGET PENDUKUNG AGAR HALAMAN SEIMBANG & BERNAPAS */}
-                        <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-6">
+                        <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-6">
                             {/* Widget 1: Ringkasan Forum Aspirasi */}
-                            <div className="bg-white border-2 border-hima-blue-dark shadow-xs">
+                            <div className="scroll-reveal stagger-1 bg-white border-2 border-hima-blue-dark shadow-xs">
                                 <div className="bg-hima-blue-dark text-white px-4 py-2.5 flex items-center justify-between">
                                     <h4 className="font-black text-xs uppercase tracking-wider">
                                         Ringkasan Aspirasi
@@ -1899,7 +1899,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                             </div>
 
                             {/* Widget 2: Alur Suara Mahasiswa */}
-                            <div className="bg-white border-2 border-slate-200 p-4 space-y-3 shadow-xs">
+                            <div className="scroll-reveal stagger-2 bg-white border-2 border-slate-200 p-4 space-y-3 shadow-xs">
                                 <h4 className="font-black text-xs uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-2">
                                     Alur Tindak Lanjut Aspirasi
                                 </h4>
@@ -1932,7 +1932,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                             </div>
 
                             {/* Widget 3: Tautan Layanan HIMA */}
-                            <div className="bg-white border-2 border-slate-200 p-4 space-y-2.5 shadow-xs">
+                            <div className="scroll-reveal stagger-3 bg-white border-2 border-slate-200 p-4 space-y-2.5 shadow-xs">
                                 <h4 className="font-black text-xs uppercase tracking-wider text-slate-800 border-b border-slate-100 pb-2">
                                     Layanan Mahasiswa
                                 </h4>
