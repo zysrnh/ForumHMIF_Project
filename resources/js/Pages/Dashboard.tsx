@@ -4,6 +4,9 @@ import {
     AspirationItem,
     addCommentSharedAspiration,
     addSharedAspiration,
+    deleteSharedAspiration,
+    deleteSharedComment,
+    fetchAspirationsFromServer,
     getSharedAspirations,
     subscribeAspirations,
     toggleVoteSharedAspiration,
@@ -265,9 +268,12 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
     const [ksmSearch, setKsmSearch] = useState(ksmData?.filters?.search || '');
     const [selectedSurvey, setSelectedSurvey] = useState<SurveyItem | null>(null);
 
-    // Load & Subscribe Sinkronisasi Data Dua Arah
+    // Load & Subscribe Sinkronisasi Data Dua Arah dari Server
     useEffect(() => {
         setAspirations(getSharedAspirations());
+        fetchAspirationsFromServer().then((items) => {
+            setAspirations(items);
+        });
         const unsubscribe = subscribeAspirations((updated) => {
             setAspirations(updated);
         });
@@ -275,9 +281,23 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
     }, []);
 
     // Toggle Upvote Tersinkron
-    const handleToggleVote = (id: number) => {
-        const updated = toggleVoteSharedAspiration(id);
+    const handleToggleVote = async (id: number) => {
+        const updated = await toggleVoteSharedAspiration(id);
         setAspirations(updated);
+    };
+
+    // Hapus Aspirasi (Admin atau Pembuat)
+    const handleDeleteAspiration = async (id: number, title: string) => {
+        if (!confirm(`Hapus aspirasi "${title}"?`)) return;
+        await deleteSharedAspiration(id);
+        setAspirations(getSharedAspirations());
+    };
+
+    // Hapus Komentar (Admin atau Pembuat)
+    const handleDeleteComment = async (commentId: number, aspirationId: number) => {
+        if (!confirm('Hapus komentar ini?')) return;
+        await deleteSharedComment(commentId, aspirationId);
+        setAspirations(getSharedAspirations());
     };
 
     // Toggle Buka/Tutup Komentar Tanggapan
@@ -286,14 +306,12 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
     };
 
     // Kirim Tanggapan Baru Tersinkron
-    const handleAddComment = (aspirationId: number, e: React.FormEvent) => {
+    const handleAddComment = async (aspirationId: number, e: React.FormEvent) => {
         e.preventDefault();
         const text = (commentInputs[aspirationId] || '').trim();
         if (!text) return;
 
-        const updated = addCommentSharedAspiration(aspirationId, {
-            authorName: user.name,
-            authorNim: userNim,
+        const updated = await addCommentSharedAspiration(aspirationId, {
             content: text,
         });
 
@@ -814,13 +832,31 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                                         </span>
                                                     </td>
                                                     <td className="p-3 text-right">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setSelectedSurvey(item)}
-                                                            className="border border-slate-300 bg-white text-slate-700 hover:bg-slate-900 hover:text-white px-2.5 py-1 text-[11px] font-semibold transition-colors"
-                                                        >
-                                                            Detail
-                                                        </button>
+                                                        <div className="flex items-center justify-end gap-1.5">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setSelectedSurvey(item)}
+                                                                className="border border-slate-300 bg-white text-slate-700 hover:bg-slate-900 hover:text-white px-2.5 py-1 text-[11px] font-semibold transition-colors"
+                                                            >
+                                                                Detail
+                                                            </button>
+                                                            {isAdmin && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        if (confirm(`Yakin ingin menghapus data survei dari ${item.respondent_name}?`)) {
+                                                                            router.delete(route('admin.ksm.destroy', item.id), {
+                                                                                preserveScroll: true,
+                                                                            });
+                                                                        }
+                                                                    }}
+                                                                    className="border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-2 py-1 text-[11px] font-bold uppercase transition-colors"
+                                                                    title="Hapus Data Survei"
+                                                                >
+                                                                    Hapus
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -1693,9 +1729,21 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                                     {item.category}
                                                 </span>
 
-                                                <span className="text-xs font-medium text-slate-400">
-                                                    {item.createdAt}
-                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs font-medium text-slate-400">
+                                                        {item.createdAt}
+                                                    </span>
+                                                    {item.canDelete && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteAspiration(item.id, item.title)}
+                                                            className="border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-2 py-0.5 text-[10px] font-bold uppercase transition-colors"
+                                                            title="Hapus Aspirasi"
+                                                        >
+                                                            Hapus
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
 
                                             {/* Judul Aspirasi (Tebal, Jelas, Nyaman Dibaca) */}
@@ -1777,7 +1825,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
 
                                                     <div className="space-y-2">
                                                         {item.comments.length === 0 ? (
-                                                            <p className="text-xs text-slate-400 italic py-1">
+                                                             <p className="text-xs text-slate-400 italic py-1">
                                                                 Belum ada tanggapan untuk aspirasi ini. Jadilah yang pertama memberikan masukan!
                                                             </p>
                                                         ) : (
@@ -1801,9 +1849,21 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                                                                 </span>
                                                                             )}
                                                                         </div>
-                                                                        <span className="text-[10px] text-slate-400">
-                                                                            {comment.createdAt}
-                                                                        </span>
+                                                                        <div className="flex items-center gap-1.5">
+                                                                            <span className="text-[10px] text-slate-400">
+                                                                                {comment.createdAt}
+                                                                            </span>
+                                                                            {comment.canDelete && (
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() => handleDeleteComment(comment.id, item.id)}
+                                                                                    className="text-red-500 hover:text-red-700 text-[10px] font-bold uppercase ml-1"
+                                                                                    title="Hapus Komentar"
+                                                                                >
+                                                                                    ✕
+                                                                                </button>
+                                                                            )}
+                                                                        </div>
                                                                     </div>
                                                                     <p className="text-slate-700">
                                                                         {comment.content}

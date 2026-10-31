@@ -8,6 +8,7 @@ import {
     APP_CATEGORIES,
     AspirationItem,
     addSharedAspiration,
+    fetchAspirationsFromServer,
     getAspirationStats,
     getSharedAspirations,
     subscribeAspirations,
@@ -91,6 +92,9 @@ export default function Welcome({
 
     useEffect(() => {
         setSharedList(getSharedAspirations());
+        fetchAspirationsFromServer().then((items) => {
+            setSharedList(items);
+        });
         const unsubscribe = subscribeAspirations((updated) => {
             setSharedList(updated);
         });

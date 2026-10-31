@@ -6,6 +6,9 @@ import {
     APP_CATEGORIES,
     AspirationItem,
     addCommentSharedAspiration,
+    deleteSharedAspiration,
+    deleteSharedComment,
+    fetchAspirationsFromServer,
     getAspirationStats,
     getSharedAspirations,
     subscribeAspirations,
@@ -34,6 +37,9 @@ export default function Topik({
 
     useEffect(() => {
         setAspirations(getSharedAspirations());
+        fetchAspirationsFromServer().then((items) => {
+            setAspirations(items);
+        });
         const unsubscribe = subscribeAspirations((updated) => {
             setAspirations(updated);
         });
@@ -73,30 +79,36 @@ export default function Topik({
         return result;
     }, [aspirations, searchQuery, activeFilter, sortBy]);
 
-    const handleVote = (id: number) => {
-        toggleVoteSharedAspiration(id);
+    const handleVote = async (id: number) => {
+        const updated = await toggleVoteSharedAspiration(id);
+        setAspirations(updated);
+    };
+
+    const handleDeleteAspiration = async (id: number, title: string) => {
+        if (!confirm(`Hapus aspirasi "${title}"?`)) return;
+        await deleteSharedAspiration(id);
+        setAspirations(getSharedAspirations());
+    };
+
+    const handleDeleteComment = async (commentId: number, aspirationId: number) => {
+        if (!confirm('Hapus komentar ini?')) return;
+        await deleteSharedComment(commentId, aspirationId);
+        setAspirations(getSharedAspirations());
     };
 
     const toggleExpandComment = (id: number) => {
         setExpandedComments((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
-    const handleSendComment = (e: React.FormEvent, aspirationId: number) => {
+    const handleSendComment = async (e: React.FormEvent, aspirationId: number) => {
         e.preventDefault();
         const text = commentTexts[aspirationId]?.trim();
         if (!text) return;
 
-        const currentAuthor = auth.user ? auth.user.name : 'Mahasiswa IF';
-        const currentNim =
-            auth.user && 'nim' in auth.user
-                ? (auth.user as { nim?: string }).nim || '240414***'
-                : '240414***';
-
-        addCommentSharedAspiration(aspirationId, {
-            authorName: currentAuthor,
-            authorNim: currentNim,
+        const updated = await addCommentSharedAspiration(aspirationId, {
             content: text,
         });
+        setAspirations(updated);
 
         setCommentTexts((prev) => ({ ...prev, [aspirationId]: '' }));
     };
@@ -325,9 +337,21 @@ export default function Topik({
                                                     )}
                                                 </div>
 
-                                                <span className="text-[11px] font-medium text-gray-400">
-                                                    {item.createdAt}
-                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-[11px] font-medium text-gray-400">
+                                                        {item.createdAt}
+                                                    </span>
+                                                    {item.canDelete && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteAspiration(item.id, item.title)}
+                                                            className="border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-2 py-0.5 text-[10px] font-bold uppercase transition-colors"
+                                                            title="Hapus Aspirasi"
+                                                        >
+                                                            Hapus
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
 
                                             {/* Judul & Isi Aspirasi */}
@@ -432,9 +456,21 @@ export default function Topik({
                                                                                         </span>
                                                                                     )}
                                                                                 </div>
-                                                                                <span className="text-[10px] text-slate-400 font-mono">
-                                                                                    {c.createdAt}
-                                                                                </span>
+                                                                                <div className="flex items-center gap-1.5">
+                                                                                    <span className="text-[10px] text-slate-400 font-mono">
+                                                                                        {c.createdAt}
+                                                                                    </span>
+                                                                                    {c.canDelete && (
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            onClick={() => handleDeleteComment(c.id, item.id)}
+                                                                                            className="text-red-500 hover:text-red-700 text-[10px] font-bold uppercase ml-1"
+                                                                                            title="Hapus Komentar"
+                                                                                        >
+                                                                                            ✕
+                                                                                        </button>
+                                                                                    )}
+                                                                                </div>
                                                                             </div>
                                                                             <p className="text-slate-700 text-xs leading-relaxed">
                                                                                 {c.content}

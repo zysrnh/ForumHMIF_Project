@@ -31,6 +31,22 @@ Route::middleware(['throttle:global'])->group(function () {
         ->middleware('throttle:forms')
         ->name('aspirasi.notify');
 
+    // Rute API Aspirasi Mahasiswa
+    Route::get('/api/aspirations', [\App\Http\Controllers\AspirationController::class, 'index'])->name('aspirations.index');
+    Route::post('/api/aspirations', [\App\Http\Controllers\AspirationController::class, 'store'])
+        ->middleware('throttle:forms')
+        ->name('aspirations.store');
+    Route::post('/api/aspirations/{aspiration}/vote', [\App\Http\Controllers\AspirationController::class, 'vote'])->name('aspirations.vote');
+    Route::post('/api/aspirations/{aspiration}/comments', [\App\Http\Controllers\AspirationController::class, 'comment'])
+        ->middleware('throttle:forms')
+        ->name('aspirations.comment');
+    Route::delete('/api/aspirations/{aspiration}', [\App\Http\Controllers\AspirationController::class, 'destroy'])
+        ->middleware('auth')
+        ->name('aspirations.destroy');
+    Route::delete('/api/aspirations/comments/{comment}', [\App\Http\Controllers\AspirationController::class, 'destroyComment'])
+        ->middleware('auth')
+        ->name('aspirations.comment.destroy');
+
     // Rute Survei Peminatan KSM untuk Mahasiswa (Dilindungi rate limit form submission)
     Route::get('/ksm/survey', [KsmSurveyController::class, 'create'])->name('ksm.survey.index');
     Route::post('/ksm/survey', [KsmSurveyController::class, 'store'])
@@ -44,6 +60,7 @@ Route::middleware(['throttle:global'])->group(function () {
             return redirect()->route('dashboard', ['tab' => 'ksm']);
         })->name('admin.ksm.dashboard');
         Route::get('/admin/ksm-survey/export', [KsmSurveyController::class, 'exportCsv'])->name('admin.ksm.export');
+        Route::delete('/admin/ksm-survey/{survey}', [KsmSurveyController::class, 'destroy'])->name('admin.ksm.destroy');
 
         // Manajemen Pengguna & Admin Baru
         Route::post('/admin/users', [AdminUserController::class, 'store'])

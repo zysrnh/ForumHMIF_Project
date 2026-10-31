@@ -341,4 +341,15 @@ class KsmSurveyController extends Controller
     {
         return $this->exportExcel();
     }
+
+    /**
+     * Hapus respon survei KSM (khusus admin).
+     */
+    public function destroy(KsmSurvey $survey): RedirectResponse
+    {
+        $respondent = $survey->respondent_name;
+        $survey->delete();
+
+        return redirect()->route('dashboard', ['tab' => 'ksm'])->with('success', "Data survei dari {$respondent} berhasil dihapus.");
+    }
 }
