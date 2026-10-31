@@ -254,69 +254,114 @@ html {
     animation: polaroidDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s both;
 }
 
-/* Bi-directional Scroll Reveal (Masuk & Keluar saat scroll ke atas maupun bawah, Fluid & Lentur) */
+/* =========================================================================
+   Bi-directional Neo-Brutalist Kinetic Reveal (Bukan Fade Lembek!)
+   Karakter: Spring bounce, tactile snap, rotational pop, dan anti-blank di mobile
+   ========================================================================= */
 .scroll-reveal {
-    opacity: 0;
-    transform: translateY(22px) scale(0.98);
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.15;
+    transform: translateY(32px) scale(0.96) rotate(-0.8deg);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: opacity, transform;
 }
 
 .scroll-reveal.is-revealed {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1) rotate(0deg);
 }
 
-/* Stagger delay bertingkat agar kartu berurutan mengalir alami */
+/* Stagger delay & alternate tilt agar saat muncul tampak dinamis & berkarakter */
 .scroll-reveal.stagger-1 {
-    transition-delay: 60ms;
+    transform: translateY(32px) scale(0.96) rotate(1deg);
+    transition-delay: 50ms;
 }
-.scroll-reveal.stagger-2 {
-    transition-delay: 120ms;
-}
-.scroll-reveal.stagger-3 {
-    transition-delay: 180ms;
-}
-.scroll-reveal.stagger-4 {
-    transition-delay: 240ms;
+.scroll-reveal.stagger-1.is-revealed {
+    transform: translateY(0) scale(1) rotate(0deg);
 }
 
-/* Scroll reveal varian slide horizontal halus jika dibutuhkan */
+.scroll-reveal.stagger-2 {
+    transform: translateY(34px) scale(0.95) rotate(-1.2deg);
+    transition-delay: 100ms;
+}
+.scroll-reveal.stagger-2.is-revealed {
+    transform: translateY(0) scale(1) rotate(0deg);
+}
+
+.scroll-reveal.stagger-3 {
+    transform: translateY(36px) scale(0.95) rotate(1.2deg);
+    transition-delay: 150ms;
+}
+.scroll-reveal.stagger-3.is-revealed {
+    transform: translateY(0) scale(1) rotate(0deg);
+}
+
+.scroll-reveal.stagger-4 {
+    transform: translateY(38px) scale(0.94) rotate(-0.8deg);
+    transition-delay: 200ms;
+}
+.scroll-reveal.stagger-4.is-revealed {
+    transform: translateY(0) scale(1) rotate(0deg);
+}
+
+/* Horizontal slide reveal dengan kinetic snap */
 .scroll-reveal-left {
-    opacity: 0;
-    transform: translateX(-28px);
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.15;
+    transform: translateX(-36px) scale(0.96) rotate(-1.5deg);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: opacity, transform;
 }
 .scroll-reveal-left.is-revealed {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1) rotate(0deg);
 }
 
 .scroll-reveal-right {
-    opacity: 0;
-    transform: translateX(28px);
-    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.15;
+    transform: translateX(36px) scale(0.96) rotate(1.5deg);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     will-change: opacity, transform;
 }
 .scroll-reveal-right.is-revealed {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1) rotate(0deg);
 }
 
-/* PWA Pop-up Entrance */
+/* PWA Pop-up Entrance & Exit Animations */
 @keyframes pwaPopupSlide {
     0% {
         opacity: 0;
-        transform: translateY(100%) scale(0.95);
+        transform: translateY(100%) scale(0.92) rotate(-1deg);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.02) rotate(0.4deg);
     }
     100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+@keyframes pwaPopupExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+    30% {
+        transform: translateY(-6px) scale(1.02) rotate(-0.5deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(120%) scale(0.88) rotate(2.5deg);
     }
 }
 
 .anim-pwa-popup {
-    animation: pwaPopupSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: pwaPopupSlide 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.anim-pwa-popup-exit {
+    animation: pwaPopupExit 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
 }
 

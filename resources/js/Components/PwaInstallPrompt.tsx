@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
     prompt: () => Promise<void>;
@@ -8,9 +8,11 @@ interface BeforeInstallPromptEvent extends Event {
 export default function PwaInstallPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
     const [showPrompt, setShowPrompt] = useState<boolean>(false);
+    const [isExiting, setIsExiting] = useState<boolean>(false);
     const [isIos, setIsIos] = useState<boolean>(false);
     const [isStandalone, setIsStandalone] = useState<boolean>(false);
     const [showIosGuide, setShowIosGuide] = useState<boolean>(false);
+    const dismissTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         // Cek apakah sudah berjalan dalam mode standalone (sudah terinstall)
@@ -39,7 +41,6 @@ export default function PwaInstallPrompt() {
 
         if (isIosDevice && isSafari) {
             setIsIos(true);
-            // Beri jeda 2.5 detik agar user sempat melihat halaman dulu
             const timer = setTimeout(() => setShowPrompt(true), 2500);
             return () => clearTimeout(timer);
         }
@@ -48,7 +49,6 @@ export default function PwaInstallPrompt() {
         const handleBeforeInstallPrompt = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e as BeforeInstallPromptEvent);
-            // Beri jeda 2 detik agar tidak langsung menabrak user saat pertama kali load
             setTimeout(() => {
                 setShowPrompt(true);
             }, 2000);
@@ -61,9 +61,42 @@ export default function PwaInstallPrompt() {
         };
     }, []);
 
+    // Timer 3 detik saat popup muncul: otomatis memicu animasi keluar jika dibiarkan
+    useEffect(() => {
+        if (!showPrompt || showIosGuide) return;
+
+        dismissTimerRef.current = setTimeout(() => {
+            handleDismiss();
+        }, 3000);
+
+        return () => {
+            if (dismissTimerRef.current) {
+                clearTimeout(dismissTimerRef.current);
+            }
+        };
+    }, [showPrompt, showIosGuide]);
+
+    const handleDismiss = () => {
+        if (isExiting) return;
+        if (dismissTimerRef.current) {
+            clearTimeout(dismissTimerRef.current);
+        }
+
+        // Jalankan animasi keluar (slide down & rotate snap)
+        setIsExiting(true);
+        setTimeout(() => {
+            setShowPrompt(false);
+            setIsExiting(false);
+            localStorage.setItem('hmif_pwa_dismissed_at', Date.now().toString());
+        }, 350);
+    };
+
     const handleInstallClick = async () => {
         if (isIos) {
             setShowIosGuide(true);
+            if (dismissTimerRef.current) {
+                clearTimeout(dismissTimerRef.current);
+            }
             return;
         }
 
@@ -73,17 +106,12 @@ export default function PwaInstallPrompt() {
             await deferredPrompt.prompt();
             const choiceResult = await deferredPrompt.userChoice;
             if (choiceResult.outcome === 'accepted') {
-                setShowPrompt(false);
+                handleDismiss();
             }
             setDeferredPrompt(null);
         } catch (err) {
             console.error('Error triggering PWA install:', err);
         }
-    };
-
-    const handleDismiss = () => {
-        setShowPrompt(false);
-        localStorage.setItem('hmif_pwa_dismissed_at', Date.now().toString());
     };
 
     if (isStandalone || !showPrompt) {
@@ -94,7 +122,9 @@ export default function PwaInstallPrompt() {
         <aside
             role="dialog"
             aria-label="Pasang Aplikasi HMIF"
-            className="fixed bottom-16 md:bottom-6 right-3 sm:right-6 z-40 max-w-[340px] sm:max-w-sm w-[calc(100%-1.5rem)] anim-pwa-popup"
+            className={`fixed bottom-16 md:bottom-6 right-3 sm:right-6 z-40 max-w-[340px] sm:max-w-sm w-[calc(100%-1.5rem)] ${
+                isExiting ? 'anim-pwa-popup-exit' : 'anim-pwa-popup'
+            }`}
         >
             <div className="bg-white border-2 border-hima-blue-dark shadow-[5px_5px_0px_0px_#1A467C] p-4 text-black relative">
                 {/* Header Popup */}
@@ -123,7 +153,7 @@ export default function PwaInstallPrompt() {
                         type="button"
                         onClick={handleDismiss}
                         aria-label="Tutup"
-                        className="text-gray-400 hover:text-black font-mono text-sm font-black p-0.5"
+                        className="text-gray-400 hover:text-black font-mono text-sm font-black p-0.5 transition-colors"
                     >
                         ✕
                     </button>

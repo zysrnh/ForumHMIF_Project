@@ -1,13 +1,22 @@
 import { useEffect } from 'react';
 
 /**
- * Hook universal untuk scroll reveal 2 arah (masuk & keluar saat scroll ke atas atau bawah).
- * Memantau semua elemen berkelas `.scroll-reveal`, `.scroll-reveal-left`, `.scroll-reveal-right`.
+ * Hook universal untuk scroll reveal 2 arah yang atraktif & responsif.
+ * Memastikan konten tidak pernah hilang/blank di layar HP (anti-blank viewport check).
  */
-export function useBiDirectionalScrollReveal(threshold = 0.08) {
+export function useBiDirectionalScrollReveal(threshold = 0.02) {
     useEffect(() => {
-        const elements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
+        const elements = document.querySelectorAll<HTMLElement>('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
         if (!elements.length) return;
+
+        // Inisialisasi cepat: Elemen yang sudah ada di dalam atau dekat viewport langsung diberi animasi aktif
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        elements.forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < viewportHeight + 150 && rect.bottom > -100) {
+                el.classList.add('is-revealed');
+            }
+        });
 
         const observer = new IntersectionObserver(
             (entries) => {
@@ -15,9 +24,9 @@ export function useBiDirectionalScrollReveal(threshold = 0.08) {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-revealed');
                     } else {
-                        // Ketika kartu keluar dari viewport (scroll ke atas atau ke bawah), reset animasi secara halus
+                        // Hanya reset animasi jika kartu sudah benar-benar jauh meninggalkan layar
                         const rect = entry.target.getBoundingClientRect();
-                        if (rect.top > window.innerHeight || rect.bottom < 0) {
+                        if (rect.top > viewportHeight + 200 || rect.bottom < -200) {
                             entry.target.classList.remove('is-revealed');
                         }
                     }
@@ -25,7 +34,7 @@ export function useBiDirectionalScrollReveal(threshold = 0.08) {
             },
             {
                 threshold,
-                rootMargin: '0px 0px -25px 0px',
+                rootMargin: '120px 0px 80px 0px',
             }
         );
 
@@ -37,3 +46,4 @@ export function useBiDirectionalScrollReveal(threshold = 0.08) {
         };
     }, [threshold]);
 }
+
