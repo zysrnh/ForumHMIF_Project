@@ -57,38 +57,63 @@ export default function Authenticated({
     return (
         <div className="min-h-screen bg-slate-50 text-black flex flex-col md:flex-row">
             {/* Mobile Topbar (App-Like Header) */}
-            <div className="md:hidden bg-white border-b-2 border-hima-blue-dark px-4 py-2.5 flex items-center justify-between shadow-brutal-sm sticky top-0 z-40">
-                <Link href="/dashboard" className="flex items-center gap-2.5">
-                    <ApplicationLogo className="h-8 w-auto" />
-                    <div>
-                        <span className="font-black text-hima-blue-dark text-xs tracking-tight block leading-tight">
-                            HIMA INFORMATIKA
-                        </span>
-                        <span className="text-[9px] font-bold text-hima-red-dark uppercase tracking-wider block">
-                            IDE LPKIA
-                        </span>
-                    </div>
-                </Link>
-
+            <div className="md:hidden bg-white border-b-2 border-hima-blue-dark px-3 py-2 flex items-center justify-between shadow-brutal-sm sticky top-0 z-40">
                 <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => setSidebarOpen(true)}
+                        className="p-1.5 border-2 border-hima-blue-dark bg-blue-50 text-hima-blue-dark hover:bg-hima-blue-dark hover:text-white transition-colors"
+                        aria-label="Buka Menu Navigasi"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+
+                    <Link href="/dashboard" className="flex items-center gap-2">
+                        <ApplicationLogo className="h-7 w-auto" />
+                        <div>
+                            <span className="font-black text-hima-blue-dark text-[11px] tracking-tight block leading-tight">
+                                HIMA IF
+                            </span>
+                            <span className="text-[8px] font-bold text-hima-red-dark uppercase tracking-wider block">
+                                LPKIA
+                            </span>
+                        </div>
+                    </Link>
+                </div>
+
+                <div className="flex items-center gap-1.5">
                     {isAdmin && (
                         <button
                             type="button"
                             onClick={() => setShowWebmailModal(true)}
-                            className="text-[10px] font-bold text-hima-red-dark bg-red-50 border border-hima-red-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-red-dark hover:text-white transition-colors flex items-center gap-1"
+                            className="text-[10px] font-bold text-hima-red-dark bg-red-50 border border-hima-red-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-red-dark hover:text-white transition-colors flex items-center gap-1"
                             title="Buka Webmail Resmi HMIF"
                         >
                             <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <span>Webmail</span>
+                            <span className="hidden sm:inline">Webmail</span>
                         </button>
                     )}
                     <Link
                         href="/"
-                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
+                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
                     >
                         Publik
+                    </Link>
+                    <Link
+                        href={route('logout')}
+                        method="post"
+                        as="button"
+                        className="text-[10px] font-black text-white bg-hima-red-dark border border-hima-red-dark px-2.5 py-1 uppercase tracking-wider hover:bg-red-700 transition-colors flex items-center gap-1 shadow-xs"
+                        title="Keluar dari Akun"
+                    >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span>Keluar</span>
                     </Link>
                 </div>
             </div>
