@@ -60,8 +60,8 @@ class AspirationController extends Controller
             'category' => ['required', 'string', Rule::in(self::CATEGORIES)],
             'content' => ['required', 'string', 'max:5000'],
             'authorName' => ['nullable', 'string', 'max:100'],
-            'authorNim' => ['nullable', 'string', 'max:50'],
-            'authorClass' => ['nullable', 'string', 'max:50'],
+            'authorNim' => ['nullable', 'string', 'regex:/^[0-9]{9}$/'],
+            'authorClass' => ['nullable', 'string', 'max:5'],
             'isAnonymous' => ['nullable', 'boolean'],
         ]);
 
@@ -80,7 +80,7 @@ class AspirationController extends Controller
             $authorNim = $isAnonymous ? null : ($validated['authorNim'] ?? null);
         }
 
-        $aspiration = DB::transaction(function () use ($validated, $user, $isAnonymous, $authorName, $authorNim, $request) {
+        $aspiration = DB::transaction(function () use ($validated, $user, $isAnonymous, $authorName, $authorNim) {
             $aspiration = Aspiration::create([
                 'user_id' => $user?->id,
                 'title' => trim($validated['title']),
@@ -88,17 +88,10 @@ class AspirationController extends Controller
                 'content' => trim($validated['content']),
                 'author_name' => $authorName,
                 'author_nim' => $authorNim,
-                'author_class' => $validated['authorClass'] ?? null,
+                'author_class' => !empty($validated['authorClass']) ? strtoupper(trim($validated['authorClass'])) : null,
                 'is_anonymous' => $isAnonymous,
                 'status' => 'baru',
-                'votes_count' => 1,
-            ]);
-
-            // Pengirim otomatis tercatat mendukung aspirasinya sendiri
-            AspirationVote::create([
-                'aspiration_id' => $aspiration->id,
-                'user_id' => $user?->id,
-                'voter_key' => $this->voterKey($request),
+                'votes_count' => 0,
             ]);
 
             return $aspiration;
@@ -106,7 +99,7 @@ class AspirationController extends Controller
 
         $aspiration->load('comments');
 
-        return response()->json(['data' => $this->serialize($aspiration, true)], 201);
+        return response()->json(['data' => $this->serialize($aspiration, false)], 201);
     }
 
     /**

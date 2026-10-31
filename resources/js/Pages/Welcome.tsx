@@ -395,106 +395,150 @@ export default function Welcome({
                             id="form-aspirasi"
                             className="scroll-reveal stagger-1 lg:col-span-5 bg-white border-2 border-hima-blue-dark p-4 sm:p-7 shadow-[6px_6px_0px_0px_#1A467C] sm:shadow-[8px_8px_0px_0px_#1A467C] flex flex-col justify-between card-brutal-hover"
                         >
-                            <form onSubmit={handleQuickSubmit} className="space-y-3.5 sm:space-y-4">
-                                <div className="border-b-2 border-hima-blue-dark pb-2.5 flex items-center justify-between">
-                                    <h2 className="text-sm sm:text-base font-black text-hima-blue-dark uppercase tracking-wider">
-                                        Kirim Aspirasi Cepat
-                                    </h2>
-                                </div>
+                            {!auth.user ? (
+                                <div className="space-y-4 my-auto py-2">
+                                    <div className="border-b-2 border-hima-blue-dark pb-2.5">
+                                        <h2 className="text-sm sm:text-base font-black text-hima-blue-dark uppercase tracking-wider">
+                                            Kirim Aspirasi Mahasiswa
+                                        </h2>
+                                    </div>
 
-                                {/* Dropdown Kategori dari APP_CATEGORIES */}
-                                <div className="space-y-1.5">
-                                    <label htmlFor="aspiration-category-select" className="text-[11px] font-bold text-gray-700 block uppercase">
-                                        Pilih Kategori:
-                                    </label>
-                                    <div className="relative">
-                                        <select
-                                            id="aspiration-category-select"
-                                            value={aspirationCategory}
-                                            onChange={(e) => setAspirationCategory(e.target.value)}
-                                            className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs cursor-pointer appearance-none pr-8"
+                                    <div className="p-4 bg-blue-50/60 border-2 border-dashed border-hima-blue-dark space-y-2 text-center">
+                                        <div className="w-10 h-10 mx-auto bg-hima-blue-dark text-white flex items-center justify-center font-black text-sm shadow-xs">
+                                            !
+                                        </div>
+                                        <h3 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase">
+                                            Login Diperlukan
+                                        </h3>
+                                        <p className="text-[11px] sm:text-xs text-gray-600 font-medium leading-relaxed">
+                                            Untuk menjaga keaslian dan transparansi aspirasi, silakan masuk dengan akun resmi mahasiswa IF sebelum mengirim aspirasi.
+                                        </p>
+                                    </div>
+
+                                    <div className="pt-2 space-y-2.5">
+                                        <Link
+                                            href={route('login')}
+                                            className="w-full btn-brutal bg-hima-red-light text-white font-black py-2.5 sm:py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark flex items-center justify-center gap-2"
                                         >
-                                            {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
-                                                <option key={cat} value={cat}>
-                                                    {cat}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-hima-blue-dark">
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </div>
+                                            <span>Masuk untuk Kirim Aspirasi</span>
+                                            <span>&rarr;</span>
+                                        </Link>
+                                        <Link
+                                            href={route('register')}
+                                            className="w-full btn-brutal bg-white text-hima-blue-dark font-black py-2 sm:py-2.5 border-2 border-hima-blue-dark shadow-[3px_3px_0px_0px_#1A467C] text-xs uppercase tracking-wider hover:bg-blue-50 flex items-center justify-center"
+                                        >
+                                            Daftar Akun Baru
+                                        </Link>
                                     </div>
                                 </div>
+                            ) : (
+                                <form onSubmit={handleQuickSubmit} className="space-y-3.5 sm:space-y-4">
+                                    <div className="border-b-2 border-hima-blue-dark pb-2.5 flex items-center justify-between">
+                                        <h2 className="text-sm sm:text-base font-black text-hima-blue-dark uppercase tracking-wider">
+                                            Kirim Aspirasi Cepat
+                                        </h2>
+                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-600 px-2 py-0.5">
+                                            ✓ {auth.user.name.split(' ')[0]}
+                                        </span>
+                                    </div>
 
-                                {/* Input Identitas Mahasiswa (Nama, NIM, Kelas) */}
-                                <div className="space-y-1.5 pt-1 border-t border-dashed border-gray-300">
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                        <div>
-                                            <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
-                                                Nama Mahasiswa
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={aspirationAuthorName}
-                                                onChange={(e) => setAspirationAuthorName(e.target.value)}
-                                                placeholder="Nama lengkap..."
-                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
-                                                NIM
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={aspirationAuthorNim}
-                                                onChange={(e) => setAspirationAuthorNim(e.target.value)}
-                                                placeholder="Contoh: 250414010"
-                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
-                                                Kelas
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={aspirationAuthorClass}
-                                                onChange={(e) => setAspirationAuthorClass(e.target.value)}
-                                                placeholder="Contoh: 2IF01"
-                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
-                                            />
+                                    {/* Dropdown Kategori dari APP_CATEGORIES */}
+                                    <div className="space-y-1.5">
+                                        <label htmlFor="aspiration-category-select" className="text-[11px] font-bold text-gray-700 block uppercase">
+                                            Pilih Kategori:
+                                        </label>
+                                        <div className="relative">
+                                            <select
+                                                id="aspiration-category-select"
+                                                value={aspirationCategory}
+                                                onChange={(e) => setAspirationCategory(e.target.value)}
+                                                className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs cursor-pointer appearance-none pr-8"
+                                            >
+                                                {APP_CATEGORIES.filter((c) => c !== 'Semua').map((cat) => (
+                                                    <option key={cat} value={cat}>
+                                                        {cat}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-hima-blue-dark">
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Textarea Input */}
-                                <div className="space-y-1">
-                                    <textarea
-                                        rows={4}
-                                        value={aspirationContent}
-                                        onChange={(e) => setAspirationContent(e.target.value)}
-                                        placeholder="Tuliskan aspirasi, kebutuhan fasilitas, atau usulan kamu di sini..."
-                                        className="w-full border-2 border-hima-blue-dark p-2.5 sm:p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light resize-none rounded-none shadow-xs"
-                                    />
-                                </div>
-
-                                {/* Submit Button */}
-                                <button
-                                    type="submit"
-                                    className="w-full btn-brutal bg-hima-red-light text-white font-black py-2.5 sm:py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
-                                >
-                                    Kirim ke Forum
-                                </button>
-
-                                {aspirationSuccess && (
-                                    <div className="p-2.5 bg-green-50 border-2 border-green-700 text-green-900 text-xs font-bold text-center">
-                                        Aspirasi kamu berhasil dikirim ke forum mahasiswa!
+                                    {/* Input Identitas Mahasiswa (Nama, NIM, Kelas) */}
+                                    <div className="space-y-1.5 pt-1 border-t border-dashed border-gray-300">
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                            <div>
+                                                <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
+                                                    Nama Mahasiswa
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={aspirationAuthorName}
+                                                    onChange={(e) => setAspirationAuthorName(e.target.value)}
+                                                    placeholder="Nama lengkap..."
+                                                    className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
+                                                    NIM (9 Angka)
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    inputMode="numeric"
+                                                    maxLength={9}
+                                                    value={aspirationAuthorNim}
+                                                    onChange={(e) => setAspirationAuthorNim(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                                                    placeholder="Contoh: 250414010"
+                                                    className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs font-mono"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] font-bold text-gray-700 block uppercase mb-1">
+                                                    Kelas (Maks 5)
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    maxLength={5}
+                                                    value={aspirationAuthorClass}
+                                                    onChange={(e) => setAspirationAuthorClass(e.target.value.toUpperCase().slice(0, 5))}
+                                                    placeholder="Contoh: 2IF01"
+                                                    className="w-full border-2 border-hima-blue-dark bg-slate-50/50 p-2 text-xs font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light focus:bg-white rounded-none shadow-xs uppercase font-mono"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                )}
-                            </form>
+
+                                    {/* Textarea Input */}
+                                    <div className="space-y-1">
+                                        <textarea
+                                            rows={4}
+                                            value={aspirationContent}
+                                            onChange={(e) => setAspirationContent(e.target.value)}
+                                            placeholder="Tuliskan aspirasi, kebutuhan fasilitas, atau usulan kamu di sini..."
+                                            className="w-full border-2 border-hima-blue-dark p-2.5 sm:p-3 text-xs sm:text-sm font-semibold text-black placeholder-gray-400 focus:outline-none focus:border-hima-blue-light resize-none rounded-none shadow-xs"
+                                        />
+                                    </div>
+
+                                    {/* Submit Button */}
+                                    <button
+                                        type="submit"
+                                        className="w-full btn-brutal bg-hima-red-light text-white font-black py-2.5 sm:py-3 border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] text-xs sm:text-sm uppercase tracking-wider hover:bg-hima-red-dark"
+                                    >
+                                        Kirim ke Forum
+                                    </button>
+
+                                    {aspirationSuccess && (
+                                        <div className="p-2.5 bg-green-50 border-2 border-green-700 text-green-900 text-xs font-bold text-center">
+                                            Aspirasi kamu berhasil dikirim ke forum mahasiswa!
+                                        </div>
+                                    )}
+                                </form>
+                            )}
 
                             <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium text-center pt-2">
                                 Setiap suara akan dipelajari dan ditindaklanjuti oleh tim HIMA IF.

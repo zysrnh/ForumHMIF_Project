@@ -34,7 +34,7 @@ Route::middleware(['throttle:global'])->group(function () {
     // Rute API Aspirasi Mahasiswa
     Route::get('/api/aspirations', [\App\Http\Controllers\AspirationController::class, 'index'])->name('aspirations.index');
     Route::post('/api/aspirations', [\App\Http\Controllers\AspirationController::class, 'store'])
-        ->middleware('throttle:forms')
+        ->middleware(['auth', 'throttle:forms'])
         ->name('aspirations.store');
     Route::post('/api/aspirations/{aspiration}/vote', [\App\Http\Controllers\AspirationController::class, 'vote'])->name('aspirations.vote');
     Route::post('/api/aspirations/{aspiration}/comments', [\App\Http\Controllers\AspirationController::class, 'comment'])

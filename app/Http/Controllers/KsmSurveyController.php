@@ -43,8 +43,8 @@ class KsmSurveyController extends Controller
     {
         $validated = $request->validate([
             'respondent_name' => ['required', 'string', 'max:255'],
-            'respondent_nim' => ['nullable', 'string', 'max:50'],
-            'respondent_class' => ['nullable', 'string', 'max:50'],
+            'respondent_nim' => ['nullable', 'string', 'regex:/^[0-9]{9}$/'],
+            'respondent_class' => ['nullable', 'string', 'max:5'],
             'semester_course' => ['required', 'string', 'max:255'],
             'interested_fields' => ['required', 'array', 'min:1', 'max:3'],
             'interested_fields.*' => ['string', 'max:255'],

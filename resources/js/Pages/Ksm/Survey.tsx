@@ -358,10 +358,12 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
                                     </label>
                                     <input
                                         type="text"
+                                        inputMode="numeric"
+                                        maxLength={9}
                                         value={data.respondent_nim}
-                                        onChange={(e) => setData('respondent_nim', e.target.value)}
-                                        placeholder="Contoh: 230414010"
-                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
+                                        onChange={(e) => setData('respondent_nim', e.target.value.replace(/\D/g, '').slice(0, 9))}
+                                        placeholder="Contoh: 250414010"
+                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white font-mono"
                                     />
                                 </div>
                                 <div>
@@ -370,10 +372,11 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
                                     </label>
                                     <input
                                         type="text"
+                                        maxLength={5}
                                         value={data.respondent_class}
-                                        onChange={(e) => setData('respondent_class', e.target.value)}
+                                        onChange={(e) => setData('respondent_class', e.target.value.toUpperCase().slice(0, 5))}
                                         placeholder="Contoh: 2IF01"
-                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white"
+                                        className="w-full border-2 border-hima-blue-dark p-2 text-xs sm:text-sm font-bold rounded-none focus:outline-none focus:border-hima-blue-light bg-white uppercase font-mono"
                                     />
                                 </div>
                             </div>
