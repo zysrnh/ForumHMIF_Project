@@ -101,9 +101,13 @@ export default function Authenticated({
                     )}
                     <Link
                         href="/"
-                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
+                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors flex items-center gap-1 shadow-xs shrink-0"
+                        title="Kembali ke Halaman Utama"
                     >
-                        Publik
+                        <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span>Beranda</span>
                     </Link>
                 </div>
             </div>
@@ -199,6 +203,20 @@ export default function Authenticated({
                     <nav className={`space-y-1 flex-1 overflow-y-auto text-xs transition-all ${
                         isDesktopCollapsed ? 'p-2 md:px-1.5 md:py-2' : 'p-3'
                     }`}>
+                        {/* 0. Halaman Utama Portal */}
+                        <Link
+                            href="/"
+                            title="Kembali ke Halaman Utama"
+                            className={`w-full flex items-center font-bold border border-slate-200 text-hima-blue-dark bg-blue-50/50 hover:bg-hima-blue-dark hover:text-white transition-all group ${
+                                isDesktopCollapsed ? 'md:justify-center md:px-2 md:py-2.5 px-3 py-2 gap-2.5' : 'px-3 py-2 gap-2.5'
+                            }`}
+                        >
+                            <svg className="w-4 h-4 shrink-0 text-hima-blue-dark group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span className={isDesktopCollapsed ? 'md:hidden' : 'inline'}>Halaman Utama</span>
+                        </Link>
+
                         {/* 1. Semua Aspirasi */}
                         {isProfilePage ? (
                             <Link
@@ -511,6 +529,16 @@ export default function Authenticated({
                         <div className="flex-1 min-w-0">
                             {header}
                         </div>
+                        <Link
+                            href="/"
+                            className="hidden lg:inline-flex items-center gap-1.5 border-2 border-hima-blue-dark bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-hima-blue-dark hover:bg-hima-blue-dark hover:text-white transition-all shadow-brutal-xs shrink-0"
+                            title="Kembali ke Halaman Utama Web"
+                        >
+                            <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span>Beranda</span>
+                        </Link>
                     </header>
                 ) : (
                     <div className="hidden md:flex items-center px-6 py-2 bg-white border-b-2 border-hima-blue-dark">
@@ -786,30 +814,6 @@ export default function Authenticated({
                             }`}
                         />
                     </button>
-
-                    {/* 4. Webmail HMIF (HANYA MUNCUL JIKA USER ADMIN/SUPER ADMIN) */}
-                    {isAdmin && (
-                        <button
-                            type="button"
-                            onClick={() => setShowWebmailModal(true)}
-                            className="group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70"
-                        >
-                            <div className="p-1 border border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50 transition-all">
-                                <svg
-                                    className="w-5 h-5 text-gray-500 group-hover:text-hima-red-dark transition-colors"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <span className="text-[10px] uppercase tracking-tight mt-0.5 text-gray-500 group-hover:text-hima-red-dark font-bold">
-                                Webmail
-                            </span>
-                            <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-hima-red-dark opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </button>
-                    )}
 
                     {/* 5. Akun Saya (dengan Dropup Popover Melayang ke Atas) */}
                     <div className="relative flex-1">
