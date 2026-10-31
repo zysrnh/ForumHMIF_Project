@@ -1,5 +1,6 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { useBiDirectionalScrollReveal } from '@/hooks/useBiDirectionalScrollReveal';
 
 interface Props {
     user?: {
@@ -25,6 +26,9 @@ interface Props {
 export default function Survey({ user, hasFilled, existingSurvey }: Props) {
     const pageProps = usePage().props as { flash?: { success?: string } };
     const successFlash = pageProps.flash?.success;
+
+    // Pasang animasi kinetik scroll reveal masuk-keluar dua arah
+    useBiDirectionalScrollReveal();
 
     // State untuk opsi 'Yang lain'
     const [customCourse, setCustomCourse] = useState('');
@@ -230,7 +234,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
 
                 {/* 2. MAIN CONTAINER - BERJARAK & LEGA (ADA NAFAS) */}
-                <main className="w-full max-w-3xl mx-auto px-3.5 sm:px-6 py-4 sm:py-6 pb-28 md:pb-12 space-y-6 sm:space-y-7 flex-1">
+                <main className="w-full max-w-3xl mx-auto px-3.5 sm:px-6 py-6 sm:py-8 pb-32 md:pb-16 space-y-10 sm:space-y-12 flex-1">
                     {/* Notifikasi Berhasil */}
                     {(wasSuccessful || successFlash) && (
                         <div className="bg-green-50 border-2 border-green-700 p-4 sm:p-5 shadow-brutal-xs text-green-950 space-y-2 anim-feed-item">
@@ -248,8 +252,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                     {/* Banner Intro Survei */}
                     <div
-                        className="anim-survey-card bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-5 sm:p-7 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] space-y-3"
-                        style={{ animationDelay: '0.05s' }}
+                        className="scroll-reveal bg-white border-2 border-hima-blue-dark border-t-6 border-t-hima-blue-dark p-5 sm:p-7 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] space-y-3"
                     >
                         <div className="flex items-center gap-2 flex-wrap">
                             <span className="bg-hima-red-dark text-white text-[9px] font-black uppercase px-2 py-0.5 tracking-wider">
@@ -322,11 +325,10 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
                     )}
 
                     {/* FORM PERTANYAAN */}
-                    <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
+                    <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
                         {/* IDENTITAS PENGISI */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.1s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <h2 className="text-xs sm:text-sm font-black text-hima-blue-dark uppercase tracking-wide border-b border-gray-100 pb-2">
                                 Identitas Responden
@@ -379,8 +381,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 1: MATKUL SEMESTER 3 */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.15s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <div className="space-y-0.5">
                                 <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
@@ -459,8 +460,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 2: BIDANG TEKNOLOGI (MAKSIMAL 3) */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.2s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
@@ -547,8 +547,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 3: BENTUK KEGIATAN (MAKSIMAL 2) */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.25s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
@@ -605,8 +604,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 4: METODE BELAJAR EFEKTIF */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.3s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Menurutmu, metode belajar yang paling efektif seperti apa? <span className="text-hima-red-dark">*</span>
@@ -643,8 +641,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 5: TINGKAT KETERTARIKAN (SKALA 1 - 4) */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.35s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Seberapa tertarik kamu untuk kegiatan KSM? <span className="text-hima-red-dark">*</span>
@@ -686,8 +683,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 6: HARI YANG MEMUNGKINKAN (MAKSIMAL 2) */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.4s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <div className="flex items-start justify-between gap-2">
                                 <div className="space-y-0.5">
@@ -744,8 +740,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 7: WAKTU PELAKSANAAN */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
-                            style={{ animationDelay: '0.45s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-xs space-y-4"
                         >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Waktu pelaksanaan yang paling anda inginkan adalah <span className="text-hima-red-dark">*</span>
@@ -782,8 +777,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* PERTANYAAN 8: SARAN / IDE LAIN */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-2.5"
-                            style={{ animationDelay: '0.5s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-sm space-y-2.5"
                         >
                             <label className="block text-xs sm:text-sm font-black text-gray-950 leading-snug">
                                 Apakah kamu memiliki saran atau ide lain untuk kegiatan KSM?
@@ -803,8 +797,7 @@ export default function Survey({ user, hasFilled, existingSurvey }: Props) {
 
                         {/* TOMBOL SUBMIT RESPONSIF & MUDAH DIJANGKAU */}
                         <div
-                            className="anim-survey-card bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-brutal-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5"
-                            style={{ animationDelay: '0.55s' }}
+                            className="scroll-reveal bg-white border-2 border-hima-blue-dark p-3 sm:p-4 shadow-brutal-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5"
                         >
                             <button
                                 type="button"

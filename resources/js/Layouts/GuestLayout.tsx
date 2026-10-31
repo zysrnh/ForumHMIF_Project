@@ -8,7 +8,7 @@ interface GuestLayoutProps extends PropsWithChildren {
 
 export default function Guest({ children, maxWidth = 'max-w-md' }: GuestLayoutProps) {
     return (
-        <div className="bg-blueprint flex min-h-screen flex-col items-center justify-center py-4 sm:py-6 px-4 pb-24 md:pb-6 selection:bg-hima-blue-light selection:text-white relative overflow-x-hidden">
+        <div className="bg-blueprint flex min-h-screen flex-col items-center justify-center py-6 sm:py-10 px-4 pb-28 md:pb-8 selection:bg-hima-blue-light selection:text-white relative overflow-x-hidden">
             {/* Ambient Floating Accents */}
             <div className="hidden md:block absolute top-10 left-10 w-11 h-11 bg-hima-blue-light/30 border-2 border-hima-blue-dark shadow-brutal pointer-events-none anim-float-1" />
             <div className="hidden md:block absolute bottom-12 right-12 w-13 h-13 bg-hima-red-light/30 border-2 border-hima-red-dark shadow-brutal-red pointer-events-none anim-float-2" />

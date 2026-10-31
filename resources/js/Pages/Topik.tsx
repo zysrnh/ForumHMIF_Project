@@ -1,6 +1,7 @@
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useMemo, useState } from 'react';
+import { useBiDirectionalScrollReveal } from '@/hooks/useBiDirectionalScrollReveal';
 import {
     APP_CATEGORIES,
     AspirationItem,
@@ -27,6 +28,9 @@ export default function Topik({
     const [sortBy, setSortBy] = useState<'votes' | 'latest'>('votes');
     const [expandedComments, setExpandedComments] = useState<Record<number, boolean>>({});
     const [commentTexts, setCommentTexts] = useState<Record<number, string>>({});
+
+    // Pasang animasi kinetik scroll reveal masuk-keluar dua arah
+    useBiDirectionalScrollReveal();
 
     useEffect(() => {
         setAspirations(getSharedAspirations());
@@ -102,7 +106,7 @@ export default function Topik({
             <Head title="Eksplorasi Topik Aspirasi - Forum HMIF" />
 
             <div className="bg-blueprint text-[#000000] min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-6 lg:p-8 pb-20 md:pb-8 relative overflow-x-hidden selection:bg-hima-red-light selection:text-white">
-                <div className="w-full max-w-7xl z-10 space-y-5 sm:space-y-6 my-1 sm:my-2">
+                <div className="w-full max-w-7xl z-10 space-y-10 sm:space-y-14 my-2 sm:my-4">
                     {/* 1. NAVBAR FORUM (SERAGAM DENGAN BERANDA) */}
                     <header className="anim-brutal-drop bg-white border-2 border-hima-blue-dark p-3.5 sm:p-5 shadow-[4px_4px_0px_0px_#1A467C] sm:shadow-[6px_6px_0px_0px_#1A467C] flex items-center justify-between gap-3 sm:gap-4">
                         <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
@@ -169,7 +173,7 @@ export default function Topik({
                     </header>
 
                     {/* 2. HEADER BANNER */}
-                    <section className="bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm space-y-5">
+                    <section className="scroll-reveal bg-white border-2 border-hima-blue-dark p-5 sm:p-7 shadow-brutal-sm space-y-5">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 border-b-2 border-slate-100 pb-5">
                             <div className="space-y-1.5 max-w-2xl">
                                 <h1 className="text-xl sm:text-3xl font-black text-hima-blue-dark uppercase tracking-tight leading-tight">
@@ -269,7 +273,7 @@ export default function Topik({
                     </section>
 
                     {/* 3. LIST TOPIK */}
-                    <section className="space-y-5">
+                    <section className="space-y-6">
                         <div className="flex items-center justify-between text-xs font-bold text-gray-600 px-1">
                             <span>Menampilkan {filteredItems.length} aspirasi</span>
                             <span className="text-hima-blue-dark font-black">
@@ -297,7 +301,7 @@ export default function Topik({
                                 </button>
                             </div>
                         ) : (
-                            <div className="space-y-3.5">
+                            <div className="space-y-6 sm:space-y-7">
                                 {filteredItems.map((item, index) => {
                                     const isTop = index === 0 && sortBy === 'votes';
                                     const isExpanded = expandedComments[item.id] || false;
@@ -305,7 +309,7 @@ export default function Topik({
                                     return (
                                         <div
                                             key={item.id}
-                                            className="bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[5px_5px_0px_0px_#1A467C] card-brutal-hover space-y-2.5"
+                                            className={`scroll-reveal stagger-${(index % 4) + 1} bg-white border-2 border-hima-blue-dark p-4 sm:p-5 shadow-[5px_5px_0px_0px_#1A467C] card-brutal-hover space-y-2.5`}
                                         >
                                             {/* Header Card: Category & Waktu */}
                                             <div className="flex items-center justify-between gap-2 flex-wrap">

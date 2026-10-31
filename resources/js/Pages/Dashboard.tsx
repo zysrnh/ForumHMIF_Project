@@ -10,6 +10,7 @@ import {
 } from '@/data/aspirations';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useBiDirectionalScrollReveal } from '@/hooks/useBiDirectionalScrollReveal';
 
 interface SurveyItem {
     id: number;
@@ -94,6 +95,9 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
     const userNim = user.nim || (user.email.includes('@') ? user.email.split('@')[0] : '250414010');
     const isAdmin = ['admin', 'super_admin', 'superadmin'].includes(user.role || '');
     const isSuperAdmin = user.role === 'super_admin' || user.role === 'superadmin';
+
+    // Aktifkan scroll reveal masuk-keluar interaktif
+    useBiDirectionalScrollReveal();
 
     // Inisialisasi Tab Aktif berdasarkan props server atau URL query
     const initialNav = useMemo<'feed' | 'create' | 'my' | 'ksm' | 'users'>(() => {
@@ -1520,7 +1524,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                         {/* KOLOM KIRI (70%): SEARCH, FILTER & LIST KARTU ASPIRASI */}
-                        <div className="lg:col-span-8 space-y-4">
+                        <div className="lg:col-span-8 space-y-6 sm:space-y-7">
                             {/* Kotak Filter & Pencarian yang Rapi, Ringkas & Bebas Overflow */}
                             <div className="w-full bg-white border-2 border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-3 relative z-30 anim-feed-item">
                                 {/* Baris 1: Pencarian Full Width */}
@@ -1681,8 +1685,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                     return (
                                         <div
                                             key={item.id}
-                                            style={{ animationDelay: `${index * 30}ms` }}
-                                            className="w-full bg-white border-2 border-slate-200 border-l-4 border-l-hima-blue-dark p-5 sm:p-6 shadow-xs hover:border-slate-300 transition-all duration-150 anim-feed-item space-y-3.5"
+                                            className={`scroll-reveal stagger-${(index % 4) + 1} w-full bg-white border-2 border-slate-200 border-l-4 border-l-hima-blue-dark p-5 sm:p-6 shadow-xs hover:border-slate-300 transition-all duration-150 space-y-3.5`}
                                         >
                                             {/* Baris Kategori & Waktu */}
                                             <div className="flex items-center justify-between gap-2">
