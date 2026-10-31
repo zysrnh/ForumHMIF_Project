@@ -825,10 +825,19 @@ export default function Authenticated({
                                 <div className="fixed bottom-16 right-2 sm:right-4 w-60 bg-white border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] z-50 overflow-hidden anim-feed-item">
                                     {/* Header Info User */}
                                     <div className="p-3 bg-blue-50/80 border-b-2 border-hima-blue-dark/20">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <div className="w-7 h-7 bg-hima-blue-dark text-white font-black text-xs flex items-center justify-center shrink-0">
-                                                {user.name.charAt(0).toUpperCase()}
-                                            </div>
+                                        <div className="flex items-center gap-2.5 mb-1.5">
+                                            {user.avatar && !avatarError ? (
+                                                <img
+                                                    src={user.avatar}
+                                                    alt={user.name}
+                                                    onError={() => setAvatarError(true)}
+                                                    className="w-10 h-10 border-2 border-hima-blue-dark object-cover shrink-0 bg-white shadow-xs"
+                                                />
+                                            ) : (
+                                                <div className="w-10 h-10 border-2 border-hima-blue-dark bg-hima-blue-dark text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
+                                                    {user.name.charAt(0).toUpperCase()}
+                                                </div>
+                                            )}
                                             <div className="min-w-0">
                                                 <p className="text-xs font-black text-hima-blue-dark uppercase truncate" title={user.name}>
                                                     {user.name}
@@ -882,23 +891,24 @@ export default function Authenticated({
                             }`}
                         >
                             <div
-                                className={`p-1 border transition-all ${
+                                className={`p-0.5 border transition-all ${
                                     isProfilePage || mobileAccountMenuOpen
                                         ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
                                         : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
                                 }`}
                             >
-                                <svg
-                                    className={`w-5 h-5 transition-colors ${
-                                        isProfilePage || mobileAccountMenuOpen ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
-                                    }`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
+                                {user.avatar && !avatarError ? (
+                                    <img
+                                        src={user.avatar}
+                                        alt={user.name}
+                                        onError={() => setAvatarError(true)}
+                                        className="w-5 h-5 border border-hima-blue-dark object-cover shrink-0 bg-white"
+                                    />
+                                ) : (
+                                    <div className="w-5 h-5 bg-hima-blue-dark text-white font-black text-[10px] flex items-center justify-center shrink-0">
+                                        {user.name.charAt(0).toUpperCase()}
+                                    </div>
+                                )}
                             </div>
                             <span
                                 className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
