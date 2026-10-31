@@ -491,7 +491,7 @@ export default function Welcome({
 
                                 {aspirationSuccess && (
                                     <div className="p-2.5 bg-green-50 border-2 border-green-700 text-green-900 text-xs font-bold text-center">
-                                        Aspirasi berhasil dikirim dan tersinkron ke dashboard!
+                                        Aspirasi kamu berhasil dikirim ke forum mahasiswa!
                                     </div>
                                 )}
                             </form>
