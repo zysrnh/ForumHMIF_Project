@@ -16,6 +16,7 @@ export default function Authenticated({
 }: AuthenticatedLayoutProps) {
     const user = usePage().props.auth.user;
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [mobileAccountMenuOpen, setMobileAccountMenuOpen] = useState(false);
     const [showWebmailModal, setShowWebmailModal] = useState(false);
     const [isDesktopCollapsed, setIsDesktopCollapsed] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
@@ -52,6 +53,7 @@ export default function Authenticated({
             onSelectNav(navId);
         }
         setSidebarOpen(false);
+        setMobileAccountMenuOpen(false);
     };
 
     return (
@@ -99,21 +101,9 @@ export default function Authenticated({
                     )}
                     <Link
                         href="/"
-                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
+                        className="text-[10px] font-bold text-hima-blue-dark bg-blue-50 border border-hima-blue-dark px-2.5 py-1 uppercase tracking-wider hover:bg-hima-blue-dark hover:text-white transition-colors"
                     >
                         Publik
-                    </Link>
-                    <Link
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="text-[10px] font-black text-white bg-hima-red-dark border border-hima-red-dark px-2.5 py-1 uppercase tracking-wider hover:bg-red-700 transition-colors flex items-center gap-1 shadow-xs"
-                        title="Keluar dari Akun"
-                    >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        <span>Keluar</span>
                     </Link>
                 </div>
             </div>
@@ -821,49 +811,113 @@ export default function Authenticated({
                         </button>
                     )}
 
-                    {/* 5. Akun Saya */}
-                    <Link
-                        href={route('profile.edit')}
-                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
-                            isProfilePage ? 'bg-blue-50/40' : ''
-                        }`}
-                    >
-                        <div
-                            className={`p-1 border transition-all ${
-                                isProfilePage
-                                    ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
-                                    : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
+                    {/* 5. Akun Saya (dengan Dropup Popover Melayang ke Atas) */}
+                    <div className="relative flex-1">
+                        {mobileAccountMenuOpen && (
+                            <>
+                                {/* Backdrop transparan untuk menutup saat klik area luar */}
+                                <div
+                                    className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs"
+                                    onClick={() => setMobileAccountMenuOpen(false)}
+                                />
+
+                                {/* Floating Dropup Menu melayang tepat di atas tombol Akun */}
+                                <div className="fixed bottom-16 right-2 sm:right-4 w-60 bg-white border-2 border-hima-blue-dark shadow-[4px_4px_0px_0px_#1A467C] z-50 overflow-hidden anim-feed-item">
+                                    {/* Header Info User */}
+                                    <div className="p-3 bg-blue-50/80 border-b-2 border-hima-blue-dark/20">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <div className="w-7 h-7 bg-hima-blue-dark text-white font-black text-xs flex items-center justify-center shrink-0">
+                                                {user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="text-xs font-black text-hima-blue-dark uppercase truncate" title={user.name}>
+                                                    {user.name}
+                                                </p>
+                                                <p className="text-[10px] font-mono text-slate-500 font-bold">
+                                                    NIM: {displayNim}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <span className="inline-block text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 bg-hima-blue-dark text-white">
+                                            {user.role === 'super_admin' ? 'SUPER ADMIN' : isAdmin ? 'ADMIN HIMA' : 'MAHASISWA'}
+                                        </span>
+                                    </div>
+
+                                    {/* Menu Items */}
+                                    <div className="p-1.5 space-y-1">
+                                        <Link
+                                            href={route('profile.edit')}
+                                            onClick={() => setMobileAccountMenuOpen(false)}
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors"
+                                        >
+                                            <svg className="w-4 h-4 text-hima-blue-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                            <span>Profil & Akun</span>
+                                        </Link>
+
+                                        <Link
+                                            href={route('logout')}
+                                            method="post"
+                                            as="button"
+                                            onClick={() => setMobileAccountMenuOpen(false)}
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-black text-red-600 hover:bg-red-50 transition-colors border-t border-slate-100"
+                                        >
+                                            <svg className="w-4 h-4 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>
+                                            <span className="uppercase tracking-wider">Keluar Akun</span>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        <button
+                            type="button"
+                            onClick={() => setMobileAccountMenuOpen(!mobileAccountMenuOpen)}
+                            className={`w-full group relative flex flex-col items-center justify-center py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
+                                isProfilePage || mobileAccountMenuOpen ? 'bg-blue-50/40' : ''
                             }`}
                         >
-                            <svg
-                                className={`w-5 h-5 transition-colors ${
-                                    isProfilePage ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
+                            <div
+                                className={`p-1 border transition-all ${
+                                    isProfilePage || mobileAccountMenuOpen
+                                        ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
+                                        : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
                                 }`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
                             >
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </div>
-                        <span
-                            className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
-                                isProfilePage
-                                    ? 'text-hima-blue-dark font-black'
-                                    : 'text-gray-500 group-hover:text-hima-blue-dark font-bold'
-                            }`}
-                        >
-                            Akun
-                        </span>
-                        <span
-                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
-                                isProfilePage
-                                    ? 'bg-hima-blue-dark opacity-100'
-                                    : 'bg-hima-blue-dark opacity-0 group-hover:opacity-100'
-                            }`}
-                        />
-                    </Link>
+                                <svg
+                                    className={`w-5 h-5 transition-colors ${
+                                        isProfilePage || mobileAccountMenuOpen ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
+                                    }`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <span
+                                className={`text-[10px] uppercase tracking-tight mt-0.5 transition-colors ${
+                                    isProfilePage || mobileAccountMenuOpen
+                                        ? 'text-hima-blue-dark font-black'
+                                        : 'text-gray-500 group-hover:text-hima-blue-dark font-bold'
+                                }`}
+                            >
+                                Akun
+                            </span>
+                            <span
+                                className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                    isProfilePage || mobileAccountMenuOpen
+                                        ? 'bg-hima-blue-dark opacity-100'
+                                        : 'bg-hima-blue-dark opacity-0 group-hover:opacity-100'
+                                }`}
+                            />
+                        </button>
+                    </div>
                 </div>
             </nav>
 
