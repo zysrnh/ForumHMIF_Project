@@ -213,26 +213,6 @@ export default function Welcome({
             status: 'baru',
         });
 
-        // Kirim email notifikasi ke admin info@hmif-lpkia.my.id dan ke mahasiswa jika ada email
-        try {
-            fetch(route('aspirasi.notify'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '',
-                },
-                body: JSON.stringify({
-                    title,
-                    content: aspirationContent,
-                    category: aspirationCategory,
-                    authorName: currentAuthor,
-                    authorNim: currentNim,
-                    authorClass: currentClass,
-                    authorEmail: auth.user?.email,
-                }),
-            }).catch(() => {});
-        } catch (_) {}
-
         setAspirationContent('');
         if (!auth.user) {
             setAspirationAuthorName('');

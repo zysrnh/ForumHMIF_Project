@@ -1944,17 +1944,6 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                             {statsOverview.topCategory}
                                         </span>
                                     </div>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => handleSelectTab('create')}
-                                        className="w-full btn-brutal border-2 border-hima-red-dark bg-hima-red-dark text-white py-2 px-3 text-xs font-black uppercase tracking-wider hover:bg-hima-red-light transition-all flex items-center justify-center gap-1.5"
-                                    >
-                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
-                                        </svg>
-                                        <span>Tulis Aspirasi Baru</span>
-                                    </button>
                                 </div>
                             </div>
 

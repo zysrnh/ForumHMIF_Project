@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminAspirationNotificationMail;
+use App\Mail\AspirationConfirmationMail;
 use App\Models\Aspiration;
 use App\Models\AspirationComment;
 use App\Models\AspirationVote;
@@ -10,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class AspirationController extends Controller
@@ -98,6 +102,29 @@ class AspirationController extends Controller
         });
 
         $aspiration->load('comments');
+
+        // Kirim notifikasi email langsung ke info@hmif-lpkia.my.id dan mahasiswa
+        try {
+            $mailPayload = [
+                'title' => $aspiration->title,
+                'category' => $aspiration->category,
+                'content' => $aspiration->content,
+                'authorName' => $aspiration->author_name,
+                'authorNim' => $aspiration->author_nim,
+                'authorClass' => $aspiration->author_class,
+                'authorEmail' => $user?->email,
+            ];
+
+            // 1. Notifikasi ke email resmi pengurus HMIF
+            Mail::to('info@hmif-lpkia.my.id')->send(new AdminAspirationNotificationMail($mailPayload));
+
+            // 2. Email konfirmasi/bukti tanda terima ke mahasiswa yang login
+            if (!empty($user?->email)) {
+                Mail::to($user->email)->send(new AspirationConfirmationMail($mailPayload));
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Gagal mengirim email aspirasi otomatis: ' . $e->getMessage());
+        }
 
         return response()->json(['data' => $this->serialize($aspiration, false)], 201);
     }
