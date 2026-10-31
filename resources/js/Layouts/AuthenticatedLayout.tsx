@@ -636,25 +636,25 @@ export default function Authenticated({
                         type="button"
                         onClick={() => {
                             if (isProfilePage) {
-                                window.location.href = '/dashboard';
+                                window.location.href = '/dashboard?tab=create';
                             } else {
                                 handleNavClick('create');
                             }
                         }}
-                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-red-50/70 ${
+                        className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all duration-150 active:scale-90 hover:bg-red-50/70 ${
                             currentNav === 'create' ? 'bg-red-50/40' : ''
                         }`}
                     >
                         <div
-                            className={`p-1 border transition-all ${
+                            className={`p-1 border transition-all duration-200 ${
                                 currentNav === 'create'
-                                    ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A]'
-                                    : 'border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50'
+                                    ? 'bg-red-50 border-hima-red-dark shadow-[1px_1px_0px_0px_#CA2C2A] scale-105'
+                                    : 'border-transparent group-hover:border-hima-red-dark/50 group-hover:bg-red-50/50 group-hover:scale-105'
                             }`}
                         >
                             <svg
-                                className={`w-5 h-5 transition-colors ${
-                                    currentNav === 'create' ? 'text-hima-red-dark' : 'text-gray-500 group-hover:text-hima-red-dark'
+                                className={`w-5 h-5 transition-transform duration-200 ${
+                                    currentNav === 'create' ? 'text-hima-red-dark scale-105' : 'text-gray-500 group-hover:text-hima-red-dark'
                                 }`}
                                 fill="none"
                                 stroke="currentColor"
@@ -673,10 +673,10 @@ export default function Authenticated({
                             Tulis
                         </span>
                         <span
-                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                            className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all duration-200 ${
                                 currentNav === 'create'
-                                    ? 'bg-hima-red-dark opacity-100'
-                                    : 'bg-hima-red-dark opacity-0 group-hover:opacity-100'
+                                    ? 'bg-hima-red-dark opacity-100 scale-x-100'
+                                    : 'bg-hima-red-dark opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-75'
                             }`}
                         />
                     </button>
@@ -692,20 +692,20 @@ export default function Authenticated({
                                     handleNavClick('ksm');
                                 }
                             }}
-                            className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all active:scale-95 hover:bg-blue-50/70 ${
+                            className={`group relative flex flex-col items-center justify-center flex-1 py-1.5 transition-all duration-150 active:scale-90 hover:bg-blue-50/70 ${
                                 currentNav === 'ksm' ? 'bg-blue-50/40' : ''
                             }`}
                         >
                             <div
-                                className={`p-1 border transition-all ${
+                                className={`p-1 border transition-all duration-200 ${
                                     currentNav === 'ksm'
-                                        ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C]'
-                                        : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50'
+                                        ? 'bg-blue-50 border-hima-blue-dark shadow-[1px_1px_0px_0px_#1A467C] scale-105'
+                                        : 'border-transparent group-hover:border-hima-blue-dark/50 group-hover:bg-blue-50/50 group-hover:scale-105'
                                 }`}
                             >
                                 <svg
-                                    className={`w-5 h-5 transition-colors ${
-                                        currentNav === 'ksm' ? 'text-hima-blue-dark' : 'text-gray-500 group-hover:text-hima-blue-dark'
+                                    className={`w-5 h-5 transition-transform duration-200 ${
+                                        currentNav === 'ksm' ? 'text-hima-blue-dark scale-105' : 'text-gray-500 group-hover:text-hima-blue-dark'
                                     }`}
                                     fill="none"
                                     stroke="currentColor"
@@ -724,10 +724,10 @@ export default function Authenticated({
                                 Rekap
                             </span>
                             <span
-                                className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all ${
+                                className={`absolute bottom-0 left-2 right-2 h-0.5 transition-all duration-200 ${
                                     currentNav === 'ksm'
-                                        ? 'bg-hima-blue-dark opacity-100'
-                                        : 'bg-hima-blue-dark opacity-0 group-hover:opacity-100'
+                                        ? 'bg-hima-blue-dark opacity-100 scale-x-100'
+                                        : 'bg-hima-blue-dark opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-75'
                                 }`}
                             />
                         </button>

@@ -1,0 +1,1 @@
+import{t as e}from"./app-BuZV8R7_.js";var t=e();function n(e){return(0,t.jsx)(`img`,{...e,src:`/logo/logo.png`,alt:`Logo HIMA IF`,className:`object-contain ${e.className||`h-10 w-auto`}`})}export{n as t};

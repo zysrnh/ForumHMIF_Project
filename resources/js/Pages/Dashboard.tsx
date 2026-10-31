@@ -463,12 +463,12 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                             <button
                                 type="button"
                                 onClick={() => setIsCreateAdminModalOpen(true)}
-                                className="inline-flex btn-brutal items-center gap-1 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-xs hover:bg-hima-red-light transition-all"
+                                className="inline-flex btn-brutal items-center gap-1.5 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-brutal-xs hover:bg-hima-red-light transition-all"
                             >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
                                 </svg>
-                                <span>+ Admin Baru</span>
+                                <span>Admin Baru</span>
                             </button>
                         ) : activeNav === 'ksm' ? (
                             <a
@@ -533,7 +533,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                 {/* 1. TAMPILAN REKAP DATA KSM (KHUSUS ADMIN)                                 */}
                 {/* ========================================================================= */}
                 {activeNav === 'ksm' && isAdmin && ksmData ? (
-                    <div className="w-full space-y-8 sm:space-y-10">
+                    <div key="ksm" className="anim-tab-enter w-full space-y-8 sm:space-y-10">
                         {/* Metrik Statistik Flat Minimalis */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                             <div className="bg-white border-2 border-slate-200 p-4 space-y-1">
@@ -1019,7 +1019,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 1.5 PANEL KELOLA PENGGUNA & ADMIN HIMA                                    */
                     /* ========================================================================= */
-                    <div className="space-y-8 sm:space-y-10">
+                    <div key="users" className="anim-tab-enter space-y-8 sm:space-y-10">
                         {adminSuccess && (
                             <div className="bg-emerald-600 text-white px-4 py-3 text-xs font-bold border-2 border-slate-900 shadow-brutal-sm flex items-center justify-between">
                                 <div className="flex items-center gap-2">
@@ -1102,17 +1102,6 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                 </div>
 
                                 <div className="flex items-center gap-2 flex-wrap">
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsCreateAdminModalOpen(true)}
-                                        className="inline-flex btn-brutal items-center gap-1 border-2 border-hima-blue-dark bg-hima-red-dark text-white px-3 py-1.5 text-xs font-black uppercase tracking-wider shadow-brutal-xs hover:bg-hima-red-light transition-all shrink-0"
-                                    >
-                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M12 4v16m8-8H4" />
-                                        </svg>
-                                        <span>+ Admin Baru</span>
-                                    </button>
-
                                     <form onSubmit={handleUserSearch} className="flex items-center gap-1.5 w-full sm:w-auto">
                                         <input
                                             type="text"
@@ -1141,14 +1130,6 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                             </button>
                                         )}
                                     </form>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsCreateAdminModalOpen(true)}
-                                        className="sm:hidden px-3 py-1.5 bg-hima-red-dark text-white font-black text-xs uppercase shrink-0"
-                                    >
-                                        + Admin
-                                    </button>
                                 </div>
                             </div>
 
@@ -1329,7 +1310,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                                     <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3">
                                         <div>
                                             <h3 className="text-sm font-black text-hima-blue-dark uppercase tracking-tight">
-                                                + Buat Akun Pengurus / Admin Baru
+                                                Buat Akun Pengurus / Admin Baru
                                             </h3>
                                             <p className="text-[11px] text-slate-500 mt-0.5">
                                                 Daftarkan akun pengurus HIMA IF dengan hak akses administratif.
@@ -1457,7 +1438,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 2. FORM TULIS ASPIRASI BARU (TERPUSAT, LEGA, RAPI)                        */
                     /* ========================================================================= */
-                    <div className="scroll-reveal max-w-3xl mx-auto w-full bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-sm space-y-6">
+                    <div key="create" className="anim-tab-enter max-w-3xl mx-auto w-full bg-white border-2 border-hima-blue-dark p-6 sm:p-8 shadow-sm space-y-6">
                         <div className="border-b-2 border-slate-100 pb-4">
                             <h2 className="text-base sm:text-lg font-black text-hima-blue-dark uppercase tracking-tight">
                                 Formulir Penyampaian Aspirasi
@@ -1558,7 +1539,7 @@ export default function Dashboard({ ksmData, usersData, currentTab }: DashboardP
                     /* ========================================================================= */
                     /* 3. TAMPILAN FEED ASPIRASI (2 KOLOM PROPORSIONAL, BERNAPAS & TIDAK SEMPIT)   */
                     /* ========================================================================= */
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div key={activeNav} className="anim-tab-enter grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                         {/* KOLOM KIRI (70%): SEARCH, FILTER & LIST KARTU ASPIRASI */}
                         <div className="lg:col-span-8 space-y-10 sm:space-y-14">
                             {/* Kotak Filter & Pencarian yang Rapi, Ringkas & Bebas Overflow */}

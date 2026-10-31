@@ -128,6 +128,22 @@ html {
     animation: feedSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Tab Content Smooth Entrance Transition */
+@keyframes tabContentEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.995);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.anim-tab-enter {
+    animation: tabContentEnter 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Pop Feedback Animation */
 @keyframes votePop {
     0% {
